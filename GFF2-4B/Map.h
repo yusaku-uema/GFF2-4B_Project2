@@ -6,8 +6,6 @@ private:
 int g_block_image[4];
 int g_haikei_image;
 
-int g_block_quantity = 20;
-int g_stage_x = 0;
 public:
 Map();
 ~Map() {};
