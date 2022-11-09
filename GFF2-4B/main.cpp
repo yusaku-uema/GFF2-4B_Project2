@@ -13,7 +13,7 @@
 /***********************************************
 *変数
 ************************************************/
-bool g_forcedtermination;
+bool g_forcedtermination; //強制終了
 
 /***********************************************
 *マップチップ
@@ -80,6 +80,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         OutputDebugString(err);
         return 0;
     }
+        ClearDrawScreen();  //画面の初期化
+
+        /*最初からクラス化、シーンマネージャーで書きましょう*/
+        /*誰が見ても分かるように変数にコメント付けましょう*/
 
     // ゲームループ
     while (ProcessMessage() == 0 && sceneMng->Update() != nullptr) {
