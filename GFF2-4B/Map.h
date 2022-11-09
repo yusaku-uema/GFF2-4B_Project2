@@ -5,7 +5,8 @@ class Map
 private:
 int g_block_image[4];
 int g_haikei_image;
-
+int g_stage_x;
+int g_block_quantity;// ƒuƒƒbƒN‚Ì”
 public:
 Map();
 ~Map() {};
