@@ -11,7 +11,7 @@
 /***********************************************
 *変数
 ************************************************/
-bool g_forcedtermination;
+bool g_forcedtermination; //強制終了
 
 /***********************************************
 *マップチップ
@@ -76,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ClearDrawScreen();  //画面の初期化
 
         /*最初からクラス化、シーンマネージャーで書きましょう*/
+        /*誰が見ても分かるように変数にコメント付けましょう*/
 
         ScreenFlip();         //裏画面の内容を表画面に反映
 
