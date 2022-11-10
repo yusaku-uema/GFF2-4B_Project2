@@ -31,7 +31,7 @@ void Map::MapInit()
 
 void Map::Draw() const
 {
-	DrawGraph(0, 60, g_haikei_image, TRUE);
+	DrawGraph(0, 120, g_haikei_image, TRUE);
 
     for (int i = 0; i < MAP_HIGHT; i++)
     {
@@ -40,7 +40,7 @@ void Map::Draw() const
            if (MAP_DATA[i][j] != 0)
            {
                if (MAP_DATA[i][j] <= g_block_quantity)DrawGraph(30 * j
-                   - g_stage_x, 60 + (30 * i), g_block_image[MAP_DATA[i][j]], TRUE);
+                ,  (30 * i), g_block_image[MAP_DATA[i][j]], TRUE);
 
            }
         }
