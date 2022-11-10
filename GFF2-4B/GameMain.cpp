@@ -10,6 +10,7 @@ AbstractScene* GameMain::Update()
 {
 	ui.ScoreMove();
 	ui.TimeMove();
+	if (ui.g_time <= 0)return new Title;
 	return this;
 }
 
