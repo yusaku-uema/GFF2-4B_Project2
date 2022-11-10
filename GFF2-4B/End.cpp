@@ -8,7 +8,7 @@ End::End()
 
 }
 
-AbstractScene* Title::Update()
+AbstractScene* End::Update()
 {
 
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_A) {
@@ -20,7 +20,7 @@ AbstractScene* Title::Update()
 	return this;
 }
 
-void Title::Draw() const
+void End::Draw() const
 {
 	DrawString(0, 10, "Aでタイトル画面", GetColor(255, 0, 0));
 	DrawString(0, 60, "Bでゲームメイン", GetColor(255, 0, 0));
