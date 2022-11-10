@@ -24,7 +24,7 @@ void UI::TimeMove()
 
 void UI::Draw()const
 {
-	SetFontSize(30);
-	DrawFormatString(0, 200, 0xffffff, "スコア::%d", g_score);
-	DrawFormatString(0, 250, 0xffffff, "タイム::%d", g_time / 60);
+	SetFontSize(60);
+	DrawFormatString(0, 30, 0xffffff, "スコア::%d", g_score);
+	DrawFormatString(700, 30, 0xffffff, "タイム::%d", g_time / 60);
 }
