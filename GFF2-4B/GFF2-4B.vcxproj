@@ -171,7 +171,7 @@
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="Player" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
