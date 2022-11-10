@@ -1,6 +1,7 @@
 #pragma once
 #include "AbstractScene.h"
 #include"Map.h"
+#include"Player.h"
 #include"UI.h"
 
 class GameMain :
@@ -9,6 +10,7 @@ class GameMain :
 private:
     Map map;
     UI ui;
+    Player player;
 
 public:
     //コンストラクタ

@@ -89,7 +89,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         /*誰が見ても分かるように変数にコメント付けましょう*/
 
     // ゲームループ
-    while (ProcessMessage() == 0 && sceneMng->Update() != nullptr) {
+    while (ProcessMessage() == 0 && sceneMng->Update() != nullptr && g_forcedtermination != true) {
   
         
         ClearDrawScreen();		// 画面の初期化

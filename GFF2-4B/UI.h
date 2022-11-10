@@ -11,6 +11,7 @@ public:
     void ScoreMove();//ƒXƒRƒAˆ—
     void Draw()const;
     int g_score;
-private:
     int g_time;
+private:
+  
 };
