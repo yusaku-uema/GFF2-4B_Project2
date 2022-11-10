@@ -158,6 +158,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ranking.cpp" />
+    <ClCompile Include="InputRankingScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Help.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Ranking.h" />
+    <ClInclude Include="InputRankingScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Player.h" />

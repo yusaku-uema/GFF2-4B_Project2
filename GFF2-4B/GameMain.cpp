@@ -1,5 +1,6 @@
 #include"DxLib.h"
 #include "GameMain.h"
+#include"InputRankingScene.h"
 
 GameMain::GameMain()
 {
@@ -8,6 +9,9 @@ GameMain::GameMain()
 
 AbstractScene* GameMain::Update()
 {
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {
+		return new InputRanking(7);
+	}
 	ui.ScoreMove();
 	ui.TimeMove();
 	return this;

@@ -1,5 +1,6 @@
 #include"DxLib.h"
 #include"UI.h"
+#include"Ranking.h"
 
 UI::UI()
 {
@@ -17,6 +18,7 @@ void UI::TimeMove()
 {
 	if (--g_time <= 0)
 	{
+		ranking.getvalue(g_score);
 	}
 
 
