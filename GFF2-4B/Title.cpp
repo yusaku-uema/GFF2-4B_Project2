@@ -22,6 +22,6 @@ AbstractScene* Title::Update()
 
 void Title::Draw() const
 {
-	DrawString(0, 0,  "A‚ÅƒQ[ƒ€", GetColor(255, 0, 0));
-	DrawString(0, 40, "B‚Åƒwƒ‹ƒv", GetColor(255, 0, 0));
+	DrawString(0, 10,  "A‚ÅƒQ[ƒ€", GetColor(255, 0, 0));
+	DrawString(0, 60, "B‚Åƒwƒ‹ƒv", GetColor(255, 0, 0));
 }

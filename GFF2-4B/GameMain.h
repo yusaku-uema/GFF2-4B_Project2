@@ -2,12 +2,14 @@
 #include "AbstractScene.h"
 #include"Map.h"
 #include"Player.h"
+#include"UI.h"
 
 class GameMain :
     public AbstractScene
 {
 private:
     Map map;
+    UI ui;
     Player player;
 
 public:
