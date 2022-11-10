@@ -168,10 +168,10 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Title.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
