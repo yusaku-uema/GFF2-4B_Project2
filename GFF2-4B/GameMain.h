@@ -7,6 +7,7 @@ class GameMain :
 {
 private:
     Map map;
+
 public:
     //コンストラクタ
     GameMain();

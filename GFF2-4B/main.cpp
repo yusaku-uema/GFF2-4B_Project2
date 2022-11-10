@@ -2,6 +2,7 @@
 #include"SceneManager.h"
 #include"GameMain.h"
 #include"Title.h"
+#include"fps_fixed.h"
 
 #define MAP_HIGHT 20
 #define MAP_WIDTH 103
@@ -16,6 +17,9 @@
 ************************************************/
 bool g_forcedtermination; //強制終了
 unsigned int PLAYER_MAP[MAP_HIGHT][MAP_WIDTH];
+Fps fps; 
+
+
 ///***********************************************
 //*マップチップ
 //************************************************/
@@ -87,9 +91,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     // ゲームループ
     while (ProcessMessage() == 0 && sceneMng->Update() != nullptr) {
   
+        
         ClearDrawScreen();		// 画面の初期化
+        fps.Avg();
         sceneMng->Draw();
         ScreenFlip();
+        fps.Wait();
         if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7) {
             g_forcedtermination = true;
         }
