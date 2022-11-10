@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Help.cpp" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="GameMain.h" />
