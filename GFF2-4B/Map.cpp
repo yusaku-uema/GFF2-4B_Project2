@@ -40,7 +40,7 @@ void Map::Draw() const
            if (MAP_DATA[i][j] != 0)
            {
                if (MAP_DATA[i][j] <= g_block_quantity)DrawGraph(30 * j
-                ,  (30 * i), g_block_image[MAP_DATA[i][j]], TRUE);
+                , 120+(30 * i), g_block_image[MAP_DATA[i][j]-1], TRUE);
 
            }
         }
