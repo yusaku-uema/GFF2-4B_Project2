@@ -8,7 +8,7 @@ struct	RankingData {
     long	score;
 };
 
-class Ranking
+class RANKING
 {
 private:
 
@@ -33,9 +33,13 @@ public:
     int fontno ;
     int g_Score;
 
-    Ranking();
+    //コンストラクタ
+    RANKING();
+    //デストラクタ
+    ~RANKING() {}
 
 	void InputRanking();
+    void InputRankingDraw()const;
 	void DrawRanking();
     void SortRanking(void);		//ランキング並べ替え
     int  SaveRanking(void);		//ランキングデータの保存
@@ -43,4 +47,4 @@ public:
     int getvalue(int g_score); //scoreなどの値を取得する
 };
 
-extern Ranking ranking;
+//extern Ranking ranking;

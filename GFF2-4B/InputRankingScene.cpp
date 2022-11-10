@@ -14,5 +14,5 @@ AbstractScene* InputRanking::Update() {
 }
 
 void InputRanking::Draw() const{
-	ranking.InputRanking();
+	ranking.InputRankingDraw();
 }

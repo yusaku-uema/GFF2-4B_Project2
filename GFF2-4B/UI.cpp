@@ -18,7 +18,7 @@ void UI::TimeMove()
 {
 	if (--g_time <= 0)
 	{
-		ranking.getvalue(g_score);
+		/*ranking.getvalue(g_score);*/
 	}
 
 

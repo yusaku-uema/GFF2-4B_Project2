@@ -10,9 +10,9 @@ char g_name[5][13] = {
     {'0','1','2','3','4','5','6','7','8','9',}
 };
 
-Ranking ranking;
+//Ranking ranking;
 
-Ranking::Ranking() {
+RANKING::RANKING() {
     fonttime = 0;
     g_nowfontX = 0;
     g_nowfontY = 0;
@@ -24,19 +24,19 @@ Ranking::Ranking() {
     if (g_RankingInputImage = LoadGraph("images/rankingnyuuryoku.png"));
 }
 
-void Ranking::InputRanking() {
+void RANKING::InputRanking() {
     // 入力キー取得
     g_OldKey = g_NowKey;
     g_NowKey = GetJoypadAnalogInput(&AX, &AY, DX_INPUT_PAD1);
     g_KeyFlg = g_NowKey & ~g_OldKey;
 
-    // //ランキング画像表示
-    DrawGraph(0, 0, g_RankingInputImage, FALSE);
+    ////ランキング画像表示
+    //DrawGraph(0, 0, g_RankingInputImage, FALSE);
 
-    //フォントサイズの設定
-    SetFontSize(20);
-    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
-    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
+    ////フォントサイズの設定
+    //SetFontSize(20);
+    //DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
+    //DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
 
     if (fonttime >= 7)
     {
@@ -134,7 +134,42 @@ void Ranking::InputRanking() {
     DrawFormatString(210, 165, color, "%s", g_Ranking[4].name);
 }
 
-void Ranking::SortRanking() {
+void RANKING::InputRankingDraw() const{
+    //ランキング画像表示
+    DrawGraph(0, 0, g_RankingInputImage, FALSE);
+
+    //フォントサイズの設定
+    SetFontSize(20);
+    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
+    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
+
+   /* SetFontSize(30);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 13; j++)
+        {
+            if (i == g_nowfontY && j == g_nowfontX)
+            {
+                color = red;
+            }
+            DrawFormatString(FONT_X + 365, FONT_Y + 140, white, "%s", kettei);
+
+            if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12)
+            {
+                DrawFormatString(FONT_X + 365, FONT_Y + 140, red, "%s", kettei);
+            }
+
+            DrawFormatString(g_fontX, g_fontY, color, "%c", g_name[i][j]);
+            color = white;
+            g_fontX += 35;
+        }
+        g_fontX = FONT_X;
+        g_fontY += 35;
+    }
+    g_fontY = FONT_Y;*/
+}
+
+void RANKING::SortRanking() {
     int i, j;
     RankingData work;
 
@@ -164,7 +199,7 @@ void Ranking::SortRanking() {
     }
 }
 
-int Ranking::SaveRanking() {
+int RANKING::SaveRanking() {
     FILE* fp;
 #pragma warning(disable:4996)
 
@@ -186,7 +221,7 @@ int Ranking::SaveRanking() {
     return 0;
 }
 
-int Ranking::ReadRanking() {
+int RANKING::ReadRanking() {
     FILE* fp;
 #pragma warning(disable:4996)
 
@@ -208,6 +243,6 @@ int Ranking::ReadRanking() {
     return 0;
 }
 
-int Ranking::getvalue(int g_score) {
+int RANKING::getvalue(int g_score) {
     return g_Score=g_score;
 }

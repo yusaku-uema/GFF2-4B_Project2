@@ -1,7 +1,10 @@
 #pragma once
 #include"SceneManager.h"
+#include"Ranking.h"
 
 class InputRanking :public AbstractScene {
+private:
+	RANKING ranking;
 public:
 	InputRanking(int g_GameState);
 
