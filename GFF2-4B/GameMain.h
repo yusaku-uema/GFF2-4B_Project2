@@ -1,12 +1,14 @@
 #pragma once
 #include "AbstractScene.h"
 #include"Map.h"
+#include"UI.h"
 
 class GameMain :
     public AbstractScene
 {
 private:
     Map map;
+    UI ui;
 
 public:
     //コンストラクタ

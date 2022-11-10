@@ -8,11 +8,13 @@ GameMain::GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	
+	ui.ScoreMove();
+	ui.TimeMove();
 	return this;
 }
 
 void GameMain::Draw() const
 {
 	map.Draw();
+	ui.Draw();
 }
