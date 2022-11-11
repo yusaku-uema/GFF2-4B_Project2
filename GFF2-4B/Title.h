@@ -6,7 +6,11 @@ class Title :
     public AbstractScene
 {
 private:
-
+   int g_MenuNumber; //メニューカーソルが今何番なのか。
+   int g_MenuY; //カーソルの位置
+   int g_KeyFlg; //同じ入力キーか
+   int g_OldKey; //前回の入力
+   int g_NowKey; //今回の入力キー
 public:
     //コンストラクタ
     Title();
