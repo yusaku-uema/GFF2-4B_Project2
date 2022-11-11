@@ -32,6 +32,7 @@ private:
 public:
     Ranking();
 
+
 	void InputRanking();
 	void DrawRanking();
     void SortRanking(void);		//ƒ‰ƒ“ƒLƒ“ƒO•À‚×‘Ö‚¦

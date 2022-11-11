@@ -12,13 +12,12 @@ private:
    int g_OldKey; //前回の入力
    int g_NowKey; //今回の入力キー
 
-   Ranking ranking; //後で消す
+   //Ranking ranking; //後で消す
 
 public:
     //コンストラクタ
     Title();
     //デストラクタ
-    ~Title();
     //描画以外の更新を実行
     AbstractScene* Update() override;
     //描画に関することを実装

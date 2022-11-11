@@ -45,7 +45,9 @@ void Title::Draw() const
 	SetFontSize(60);
 	DrawString(500, 280,  "Game Start", GetColor(255, 0, 0));
 	DrawString(500, 340, "Help", GetColor(255, 0, 0));
-	DrawString(500, 400, "Ranking,ランキング表示処理なし、シーン切り替え確認済み", GetColor(255, 0, 0));
-	DrawString(500, 460, "Credit　クレジット表示処理なし、シーン切り替え確認済み", GetColor(255, 0, 0));
+	DrawString(500, 400, "Ranking,", GetColor(255, 0, 0));
+	DrawString(500, 460, "Credit　", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
+	SetFontSize(30);
+	DrawString(100, 650, "ヘルプ表示処理なし、ランキング表示処理なし、クレジット表示処理なし、\nシーン切り替え確認済み", GetColor(255, 0, 0));
 }
