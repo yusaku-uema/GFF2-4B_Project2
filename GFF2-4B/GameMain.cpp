@@ -1,6 +1,7 @@
 #include"DxLib.h"
 #include "GameMain.h"
 #include"InputRankingScene.h"
+#include"Title.h"
 
 GameMain::GameMain()
 {
@@ -14,8 +15,12 @@ AbstractScene* GameMain::Update()
 	}
 	ui.ScoreMove();
 	ui.TimeMove();
-	if (ui.g_time <= 0)return new Title;
+	
 	player.Movement();
+
+	if (ui.gettimeisup() == TRUE) {
+		return new Title();
+	}
 	return this;
 }
 
