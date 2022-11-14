@@ -10,8 +10,11 @@ GameMain::GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {
+	/*if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_A) {
 		return new InputRanking(7);
+	}*/
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_Y) {
+		//return ゲームクリア移行
 	}
 	ui.ScoreMove();
 	ui.TimeMove();
@@ -29,4 +32,5 @@ void GameMain::Draw() const
 	map.Draw();
 	ui.Draw();
 	player.Draw();
+
 }

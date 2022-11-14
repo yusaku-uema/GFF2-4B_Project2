@@ -3,6 +3,7 @@
 #include <math.h>
 #include"UI.h"
 
+
 UI::UI()
 {
 	g_score = 0;
@@ -21,25 +22,25 @@ void UI::ScoreMove()
 
 void  UI::TimeMove()
 {
-	
+
 	if (count++ % fps == 0) {
 
-	 if (--g_time >= 0)
-	{
-		g_timeisup = FALSE;
+		if (--g_time >= 0)
+		{
+			g_timeisup = FALSE;
+		}
+		else
+		{
+			g_timeisup = TRUE;
+		}
 	}
-	else
-	{
-		g_timeisup = TRUE;
-	}
- }
 
 }
 
 void UI::Draw()const
 {
 	SetFontSize(60);
-	DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
+	//DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
 	DrawFormatString(700, 30, 0xffffff, "TIME:%d", g_time);
 	int a = (1280 - (150 * (g_stage_item_quantity - 1))) / 2;
 
