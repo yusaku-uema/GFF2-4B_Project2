@@ -1,6 +1,8 @@
 #include"DxLib.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include"UI.h"
-#include"Ranking.h"
+
 
 UI::UI()
 {
@@ -38,7 +40,7 @@ void  UI::TimeMove()
 void UI::Draw()const
 {
 	SetFontSize(60);
-	DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
+	//DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
 	DrawFormatString(700, 30, 0xffffff, "TIME:%d", g_time);
 	int a = (1280 - (150 * (g_stage_item_quantity - 1))) / 2;
 
