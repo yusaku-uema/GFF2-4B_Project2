@@ -168,6 +168,7 @@
     <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
+    <ClInclude Include="Gameclear.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Help.h" />

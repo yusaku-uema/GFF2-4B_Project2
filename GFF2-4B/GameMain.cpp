@@ -13,6 +13,9 @@ AbstractScene* GameMain::Update()
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {
 		return new InputRanking(7);
 	}
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_Y) {
+		//return ゲームクリア移行
+	}
 	ui.ScoreMove();
 	ui.TimeMove();
 	
