@@ -11,10 +11,6 @@ struct	RankingData {
 class Ranking
 {
 private:
-
-public:
-    RankingData g_Ranking[10];
-
     int g_RankingInputImage;
     int fonttime;
     int g_KeyFlg;
@@ -32,8 +28,10 @@ public:
     int g_fontY ;
     int fontno ;
     int g_Score;
-
+    RankingData g_Ranking[10];
+public:
     Ranking();
+
 
 	void InputRanking();
 	void DrawRanking();
