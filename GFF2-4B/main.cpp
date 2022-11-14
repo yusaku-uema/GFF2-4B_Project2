@@ -75,7 +75,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     try
     {
-        sceneMng = new SceneManager((AbstractScene*)new GameMain());
+        sceneMng = new SceneManager((AbstractScene*)new Title());
 
     }
     catch (const char* err)
