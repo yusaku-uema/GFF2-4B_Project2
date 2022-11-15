@@ -1,4 +1,6 @@
 #pragma once
+#include"DxLib.h"
+
 const int FONT_X = 100;
 const int FONT_Y = 200;
 
@@ -11,11 +13,13 @@ struct	RankingData {
 class RANKING
 {
 private:
-
+    
 public:
-    RankingData g_Ranking[10];
+    FILE* fp;
+    RankingData g_Ranking[5];
 
     int g_RankingInputImage;
+    int g_DrawRankingImage;
     int fonttime;
     int g_KeyFlg;
     int  g_OldKey;
@@ -23,13 +27,11 @@ public:
     int AX, AY;
     int g_nowfontX;
     int g_nowfontY;
-    int Cr;
     int red;
     int white;
     int color;
     char kettei[5] = "削除";
-    int g_fontX ;
-    int g_fontY ;
+    char enter[5] = "決定";
     int fontno ;
     int g_Score;
 
@@ -40,11 +42,9 @@ public:
 
 	void InputRanking();
     void InputRankingDraw()const;
-	void DrawRanking();
+	void DrawRanking()const;
     void SortRanking(void);		//ランキング並べ替え
     int  SaveRanking(void);		//ランキングデータの保存
     int  ReadRanking(void);		//ランキングデータ読み込み
-    int getvalue(int g_score); //scoreなどの値を取得する
+    void InputRankingInit(void);
 };
-
-//extern Ranking ranking;

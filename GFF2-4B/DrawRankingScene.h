@@ -1,20 +1,16 @@
 #pragma once
-#include"SceneManager.h"
+#include"AbstractScene.h"
 #include"Ranking.h"
-#include"UI.h"
 
-class InputRanking :public AbstractScene {
+class DrawRanking :public AbstractScene {
 private:
 	RANKING ranking;
-	UI ui;
 public:
-	int g_score;
-
-	InputRanking(int g_GameState,int n);
+	DrawRanking(int g_GameState);
 
 
 	//デストラクタ
-	virtual~InputRanking() {};
+	virtual~DrawRanking() {};
 
 	//描画以外の更新を実装する
 	virtual AbstractScene* Update() override;
@@ -22,7 +18,5 @@ public:
 	//描画に関することを実装する
 	virtual void Draw() const override;
 
-	int getvalue(int n);
-
-	int g_InputRankingGameState;
+	int g_DrawRankingGameState;
 };

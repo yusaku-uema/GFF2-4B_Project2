@@ -1,16 +1,15 @@
 #include"Ranking.h"
 #include"UI.h"
-#include"DxLib.h"
 
-char g_name[5][13] = {
+char g_name[6][13] = {
     {'a','b','c','d','e','f','g','h','i','j','k','l','m'},
     {'n','o','p','q','r','s','t','u','v','w','x','y','z'},
     {'A','B','C','D','E','F','G','H','I','J','K','L','M'},
     {'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'},
-    {'0','1','2','3','4','5','6','7','8','9',}
+    {'0','1','2','3','4','5','6','7','8','9',},
+    {}
 };
 
-//Ranking ranking;
 
 RANKING::RANKING() {
     fonttime = 0;
@@ -18,10 +17,34 @@ RANKING::RANKING() {
     g_nowfontY = 0;
     red = GetColor(255, 0, 0);
     white = GetColor(255, 255, 255);
-    g_fontX = FONT_X;
-    g_fontY = FONT_Y;
     fontno = 0;
     if (g_RankingInputImage = LoadGraph("images/rankingnyuuryoku.png"));
+    if (g_DrawRankingImage = LoadGraph("images/rankingnyuuryoku.png"));
+    ReadRanking();
+}
+
+void RANKING::InputRankingInit(void)
+{
+    g_Ranking[4].name[fontno] = '\0';
+    for (int i = 0; i < 11; i++)
+    {
+        g_Ranking[4].name[i] = '\0';
+    }
+
+}
+
+void RANKING::DrawRanking(void)const
+{
+    //ランキング画像表示
+    DrawGraph(0, 0, g_DrawRankingImage, FALSE);
+
+    //ランキング一覧を表示
+    SetFontSize(30);
+    for (int i = 0; i < 5; i++) {
+        DrawFormatString(120, 170 + i * 25, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+    }
+    SetFontSize(30);
+    DrawString(50, 450, "----Aボタン押してタイトルに戻る----", 0xffffff, 0);
 }
 
 void RANKING::InputRanking() {
@@ -30,18 +53,11 @@ void RANKING::InputRanking() {
     g_NowKey = GetJoypadAnalogInput(&AX, &AY, DX_INPUT_PAD1);
     g_KeyFlg = g_NowKey & ~g_OldKey;
 
-    ////ランキング画像表示
-    //DrawGraph(0, 0, g_RankingInputImage, FALSE);
-
-    ////フォントサイズの設定
-    //SetFontSize(20);
-    //DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
-    //DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
-
     if (fonttime >= 7)
     {
         if (AX > 0 || g_KeyFlg & PAD_INPUT_RIGHT)
         {
+            if (g_nowfontY == 6 && g_nowfontX >= 6 && g_nowfontX <= 7)g_nowfontY = 4;
             if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 11)g_nowfontX = 12;
             g_nowfontX++;
             if (g_nowfontX > 12) g_nowfontX = 0;
@@ -49,6 +65,7 @@ void RANKING::InputRanking() {
         }
         else if (AX < 0 || g_KeyFlg & PAD_INPUT_LEFT)
         {
+            if (g_nowfontY == 6 && g_nowfontX >= 6 && g_nowfontX <= 7)g_nowfontY = 4;
             g_nowfontX--;
             if (g_nowfontY == 4 && g_nowfontX <= 11 && g_nowfontX >= 10)g_nowfontX = 9;
             if (g_nowfontX < 0) g_nowfontX = 12;
@@ -57,46 +74,33 @@ void RANKING::InputRanking() {
         else if (AY > 0 || g_KeyFlg & PAD_INPUT_DOWN)
         {
             g_nowfontY++;
-            if (g_nowfontY > 4) g_nowfontY = 0;
+            if(g_nowfontY == 5 && g_nowfontX >= 6 && g_nowfontX <= 7)
+            g_nowfontY++;
+            else if (g_nowfontY > 4) g_nowfontY = 0;
             fonttime = 0;
         }
         else if (AY < 0 || g_KeyFlg & PAD_INPUT_UP)
         {
             g_nowfontY--;
-            if (g_nowfontY < 0) g_nowfontY = 4;
+            if (g_nowfontY == -1 && g_nowfontX >= 6 && g_nowfontX <= 7)
+                g_nowfontY = 6;
+            else if (g_nowfontY < 0) g_nowfontY = 4;
             fonttime = 0;
         }
     }
 
-    SetFontSize(30);
-    for (int i = 0; i < 5; i++)
+
+    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)//決定
     {
-        for (int j = 0; j < 13; j++)
-        {
-            if (i == g_nowfontY && j == g_nowfontX)
+        if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12) {//消去
+            if (fonttime >= 10)
             {
-                color = red;
+                fontno--;
+                g_Ranking[4].name[fontno] = '\0';
+                if (fontno < 0)fontno = 0;
+                fonttime = 0;
             }
-            DrawFormatString(FONT_X + 365, FONT_Y + 140, white, "%s", kettei);
-
-            if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12)
-            {
-                DrawFormatString(FONT_X + 365, FONT_Y + 140, red, "%s", kettei);
-            }
-
-            DrawFormatString(g_fontX, g_fontY, color, "%c", g_name[i][j]);
-            color = white;
-            g_fontX += 35;
         }
-        g_fontX = FONT_X;
-        g_fontY += 35;
-    }
-    g_fontY = FONT_Y;
-
-
-    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)//決定
-    {
-
         if (fonttime >= 10)
         {
             if (fontno < 9)
@@ -105,19 +109,21 @@ void RANKING::InputRanking() {
                 fontno++;
             }
 
-            if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12)
+            if (g_nowfontY == 6 && g_nowfontX >= 6 && g_nowfontX <= 7)
             {
                 g_Ranking[4].score = g_Score;	// ランキングデータの5番目にスコアを登録
                 SortRanking();		// ランキング並べ替え
                 SaveRanking();		// ランキングデータの保存
             }
 
+            
+
             fonttime = 0;
         }
 
     }
 
-    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)//消去
+    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)//消去
     {
         if (fonttime >= 10)
         {
@@ -131,42 +137,51 @@ void RANKING::InputRanking() {
 
     fonttime++;
 
-    DrawFormatString(210, 165, color, "%s", g_Ranking[4].name);
+    
 }
 
 void RANKING::InputRankingDraw() const{
+    int color=white;
+    int g_fontX=100;
+    int  g_fontY=200;
+
     //ランキング画像表示
-    DrawGraph(0, 0, g_RankingInputImage, FALSE);
+    /*DrawGraph(0, 0, g_RankingInputImage, FALSE);*/
 
     //フォントサイズの設定
     SetFontSize(20);
     DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
     DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
 
-   /* SetFontSize(30);
-    for (int i = 0; i < 5; i++)
+    SetFontSize(30);
+    for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < 13; j++)
         {
             if (i == g_nowfontY && j == g_nowfontX)
             {
-                color = red;
+               color = red;
             }
             DrawFormatString(FONT_X + 365, FONT_Y + 140, white, "%s", kettei);
+            DrawFormatString(FONT_X + 205, FONT_Y + 180, white, "%s", enter);
 
             if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12)
             {
                 DrawFormatString(FONT_X + 365, FONT_Y + 140, red, "%s", kettei);
             }
-
-            DrawFormatString(g_fontX, g_fontY, color, "%c", g_name[i][j]);
+            if (g_nowfontY == 6 && g_nowfontX >= 6 && g_nowfontX <= 7) {
+                DrawFormatString(FONT_X + 205, FONT_Y + 180, red, "%s", enter);
+            }
+             DrawFormatString(g_fontX, g_fontY, color, "%c", g_name[i][j]);
             color = white;
             g_fontX += 35;
         }
         g_fontX = FONT_X;
         g_fontY += 35;
     }
-    g_fontY = FONT_Y;*/
+    g_fontY = FONT_Y; 
+
+    DrawFormatString(210, 165, color, "%s", g_Ranking[4].name);
 }
 
 void RANKING::SortRanking() {
@@ -241,8 +256,4 @@ int RANKING::ReadRanking() {
     fclose(fp);
 
     return 0;
-}
-
-int RANKING::getvalue(int g_score) {
-    return g_Score=g_score;
 }

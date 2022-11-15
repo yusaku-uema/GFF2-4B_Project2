@@ -3,6 +3,7 @@
 #include"Map.h"
 #include"Player.h"
 #include"UI.h"
+#include"Ranking.h"
 
 class GameMain :
     public AbstractScene
@@ -11,6 +12,7 @@ private:
     Map map;
     UI ui;
     Player player;
+    RANKING ranking;
 
 public:
     //コンストラクタ

@@ -70,6 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if (DxLib_Init() == -1) return -1;	// DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»ˆ—
 
 
+
     SetDrawScreen(DX_SCREEN_BACK);	// •`‰ææ‰æ–Ê‚ğ— ‚É‚·‚é
     SceneManager* sceneMng;
 
