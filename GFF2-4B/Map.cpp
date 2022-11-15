@@ -45,7 +45,7 @@ void Map::Draw() const
            }
         }
     }
-    SetDrawArea(0, 120, 1280, 600);
+    SetDrawArea(0, 0, 1280, 600);
     
  
 }

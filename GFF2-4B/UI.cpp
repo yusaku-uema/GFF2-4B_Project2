@@ -13,6 +13,7 @@ UI::UI()
 	g_stage_item_quantity = 2;
 	g_pickaxeimage = LoadGraph("images/pickaxe01.png");
 	g_whiteimage = LoadGraph("images/white.png");
+	g_bombimage = LoadGraph("images/BomFire.png");
 }
 
 
@@ -48,8 +49,8 @@ void UI::Draw()const
 	for (int i = 0; i < 4; i++)
 	{
 		DrawRotaGraph(a + (150 * i), 660, 1.0, M_PI / 180 * 0, g_whiteimage, TRUE, FALSE);
-		if (i == 1) DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_pickaxeimage, TRUE, FALSE);
-		if (i == 0) DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_bombimage, TRUE, FALSE);
+		if (i == 0) DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_pickaxeimage, TRUE, FALSE);
+		if (i == 1) DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_bombimage, TRUE, FALSE);
 		//if (i == 2) DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_item_image[1], TRUE, FALSE);
 		//if (i == 3)DrawRotaGraph(a + (150 * i), 660, 3.0, M_PI / 180 * 0, g_hammer, TRUE, FALSE);
 		//if (i == g_uicursorx)DrawRotaGraph(a + (150 * i), 660, 3.3, M_PI / 180 * 0, g_Cursorimage, TRUE, FALSE); //アイテムカーソル
