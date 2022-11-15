@@ -11,21 +11,23 @@ Title::Title()
 	g_NowKey = 0;
 	g_KeyFlg = 0;
 	g_TitleSE = LoadSoundMem("BGM/decision.mp3");
+	g_Titleimage = LoadGraph("images/taitle2.png");
 }
 
 AbstractScene* Title::Update()
 {
 
+
 	g_OldKey = g_NowKey;
-	g_NowKey = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	g_NowKey = GetJoypadInputState(DX_INPUT_PAD1);
 	g_KeyFlg = g_NowKey & ~g_OldKey;
 
 	//メニューカーソル移動処理
 	if (g_KeyFlg & PAD_INPUT_DOWN) {
-		if (++g_MenuNumber > 4) g_MenuNumber = 0;
+		if (++g_MenuNumber > 4) g_MenuNumber = 0; //下十字キー押されたら　MenuNumberを+1する。
 	}
 	if (g_KeyFlg & PAD_INPUT_UP) {
-		if (--g_MenuNumber < 0) g_MenuNumber = 4;
+		if (--g_MenuNumber < 0) g_MenuNumber = 4; //上十字キー押されたら、MenuNumberを-1する。
 	}
 
 
@@ -36,20 +38,21 @@ AbstractScene* Title::Update()
 		}
 	}
 
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 0)return new GameMain;
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 1)return new Help;
+	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 0)return new GameMain; //ゲームメイン移行
+	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
 	/*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
 	//if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)return  new クレジット
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr;
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr; //強制終了
 
 	
-	g_MenuY = g_MenuNumber * 60; //　カーソル
+	g_MenuY = g_MenuNumber * 60; //　カーソル位置60
 
 	return this;
 }
 
 void Title::Draw() const
 {
+	DrawGraph(0, 0, g_Titleimage, TRUE);
 	DrawTriangle(470, 295 + g_MenuY, 490, 310 + g_MenuY, 470, 325 + g_MenuY, GetColor(255, 0, 0), TRUE); //カーソル
 	SetFontSize(60);
 	DrawString(500, 280, "Game Start", GetColor(255, 0, 0));
@@ -58,5 +61,5 @@ void Title::Draw() const
 	DrawString(500, 460, "Credit　", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30);
-	DrawString(100, 650, "ヘルプ表示処理なし、ランキング表示処理なし、クレジット表示処理なし、\nシーン切り替え確認済み", GetColor(255, 0, 0));
+	DrawString(100, 650, "ヘルプ表示処理なし、ランキング表示処理なし、クレジット表示処理なし", GetColor(255, 0, 0));
 }
