@@ -11,10 +11,12 @@ Title::Title()
 	g_NowKey = 0;
 	g_KeyFlg = 0;
 	g_TitleSE = LoadSoundMem("BGM/decision.mp3");
+	g_Titleimage = LoadGraph("images/taitle2.png");
 }
 
 AbstractScene* Title::Update()
 {
+
 
 	g_OldKey = g_NowKey;
 	g_NowKey = GetJoypadInputState(DX_INPUT_PAD1);
@@ -50,6 +52,7 @@ AbstractScene* Title::Update()
 
 void Title::Draw() const
 {
+	DrawGraph(0, 0, g_Titleimage, TRUE);
 	DrawTriangle(470, 295 + g_MenuY, 490, 310 + g_MenuY, 470, 325 + g_MenuY, GetColor(255, 0, 0), TRUE); //カーソル
 	SetFontSize(60);
 	DrawString(500, 280, "Game Start", GetColor(255, 0, 0));
@@ -58,5 +61,5 @@ void Title::Draw() const
 	DrawString(500, 460, "Credit　", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30);
-	DrawString(100, 650, "ヘルプ表示処理なし、ランキング表示処理なし、クレジット表示処理なし、\nシーン切り替え確認済み", GetColor(255, 0, 0));
+	DrawString(100, 650, "ヘルプ表示処理なし、ランキング表示処理なし、クレジット表示処理なし", GetColor(255, 0, 0));
 }

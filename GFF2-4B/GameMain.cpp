@@ -30,6 +30,7 @@ AbstractScene* GameMain::Update()
 void GameMain::Draw() const
 {
 	map.Draw();
-	player.Draw();
 	ui.Draw();
+	player.Draw();
+	
 }

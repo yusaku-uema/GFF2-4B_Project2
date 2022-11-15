@@ -8,7 +8,7 @@ Player::Player(){
 	g_NowKey = 0;
 	g_OldKey = 0;
 	g_PlayerX = 200;
-	g_PlayerY = 600;
+	g_PlayerY = 200;
 	g_PlayerVX = 0;
 	g_PlayerVY = 0;
 	image_number = 0;
