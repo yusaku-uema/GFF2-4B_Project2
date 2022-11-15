@@ -19,7 +19,7 @@ UI::UI()
 
 void UI::ScoreMove()
 {
-	//if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)g_score += 50; //テスト
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)g_score += 50; //テスト
 }
 
 void  UI::TimeMove()

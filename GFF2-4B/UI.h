@@ -3,7 +3,6 @@
 class UI
 {
 private:
- int g_score; //スコア
   int g_time; //時間制限
   bool g_timeisup; //時間切れか判断。
   const int fps = 60; //60fpsで一秒
@@ -14,6 +13,8 @@ private:
   int g_whiteimage; //白い画像
   int g_stage_item_quantity; //アイテムの量
 public:
+    int g_score; //スコア
+
     //コンストラクタ
     UI();
     //デストラクタ
