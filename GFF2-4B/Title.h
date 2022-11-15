@@ -13,6 +13,7 @@ private:
    int g_NowKey; //今回の入力キー
    int g_TitleSE; //決定SE
    int g_TitleBGM; //タイトルに流れるBGM
+   int g_Titleimage; //タイトル背景
 
    //Ranking ranking; //後で消す
 
