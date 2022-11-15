@@ -12,6 +12,7 @@ UI::UI()
 	count = 0;
 	g_stage_item_quantity = 2;
 	g_pickaxeimage = LoadGraph("images/pickaxe01.png");
+	g_whiteimage = LoadGraph("images/white.png");
 }
 
 
@@ -40,7 +41,7 @@ void  UI::TimeMove()
 void UI::Draw()const
 {
 	SetFontSize(60);
-	//DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
+	DrawFormatString(0, 30, 0xffffff, "SCORE:%d", g_score);
 	DrawFormatString(700, 30, 0xffffff, "TIME:%d", g_time);
 	int a = (1280 - (150 * (g_stage_item_quantity - 1))) / 2;
 

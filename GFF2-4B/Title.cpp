@@ -17,15 +17,15 @@ AbstractScene* Title::Update()
 {
 
 	g_OldKey = g_NowKey;
-	g_NowKey = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	g_NowKey = GetJoypadInputState(DX_INPUT_PAD1);
 	g_KeyFlg = g_NowKey & ~g_OldKey;
 
 	//メニューカーソル移動処理
 	if (g_KeyFlg & PAD_INPUT_DOWN) {
-		if (++g_MenuNumber > 4) g_MenuNumber = 0;
+		if (++g_MenuNumber > 4) g_MenuNumber = 0; //下十字キー押されたら　MenuNumberを+1する。
 	}
 	if (g_KeyFlg & PAD_INPUT_UP) {
-		if (--g_MenuNumber < 0) g_MenuNumber = 4;
+		if (--g_MenuNumber < 0) g_MenuNumber = 4; //上十字キー押されたら、MenuNumberを-1する。
 	}
 
 
@@ -36,14 +36,14 @@ AbstractScene* Title::Update()
 		}
 	}
 
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 0)return new GameMain;
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 1)return new Help;
+	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 0)return new GameMain; //ゲームメイン移行
+	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
 	/*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
 	//if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)return  new クレジット
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr;
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr; //強制終了
 
 	
-	g_MenuY = g_MenuNumber * 60; //　カーソル
+	g_MenuY = g_MenuNumber * 60; //　カーソル位置60
 
 	return this;
 }
