@@ -34,6 +34,9 @@ public:
     char enter[5] = "決定";
     int fontno ;
     int g_Score;
+    RankingData g_Ranking[10];
+public:
+    Ranking();
 
     //コンストラクタ
     RANKING();

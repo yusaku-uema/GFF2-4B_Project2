@@ -56,6 +56,7 @@ Fps fps;
 //    }
 //}
 
+
 /***********************************************
  * プログラムの開始
  ***********************************************/
@@ -63,7 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPSTR lpCmdLine, int nCmdShow) {
 
     // タイトルを test に変更
-    SetMainWindowText("GFF");
+    SetMainWindowText("掘れダンジョン君");
     SetGraphMode(1280, 720, 16);  //画面サイズ
     ChangeWindowMode(TRUE);		// ウィンドウモードで起動
 
@@ -76,7 +77,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     try
     {
-        sceneMng = new SceneManager((AbstractScene*)new GameMain());
+        sceneMng = new SceneManager((AbstractScene*)new (Title));
 
     }
     catch (const char* err)
@@ -92,7 +93,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     // ゲームループ
     while (ProcessMessage() == 0 && sceneMng->Update() != nullptr && g_forcedtermination != true) {
   
-        
         ClearDrawScreen();		// 画面の初期化
         fps.Avg();
         sceneMng->Draw();

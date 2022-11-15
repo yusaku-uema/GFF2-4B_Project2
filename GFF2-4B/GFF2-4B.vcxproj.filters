@@ -98,6 +98,9 @@
     <ClInclude Include="InputRankingScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Gameclear.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="DrawRankingScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
