@@ -9,13 +9,11 @@ GameMain::GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {
-		return new InputRanking(7);
-	}
-	ui.ScoreMove();
+	/*ui.ScoreMove();*/
 	ui.TimeMove();
 	if (ui.g_time <= 0)return new Title;
-	player.Movement();
+	player.Player_Sousa(map);
+	player.Hammer(map);
 	return this;
 }
 

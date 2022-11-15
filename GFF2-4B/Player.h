@@ -1,23 +1,29 @@
 #pragma once
 #include"AbstractScene.h"
+#include"Map.h"
 
 class Player
 {
 private:
-	int g_OldKey; //前回の入力キー
-	int g_NowKey; //今回の入力キー
-	int g_PlayerX; //プレイヤー座標X
-	int g_PlayerY; //プレイヤー座標Y
-	int g_Movement_speed; //プレイヤー移動スピード
-	int g_Playerimage[4]; //プレイヤー画像
-	int image_number; //プレイヤー画像切り替えカウント
-	int image_Type; //プレイヤー画像要素数指定
-	bool g_direction; //左を向いているのかのフラグ
-
+	int g_player_image[4];
+	int AX, AY; //キーの値
+	int g_playerx, g_playery; //プレイヤーの座標
+	int g_ballx, g_bally;
+	int g_ball_powerx, g_ball_powery;
+	bool g_ball = FALSE;
+	int g_hammer_power;
+	int g_hammer_power_gauge;
+	int g_player_image_type;
+	int g_image_time;
+	bool g_direction;
+	int g_player_hit_front;
+	int g_player_hit_back;
+	int g_hammer_angle;
 public:
 	Player(); //コンストラクタ
 	void Draw() const;
-	void Movement(); //プレイヤー移動処理
-	void jump(); //プレイヤーのジャンプ処理
+	int g_block_count;
+	void Player_Sousa(Map map);
+	void Hammer(Map map);
 };
 
