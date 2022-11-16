@@ -166,7 +166,7 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="AdstractScene.h" />
     <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />

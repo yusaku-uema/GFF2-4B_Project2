@@ -1,27 +1,31 @@
 #include"DxLib.h"
 #include"SceneManager.h"
 
-AbstractScene* SceneManager::Update()
+SceneManager::SceneManager(AdstractScene* scene)
 {
-	AbstractScene* NextScene;
-	try
+	m_Scene = scene; 
+}
+
+
+void SceneManager::Update()
+{
+	m_Scene->Update(); 
+}
+
+
+void SceneManager::Draw()const
+{
+	m_Scene->Draw(); 
+}
+
+
+void SceneManager::ChangeScene() //“¯‚¶ƒV[ƒ“‚È‚Ì‚©H
+{
+	AdstractScene* next = m_Scene->ChangeScene();
+	if (next != m_Scene) 
 	{
-		NextScene = mScene->Update();
-	}
-	catch (const char* err)
-	{
-		OutputDebugString(err);
-		return nullptr;
+		delete m_Scene; 
+		m_Scene = next;
 	}
 
-	if (NextScene != mScene)
-	{
-		delete mScene;
-		mScene = NextScene;
-	}
-	return mScene;
-}
-void SceneManager::Draw() const
-{
-	mScene->Draw();
 }

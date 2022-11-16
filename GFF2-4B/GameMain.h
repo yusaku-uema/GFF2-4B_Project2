@@ -1,27 +1,25 @@
 #pragma once
-#include "AbstractScene.h"
+#include "AdstractScene.h"
 #include"Map.h"
-#include"Player.h"
 #include"UI.h"
 #include"Ranking.h"
 
-class GameMain :
-    public AbstractScene
+class GameMain :public AdstractScene
 {
 private:
-    Map map;
+   /* Map map;
     UI ui;
     Player player;
-    RANKING ranking;
+    RANKING ranking;*/
 
 public:
     //コンストラクタ
     GameMain();
-    //デストラクタ
-    ~GameMain() {}
     //描画以外の更新を実行
-    AbstractScene* Update() override;
+   void Update() override;
     //描画に関することを実装
     void Draw() const override;
+    //シーン切り替え
+    AdstractScene* ChangeScene();
 };
 
