@@ -1,5 +1,5 @@
 #pragma once
-#include"Item.h"
+#include"Map.h"
 
 enum PLAYER_STATE
 {
@@ -18,6 +18,7 @@ enum PLAYER_DIRECTION
 class Player
 {
 private:
+	int AX, AY; //キーの値
 	int g_player_x; //プレイヤー座標
 	int g_player_y;
 	int g_player_flg;
@@ -60,13 +61,14 @@ private:
 
 public:
 
-	void Init(); //再スタート初期化
+	Player();
+	void Player_Init(); //再スタート初期化
 	void Key(); //キー入力
 	void Player_operation(); //プレイヤー操作
 	void Hammer(); //投げるつるはし
 	void Jump(); //プレイヤージャンプ
 	void Walk(); //プレイヤー歩く処理
-	int HitBoxPlayer(int px, int py, ITEM* i);
+	//int HitBoxPlayer(int px, int py, ITEM* i);
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
 	int Player_Hit_Under(int a, int b);

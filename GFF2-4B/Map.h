@@ -1,5 +1,16 @@
 #pragma once
-#include"InputData.h"
+#define MAP_HIGHT 24
+#define MAP_WIDTH 86
+struct ITEM {
+	bool flg;
+	int x;
+	int y;
+	int point;
+	int type;
+};
+struct ITEM g_item[10];
+
+
 class Map
 {
 private:
@@ -7,15 +18,20 @@ private:
 	int g_haikei_image;
 	int g_stage_x;
 	int g_block_quantity;// ブロックの数
+	int g_item_count;
+	bool g_itme_flg;
+	int g_item_selection; //アイテム選択
+	int g_item_image[3];
+	int g_item_cursor_image[3];
 public:
 	Map();
-	~Map() {};
+	void Draw_Item(); //アイテム描画
+	void Item_Init(); //初期化マップとアイテム
+	void Item1(); //ようわからん、神里へ聞いてちょ
+	//マップの描画
+	void Draw() const;
+	//マップの初期設定
 	void Stage();
-//マップの描画
-void Draw() const;
-//マップの初期設定
-void MapInit();
-void Stage();
 unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH] =
 {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},

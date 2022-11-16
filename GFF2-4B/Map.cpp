@@ -10,22 +10,10 @@ Map::Map()
 	if (LoadDivGraph("images/block2.png", 4, 4, 1, 30, 30, g_block_image) == -1);
 }
 
+
 void Map::Stage()
 {
    
-
-}
-
-void Map::MapInit()
-{
-    for (int i = 0; i < MAP_HIGHT; i++)
-    {
-        for (int j = 0; j < MAP_WIDTH; j++)
-        {
-            MAP_DATA[i][j] = MAP_DATA_INIT[i][j];
- 
-        }
-    }
 
 }
 
