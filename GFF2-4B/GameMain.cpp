@@ -16,21 +16,21 @@ AbstractScene* GameMain::Update()
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_Y) {
 		//return ゲームクリア移行
 	}
-	ui.ScoreMove();
-	ui.TimeMove();
+	//ui.ScoreMove();
+	//ui.TimeMove();
 	
 	player.Movement();
 
-	if (ui.gettimeisup() == TRUE) {
+	/*if (ui.gettimeisup() == TRUE) {
 		return new Title();
-	}
+	}*/
 	return this;
 }
 
 void GameMain::Draw() const
 {
 	map.Draw();
-	ui.Draw();
+	//ui.Draw();
 	player.Draw();
 
 }
