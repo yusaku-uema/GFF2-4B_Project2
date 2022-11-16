@@ -7,7 +7,7 @@ Map::Map()
     g_stage_x = 0;
     g_block_quantity = 20;// ƒuƒƒbƒN‚Ì”
 	if ((g_haikei_image = LoadGraph("images/stage.png")) == -1);
-	if (LoadDivGraph("images/block2.png", 4, 4, 1, 30, 30, g_block_image) == -1);
+	if (LoadDivGraph("images/Blockwwww.png", 7, 7, 1, 30, 30, g_block_image) == -1);
 }
 
 void Map::Stage()
