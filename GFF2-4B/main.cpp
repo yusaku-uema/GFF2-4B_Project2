@@ -67,3 +67,4 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     return 0;	// ソフトの終了
 }
+
