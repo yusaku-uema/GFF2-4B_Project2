@@ -1,9 +1,8 @@
 #pragma once
-#include"SceneManager.h"
 #include"Ranking.h"
 #include"UI.h"
 
-class InputRanking :public AdstractScene {
+class InputRanking  {
 private:
 	/*RANKING ranking;
 	UI ui;*/
@@ -19,12 +18,12 @@ public:
 	virtual~InputRanking() {};
 
 	//描画以外の更新を実装する
-	void  Update() override;
+	void  Update();
 
 	//描画に関することを実装する
-	virtual void Draw() const override;
+	 void Draw();
 	//シーン切り替え
-	AdstractScene* ChangeScene();
+	void  ChangeScene();
 
 	
 };

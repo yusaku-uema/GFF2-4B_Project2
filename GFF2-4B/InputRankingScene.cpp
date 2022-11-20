@@ -8,7 +8,7 @@ InputRanking::InputRanking(int g_GameState,int n) {
 	g_score = n;
 }
 
-void InputRanking::Draw() const{
+void InputRanking::Draw() {
 	//ranking.InputRankingDraw();
 }
 
@@ -32,9 +32,9 @@ void  InputRanking::Update() {
 	//return nullptr;
 }
 
-AdstractScene* InputRanking::ChangeScene()
+void InputRanking::ChangeScene()
 {
-	return this;
+
 }
 
 int InputRanking::getvalue(int n) {

@@ -11,12 +11,12 @@ void  Help::Update()
 	
 }
 
-void Help::Draw() const
+void Help::Draw()
 {
 
 }
 
-AdstractScene* Help::ChangeScene()
+void Help::ChangeScene()
 {
-	return this;
+	
 }
