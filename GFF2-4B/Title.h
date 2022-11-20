@@ -1,9 +1,7 @@
 #pragma once
-#include "AbstractScene.h"
-#include"Ranking.h"
+#include "AdstractScene.h"
 
-class Title :
-    public AbstractScene
+class Title :public AdstractScene
 {
 private:
    int g_MenuNumber; //メニューカーソルが今何番なのか。
@@ -15,15 +13,15 @@ private:
    int g_TitleBGM; //タイトルに流れるBGM
    int g_Titleimage; //タイトル背景
 
-   //Ranking ranking; //後で消す
-
 public:
     //コンストラクタ
     Title();
-    //デストラクタ
     //描画以外の更新を実行
-    AbstractScene* Update() override;
+     void Update() override;
     //描画に関することを実装
     void Draw() const override;
+    //シーン切り替え
+    AdstractScene* ChangeScene();
+
 };
 

@@ -8,20 +8,18 @@ End::End()
 
 }
 
-AbstractScene* End::Update()
+void  End::Update()
 {
 
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_A) {
-		return new Title;
-	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {
-		return new GameMain;
-	}
-	return this;
 }
 
 void End::Draw() const
 {
 	DrawString(0, 10, "Aでタイトル画面", GetColor(255, 0, 0));
 	DrawString(0, 60, "Bでゲームメイン", GetColor(255, 0, 0));
+}
+
+AdstractScene* End::ChangeScene()
+{
+	return this;
 }

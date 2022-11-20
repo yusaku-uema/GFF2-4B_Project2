@@ -32,39 +32,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
-
     SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
-    SceneManager* sceneMng;
-
-    try
-    {
-        sceneMng = new SceneManager((AbstractScene*)new (GameMain));
-
-    }
-    catch (const char* err)
-    {
-        OutputDebugString(err);
-        return 0;
-    }
-        ClearDrawScreen();  //画面の初期化
+   
+    SceneManager* sceneManager = new SceneManager(new Title()); //最初に呼び出すシーン
 
         /*最初からクラス化、シーンマネージャーで書きましょう*/
         /*誰が見ても分かるように変数にコメント付けましょう*/
 
     // ゲームループ
-    while (ProcessMessage() == 0 && sceneMng->Update() != nullptr && g_forcedtermination != true) {
-  
-        ClearDrawScreen();		// 画面の初期化
-        fps.Avg();
-        sceneMng->Draw();
-        ScreenFlip();
-        fps.Wait();
-        if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7) {
-            g_forcedtermination = true;
+    while (ProcessMessage() == 0 && g_forcedtermination != true) {
+         
+        //保留&& sceneManager->ChangeScene() != nullptr
+
+        if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7 ) {
+            g_forcedtermination = true;//強制終了
         }
+
+        fps.Avg();
+
+        sceneManager->Update(); //描画以外の処理
+
+        ClearDrawScreen();		// 画面の初期化
+
+        sceneManager->Draw(); //描画のみ
+
+        ScreenFlip();  // 裏画面の内容を表画面に反映
+
+        sceneManager->ChangeScene(); //シーン切り替え
+
+        fps.Wait();
     }
 
     DxLib_End();	// DXライブラリ使用の終了処理
 
     return 0;	// ソフトの終了
 }
+

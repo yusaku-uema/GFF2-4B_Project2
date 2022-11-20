@@ -151,10 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Help.cpp" />
+    <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -165,7 +167,8 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="AdstractScene.h" />
+    <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="Gameclear.h" />
