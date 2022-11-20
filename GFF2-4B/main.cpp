@@ -49,68 +49,68 @@ Title title; //タイトル
  * プログラムの開始
  ***********************************************/
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-    LPSTR lpCmdLine, int nCmdShow) {
+	LPSTR lpCmdLine, int nCmdShow) {
 
-    // タイトルを test に変更
-    SetMainWindowText("掘れ掘れダンジョン君");
-    SetGraphMode(1280, 720, 16);  //画面サイズ
-    ChangeWindowMode(TRUE);		// ウィンドウモードで起動
+	// タイトルを test に変更
+	SetMainWindowText("掘れ掘れダンジョン君");
+	SetGraphMode(1280, 720, 16);  //画面サイズ
+	ChangeWindowMode(TRUE);		// ウィンドウモードで起動
 
-    if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
-    if (LoadImages() == -1) return -1; //画像読込み
-    if (LoadSounds() == -1) return -1; //サウンド読込み
+	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
+	if (LoadImages() == -1) return -1; //画像読込み
+	if (LoadSounds() == -1) return -1; //サウンド読込み
 
-    SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
-   
-        /*最初からクラス化、シーンマネージャーで書きましょう*/
-        /*誰が見ても分かるように変数にコメント付けましょう*/
+	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
-    // ゲームループ
-    while (ProcessMessage() == 0 && g_forcedtermination != true) {
-         
-        if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7 ) {
-            g_forcedtermination = true;//強制終了
-        }
+		/*最初からクラス化、シーンマネージャーで書きましょう*/
+		/*誰が見ても分かるように変数にコメント付けましょう*/
 
-        fps.Avg(); //FPS
+	// ゲームループ
+	while (ProcessMessage() == 0 && g_forcedtermination != true) {
 
-        ClearDrawScreen();		// 画面の初期化
-        switch (g_GameState) {
-        case 0:
-            title.Update(); //ゲームタイトル描画処理
-            break;
-        case 1:
-            //GameInit();
-            break;
-        case 2:
-            //DrawRanking();
-            break;
-        case 3:
-           // DrawHelp();
-            break;
-        case 4:
-            //DrawEnd();
-            break;
-        case 5:
-            //GameMain();
-            break;
-        case 6:
-           // InputRanking();
-            break;
-        case 7:
-           // Pause();
-            break;
-        }
+		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7) {
+			g_forcedtermination = true;//強制終了
+		}
 
-        ScreenFlip();  // 裏画面の内容を表画面に反映
+		fps.Avg(); //FPS
+
+		ClearDrawScreen();		// 画面の初期化
+		switch (g_GameState) {
+		case 0:
+			title.Update(); //ゲームタイトル描画処理
+			break;
+		case 1:
+			//GameInit();
+			break;
+		case 2:
+			//DrawRanking();
+			break;
+		case 3:
+			// DrawHelp();
+			break;
+		case 4:
+			//DrawEnd();
+			break;
+		case 5:
+			//GameMain();
+			break;
+		case 6:
+			// InputRanking();
+			break;
+		case 7:
+			// Pause();
+			break;
+		}
+
+		ScreenFlip();  // 裏画面の内容を表画面に反映
 
 
-        fps.Wait(); //FPSに合わせて待機
-    }
+		fps.Wait(); //FPSに合わせて待機
+	}
 
-    DxLib_End();	// DXライブラリ使用の終了処理
+	DxLib_End();	// DXライブラリ使用の終了処理
 
-    return 0;	// ソフトの終了
+	return 0;	// ソフトの終了
 }
 
 /***********************************************
@@ -118,7 +118,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 ************************************************/
 void  SetGameState(int a)
 {
-    g_GameState = a;
+	g_GameState = a; //引数で指定した値をg_GameStateに代入
 }
 
 
@@ -127,16 +127,16 @@ void  SetGameState(int a)
 ************************************************/
 int LoadImages()
 {
-    if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
-    if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
-    if ((g_haikei_image = LoadGraph("images/team/haikei.png")) == -1)return -1;
-    if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
+	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
+	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
+	if ((g_haikei_image = LoadGraph("images/team/haikei.png")) == -1)return -1;
+	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
 
-    if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
-    if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
-    if (LoadDivGraph("images/team/item.png", 3, 3, 1, 30, 30, g_item_image) == -1) return -1;
-    if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
+	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
+	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item.png", 3, 3, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
 
 /***********************************************
@@ -144,7 +144,7 @@ int LoadImages()
 ************************************************/
 int LoadSounds(void)
 {
-    if ((g_Title_SE = LoadSoundMem("BGM/decision.mp3")) == -1)return -1;
+	if ((g_Title_SE = LoadSoundMem("BGM/decision.mp3")) == -1)return -1;
 }
 
 
@@ -153,55 +153,55 @@ int LoadSounds(void)
 ************************************************/
 int GetArrayImages(int type, int num)
 {
-    switch (type)
-    {
-    case Title_Images: //タイトル画像
-        return g_Title_images;
-        break;
-    case Player_Images: //プレイヤー画像
-        if (0 <= num && num < 4) {
-            return g_player_image[num];
-        }
-        else { return -1; }
-        break;
+	switch (type)
+	{
+	case Title_Images: //タイトル画像
+		return g_Title_images;
+		break;
+	case Player_Images: //プレイヤー画像
+		if (0 <= num && num < 4) {
+			return g_player_image[num];
+		}
+		else { return -1; }
+		break;
 
-    case GameMain_Images: //１ステージの背景
-        return g_haikei_image;
-        break;
+	case GameMain_Images: //１ステージの背景
+		return g_haikei_image;
+		break;
 
-    case Block_Images: //ブロック画像
-        if (0 <= num && num < 20) {
-            return g_block_image[num];
-        }
-        else { return -1; }
-        break;
+	case Block_Images: //ブロック画像
+		if (0 <= num && num < 20) {
+			return g_block_image[num];
+		}
+		else { return -1; }
+		break;
 
-    case Player_CursorImages: //プレイヤーの前にあるカーソル
-        return g_cursor_image;
-        break;
+	case Player_CursorImages: //プレイヤーの前にあるカーソル
+		return g_cursor_image;
+		break;
 
-    case Item_Images: //アイテム画像
-        if (0 <= num && num < 3) {
-            return g_item_image[num];
-        }
-        else { return -1; }
-        break;
+	case Item_Images: //アイテム画像
+		if (0 <= num && num < 3) {
+			return g_item_image[num];
+		}
+		else { return -1; }
+		break;
 
-    case  Pickaxe_Images: //つるはし画像
-        return g_hammer_image;
-        break;
+	case  Pickaxe_Images: //つるはし画像
+		return g_hammer_image;
+		break;
 
-    default:
-        return -1;
-        break;
-    }
+	default:
+		return -1;
+		break;
+	}
 }
 
 /***********************************************
 * サウンド呼び出し
 ************************************************/
 int GetSounds(int type) {
-   
-    if (Title_SE == type)return g_Title_SE;
-    return 0;
+
+	if (Title_SE == type)return g_Title_SE;
+	return 0;
 }
