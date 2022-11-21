@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Credit.cpp" />
     <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Credit.h" />
     <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
