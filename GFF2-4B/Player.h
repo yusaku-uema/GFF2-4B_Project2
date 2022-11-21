@@ -24,6 +24,9 @@ private:
 	int g_player_x, g_player_y; //プレイヤーの座標
 	int g_hammer_x, g_hammer_y;
 	int g_hammer_speed_x, g_hammer_speed_y;
+	int g_image_time = 0;
+	int g_player_image_type;
+	bool g_item_flg;
 	bool g_hammer_flg ;//ハンマーが使われているかどうか
 	int g_hammer_power;
 	int g_direction;
@@ -51,15 +54,31 @@ private:
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
 
+	//プレイヤーUI
+	int g_item_selection;
+
+	struct ITEM {
+		bool flg;
+		int x;
+		int y;
+		int point;
+		int type;
+	};
+	struct ITEM g_item[10];
+
 public:
 	void Player_Init();
 	void Key();
 	void Player_Sousa();
+	void Draw_Item();
 	void Hammer();
 	void Jump();
 	void Walk();
 	void Fall();
-	//int HitBoxPlayer(int px, int py, ITEM* i);
+	void Item();
+	void Stage();
+	void UI();
+	int HitBoxPlayer(int px, int py, ITEM* i);
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
 	int Player_Hit_Under(int a, int b);

@@ -163,7 +163,6 @@
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="InputRankingScene.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawRankingScene.h" />
@@ -179,7 +178,6 @@
     <ClInclude Include="InputRankingScene.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tkara.h" />
-    <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

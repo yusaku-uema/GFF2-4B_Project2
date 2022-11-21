@@ -2,6 +2,7 @@
 #include"main.h"
 #include"fps_fixed.h" //FPS管理
 #include"Title.h" //タイトル
+#include"GameMain.h"
 
 
 #define MAP_HIGHT 20
@@ -44,6 +45,8 @@ int g_Title_SE; //タイトルSE
 
 Fps fps; //FPS管理
 Title title; //タイトル
+GameMain gamemain;
+
 
 /***********************************************
  * プログラムの開始
@@ -80,10 +83,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			title.Update(); //ゲームタイトル描画処理
 			break;
 		case 1:
-			//GameInit();
+			gamemain.GameMain_Init();
 			break;
 		case 2:
-			//DrawRanking();
+			gamemain.Update();
 			break;
 		case 3:
 			// DrawHelp();
