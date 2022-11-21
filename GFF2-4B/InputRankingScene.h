@@ -1,6 +1,5 @@
 #pragma once
 #include"Ranking.h"
-#include"UI.h"
 
 class InputRanking  {
 private:
