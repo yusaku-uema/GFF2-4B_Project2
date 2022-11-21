@@ -3,6 +3,7 @@
 #include"fps_fixed.h" //FPS管理
 #include"Title.h" //タイトル
 #include"GameMain.h"
+#include"Credit.h"
 
 
 #define MAP_HIGHT 20
@@ -46,6 +47,7 @@ int g_Title_SE; //タイトルSE
 Fps fps; //FPS管理
 Title title; //タイトル
 GameMain gamemain;
+Credit credit;
 
 
 /***********************************************
@@ -89,7 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			gamemain.Update();
 			break;
 		case 3:
-			// DrawHelp();
+			credit.Draw();
 			break;
 		case 4:
 			//DrawEnd();

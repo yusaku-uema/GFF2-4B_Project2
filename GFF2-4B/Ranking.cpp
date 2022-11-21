@@ -1,5 +1,4 @@
 #include"Ranking.h"
-#include"UI.h"
 
 char g_name[6][13] = {
     {'a','b','c','d','e','f','g','h','i','j','k','l','m'},
