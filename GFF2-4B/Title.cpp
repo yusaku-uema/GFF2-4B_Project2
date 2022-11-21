@@ -3,6 +3,7 @@
 #include"Help.h"
 #include "Title.h"
 #include"Credit.h"
+#include"GameReward.h"
 
 Title::Title()
 {
@@ -11,6 +12,7 @@ Title::Title()
 	g_OldKey = 0;
 	g_NowKey = 0;
 	g_KeyFlg = 0;
+
 }
 
 AbstractScene* Title::Update()
@@ -31,7 +33,7 @@ AbstractScene* Title::Update()
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B&& g_MenuNumber==0)return new GameMain;
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_MenuNumber == 1)return new Help;
 	/*if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
-	//if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_MenuNumber == 3)return  new クレジット
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_MenuNumber == 3)return  new GameReward;
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr;
     
 	//メニューカーソル（三角形）の表示

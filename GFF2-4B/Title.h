@@ -11,6 +11,7 @@ private:
    int g_KeyFlg; //同じ入力キーか
    int g_OldKey; //前回の入力
    int g_NowKey; //今回の入力キー
+   
 
    //Ranking ranking; //後で消す
 

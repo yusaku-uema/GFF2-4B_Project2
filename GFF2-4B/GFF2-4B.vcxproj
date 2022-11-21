@@ -155,6 +155,7 @@
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameReward.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Credit.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
+    <ClInclude Include="GameReward.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Help.h" />
