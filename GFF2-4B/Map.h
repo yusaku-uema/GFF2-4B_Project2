@@ -65,11 +65,12 @@ private:
 	 int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 
 public:
-	int GetMap(int x, int y,bool a); //マップ情報取得
-	void SetMap(int x, int y, int  type,bool a); // マップ書き換え
+	int GetMap(int y, int x); //マップ情報取得
+	void SetMap(int y, int x, int  type,bool a); // マップ書き換え
+	void InitMap(int y, int x); //マップ情報設定
 
-	int GetItemMap(int x, int y ,bool a); //アイテムマップ情報取得
-	void SetItmeMap(int x, int y, int type); // アイテムマップ書き換え
+	int GetItemMap(int y, int x ,bool a); //アイテムマップ情報取得
+	void SetItmeMap(int y, int x, int type); // アイテムマップ書き換え
 
 };
 

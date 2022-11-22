@@ -53,8 +53,8 @@ void Player::Player_Init() //初期化
 				g_item_count++;
 			}
 			
-			map.SetMap(i, j, map.GetMap(i, j, true),false);
-			if (map.GetMap(i, j, false) == 3)map.SetMap(i,j, GetRand(2) + 1,false);
+			map.InitMap(i, j);
+			if (map.GetMap(i, j) == 3)map.SetMap(i,j, GetRand(2) + 1,false);
 		}
 	}
 
@@ -133,15 +133,15 @@ void Player::Hammer()
 		{
 			if ((g_bkey_flg == TRUE) && (g_old_bkey_flg == FALSE))//Bボタンが押されたら
 			{
-				if (map.GetMap(g_cursory / 30, g_cursorx / 30,false) > 3)
+				if (map.GetMap(g_cursory / 30, g_cursorx / 30) > 3)
 				{
 					map.SetMap(g_cursory / 30, g_cursorx / 30,0,false) , g_break_block_count++;//カーソルのブロックを壊す（地面ブロックなら一発で壊す）
 					if ((g_break_block_count % 50) == 0) g_block_count++;
 				}
-				if (map.GetMap(g_cursory / 30, g_cursorx / 30, false) > 0)
+				if (map.GetMap(g_cursory / 30, g_cursorx / 30) > 0)
 				{
 					map.SetMap(g_cursory / 30, g_cursorx / 30, 1, true);//その他のブロックならダメージを一ずつ加える
-					if (map.GetMap(g_cursory / 30, g_cursorx / 30, false) == 0)
+					if (map.GetMap(g_cursory / 30, g_cursorx / 30) == 0)
 					{
 						g_break_block_count++;
 						if ((g_break_block_count % 50) == 0) g_block_count++;
@@ -157,10 +157,9 @@ void Player::Hammer()
 		{
 			if ((g_hammer_x / 30) < MAP_WIDTH - 2 && (g_hammer_x / 30) >= 0)//マップの範囲内の
 			{
-				if (map.GetMap(g_cursory / 30, g_cursorx / 30, false) > 0)//ブロックに当たった時
+				if (map.GetMap(g_cursory / 30, g_cursorx / 30) > 0)//ブロックに当たった時
 				{
-					//if (map.GetMap(g_cursory / 30, g_cursorx / 30, false) > 3)map.SetMap(g_cursory / 30, g_cursorx / 30, 0, false);//地面ブロックなら一発で壊す
-					//else map.SetMap(g_cursory / 30, g_cursorx / 30, 0, false);//その他のブロックならハンマーのパワー分だけダメージを与える
+					
 					map.SetMap(g_hammer_y / 30, g_hammer_x / 30, 0, false);
 
 
@@ -241,7 +240,7 @@ void Player::Item()
 	{
 		if (g_block_count > 0)
 		{
-			if (map.GetMap(g_cursory / 30, g_cursorx / 30, false) == 0)
+			if (map.GetMap(g_cursory / 30, g_cursorx / 30) == 0)
 			{
 				map.SetMap(g_cursory / 30, g_cursorx / 30, 4, false);
 				g_block_count--;
@@ -254,13 +253,13 @@ void Player::Item()
 		{
 			for (int j = ((-1 * g_scroll_x) / 30); j < ((-1 * g_scroll_x) / 30) + (1280 / 30); j++)
 			{
-				if (map.GetMap(i, j, false) <= 3)
+				if (map.GetMap(i, j) <= 3)
 				{
-					if (map.GetMap(i, j, false) > 0)
+					if (map.GetMap(i, j) > 0)
 					{
 						map.SetMap(i, j, 1, true);
 
-						if (map.GetMap(i, j, false) == 0)
+						if (map.GetMap(i, j) == 0)
 						{
 							g_break_block_count++;
 							if ((g_break_block_count % 50) == 0) g_block_count++;
@@ -281,9 +280,9 @@ void Player::Draw_Item()
 	for (int i = 0; i < 5; i++)
 	{
 		if (HitBoxPlayer(g_player_x, g_player_y, &g_item[i]))g_item[i].flg = FALSE;
-		if (map.GetMap((g_item[i].y + PLAYER_SIZE) / 30, g_item[i].x / 30, false) <= 0)
+		if (map.GetMap((g_item[i].y + PLAYER_SIZE) / 30, g_item[i].x / 30) <= 0)
 		{
-			if (map.GetMap(g_item[i].y / 30, g_item[i].x / 30, false) <= 0) g_item[i].y++;
+			if (map.GetMap(g_item[i].y / 30, g_item[i].x / 30) <= 0) g_item[i].y++;
 		}
 		else g_item[i].y = (g_item[i].y / PLAYER_SIZE) * PLAYER_SIZE;
 
@@ -302,13 +301,13 @@ void Player:: Walk()
 			{
 				g_direction = RIGHT;
 				g_player_x += 2;
-				if (map.GetMap(g_player_y / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
+				if (map.GetMap(g_player_y / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
 			}
 			else if (g_leftkey_flg)
 			{
 				g_direction = LEFT;
 				g_player_x -= 2;
-				if (map.GetMap(g_player_y / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
+				if (map.GetMap(g_player_y / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
 			}
 
 			if (++g_image_time >= 5)
@@ -319,19 +318,19 @@ void Player:: Walk()
 			}
 		}
 	}
-	if ((map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE, false) <= 0) &&
-		(map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE, false) <= 0))
+	if ((map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE) <= 0) &&
+		(map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE) <= 0))
 	{
 		g_player_flg = FALL;
 	}
 	else if ((g_akey_flg) && !(g_old_akey_flg))
 	{
-		if ((map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0), false) > 0) ||
-			(map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE, false) > 0)) //足元が地面なら（少しでも地面についてたら
+		if ((map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0)) > 0) ||
+			(map.GetMap(Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE) > 0)) //足元が地面なら（少しでも地面についてたら
 		{
 
-			if ((map.GetMap(Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE, false) <= 0) &&
-				(map.GetMap(Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE, false) <= 0)) //プレイヤーの上になにもなえれば
+			if ((map.GetMap(Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE) <= 0) &&
+				(map.GetMap(Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE) <= 0)) //プレイヤーの上になにもなえれば
 			{
 				g_move_speed_y = 50, g_player_flg = JUMP;
 			}
@@ -350,8 +349,8 @@ void Player:: Jump()
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
 	
-	if ((map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE, false) > 0) ||
-		(map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE, false) > 0))
+	if ((map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE) > 0) ||
+		(map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE) > 0))
 	{
 		g_player_y = ((g_player_y / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 		g_move_speed_y = -5;
@@ -360,10 +359,10 @@ void Player:: Jump()
 	{
 		if (g_rightkey_flg)g_player_x += 1, g_direction = RIGHT;
 		if (g_leftkey_flg)g_player_x -= 1, g_direction = LEFT;
-		if (map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 	}
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
@@ -376,8 +375,8 @@ void Player::Fall()
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーを落とす
 	if (g_move_speed_y >= -35)g_move_speed_y -= 2;
 		
-	if ((map.GetMap(Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE, false) > 0) ||
-		(map.GetMap(Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE, false) > 0)) //地面に落ちたら
+	if ((map.GetMap(Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE) > 0) ||
+		(map.GetMap(Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE, Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE) > 0)) //地面に落ちたら
 	{
 		g_player_y = ((g_player_y / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);//プレイヤーのy軸を整える
 		g_move_speed_y = 0;
@@ -387,10 +386,10 @@ void Player::Fall()
 	{
 		if (g_rightkey_flg)g_player_x += 1, g_direction = RIGHT;//落下中に右ボタンが押されたら右に進む（移動量は歩いているときの半分）
 		if (g_leftkey_flg)g_player_x -= 1, g_direction = LEFT;//落下中に左ボタンが押されたら右に進む（移動量は歩いているときの半分）
-		if (map.GetMap(Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE, false) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (map.GetMap(Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE, Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE) > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 	}
 	DrawFormatString(100, 100, 0xffffff, "fall");
 }
@@ -423,9 +422,9 @@ void Player::Stage()
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			if (map.GetMap(i,j, false) > 0)
+			if (map.GetMap(i,j) > 0)
 			{
-				DrawGraph((30 * j) + g_scroll_x, 30 * i, GetArrayImages(Block_Images, map.GetMap(i, j, false)), TRUE);
+				DrawGraph((30 * j) + g_scroll_x, 30 * i, GetArrayImages(Block_Images, map.GetMap(i, j)), TRUE);
 			}
 
 			//DrawFormatString(30 * j, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
