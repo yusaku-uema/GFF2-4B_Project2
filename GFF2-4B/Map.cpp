@@ -10,7 +10,7 @@ void Map::InitMap(int y, int x)
 ************************************************/
 int Map::GetMap(int y, int x)
 {
-	if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))return MAP_DATA[y][x];
+	if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return MAP_DATA[y][x];
 }
 
 /***********************************************
@@ -20,11 +20,11 @@ int Map::GetMap(int y, int x)
 void Map::SetMap(int y, int x, int  type, bool a)
 {
 	if (false == a ) {
-		if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))MAP_DATA[y][x] =type;
+		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))MAP_DATA[y][x] =type;
 	}
 	else
 	{
-		if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))MAP_DATA[y][x] =- type;
+		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))MAP_DATA[y][x] =- type;
 	}
 }
 
@@ -35,11 +35,11 @@ void Map::SetMap(int y, int x, int  type, bool a)
 int Map::GetItemMap(int y, int x, bool a)
 {
 	if (false) {
-		if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))return ITEM_DATA[y][x];
+		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return ITEM_DATA[y][x];
 	}
 	else
 	{
-		if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))return ITEM_DATA_INIT[y][x];
+		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return ITEM_DATA_INIT[y][x];
 	}
 
 }
@@ -49,7 +49,7 @@ int Map::GetItemMap(int y, int x, bool a)
 ************************************************/
 void Map::SetItmeMap(int y, int x, int type)
 {
-	if ((x >= 0 && MAP_HIGHT >= x) && (y >= 0 && MAP_WIDTH >= y))ITEM_DATA[y][x] = type;
+	if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))ITEM_DATA[y][x] = type;
 }
 
 
