@@ -19,7 +19,6 @@ Player::Player(){
 	LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_Playerimage);
 }
 
-
 void Player::Movement() {
 	//g_NowKey=GetJoypadInputState(DX_INPUT_PAD1); //ì¸óÕÉLÅ[ï€ë∂
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT) g_PlayerX = g_PlayerX - g_Movement_speed, ++image_number , g_direction = TRUE; //ç∂

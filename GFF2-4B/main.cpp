@@ -19,6 +19,7 @@ bool g_forcedtermination; //強制終了
 unsigned int PLAYER_MAP[MAP_HIGHT][MAP_WIDTH];
 Fps fps; 
 
+void KeyConfig(void);
 
 ///***********************************************
 //*マップチップ
