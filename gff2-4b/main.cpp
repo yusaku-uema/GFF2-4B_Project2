@@ -145,7 +145,7 @@ int LoadImages()
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
@@ -179,10 +179,7 @@ int GetArrayImages(int type, int num)
 		break;
 
 	case Player_Images: //プレイヤー画像
-		if (0 <= num && num < 4) {
-			return g_player_image[num];
-		}
-		else { return -1; }
+		return g_player_image[num];
 		break;
 
 	case GameMain_Images: //１ステージの背景
