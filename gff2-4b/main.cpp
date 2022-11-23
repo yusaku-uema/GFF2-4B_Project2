@@ -2,7 +2,8 @@
 #include"main.h"
 #include"fps_fixed.h" //FPS管理
 #include"Title.h" //タイトル
-#include"GameMain.h"
+#include"GameMain.h" //
+#include"Gameover.h"
 
 
 #define MAP_HIGHT 20
@@ -47,6 +48,7 @@ int g_Title_SE; //タイトルSE
 Fps fps; //FPS管理
 Title title; //タイトル
 GameMain gamemain;
+Gameover gameover;
 
 
 /***********************************************
@@ -70,7 +72,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		/*誰が見ても分かるように変数にコメント付けましょう*/
 
 	// ゲームループ
-	while (ProcessMessage() == 0 && g_forcedtermination != true) {
+	while (ProcessMessage() == 0 && g_forcedtermination != true && g_GameState != 999) {
 
 		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7) {
 			g_forcedtermination = true;//強制終了
@@ -93,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			// DrawHelp();
 			break;
 		case 4:
-			//DrawEnd();
+			gameover.Draw(); //ゲームオーバー
 			break;
 		case 5:
 			//GameMain();
@@ -136,6 +138,7 @@ int LoadImages()
 	if ((g_haikei_image = LoadGraph("images/team/haikei.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
+	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -161,6 +164,9 @@ int GetArrayImages(int type, int num)
 	{
 	case Title_Images: //タイトル画像
 		return g_Title_images;
+		break;
+	case GameOver_Images: //ゲームオーバー画像
+		return g_GameOver_images;
 		break;
 	case Player_Images: //プレイヤー画像
 		if (0 <= num && num < 4) {
@@ -194,7 +200,7 @@ int GetArrayImages(int type, int num)
 	case  Pickaxe_Images: //つるはし画像
 		return g_hammer_image;
 		break;
-	case Item_cursor:
+	case Item_cursor: //アイテムカーソル
 		if (0 <= num && num < 3) {
 			return g_item_cursor_image[num];
 		}
