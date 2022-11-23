@@ -26,6 +26,7 @@ int g_hammer_image; //つるはしの画像
 int g_cursor_image; //カーソルの画像
 int g_haikei_image; //１ステージの背景
 int g_Title_images; //タイトル画像
+int g_GameOver_images; //ゲームオーバー背景
 int g_white_image; //白い画像
 
 int g_block_image[20]; //ブロック画像
