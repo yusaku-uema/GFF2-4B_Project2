@@ -129,7 +129,7 @@ void GameMain::Draw()
 	{
 		SetGameState(4);
 	}
-	DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
 	
 	if (g_player_x >= 2985 && g_player_y >= 555)
 	{
