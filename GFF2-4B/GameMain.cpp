@@ -118,7 +118,7 @@ void GameMain::Update()
 }
 
 /***********************************************
-* §ŒÀŽžŠÔ
+* §ŒÀŽžŠÔ&ƒQ[ƒ€ƒNƒŠƒA‹}‚¬‚Åì‚Á‚½B
 ************************************************/
 void GameMain::Draw() 
 {
@@ -129,7 +129,12 @@ void GameMain::Draw()
 	{
 		SetGameState(4);
 	}
-
+	DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	
+	if (g_player_x >= 2985 && g_player_y >= 555)
+	{
+		SetGameState(3);
+	}
 }
 
 
@@ -211,8 +216,8 @@ void  GameMain::Stage()
 
 void  GameMain::Draw_Item()
 {
-	//DrawGraph(g_scroll_x / -7, 0, g_haikei_image, TRUE);
-	DrawBox(0, 0, 1280, 720, 0xffffff, TRUE);
+	DrawGraph(0, 0, GetArrayImages(GameMain_Images, 0), TRUE);
+	/*DrawBox(0, 0, 1280, 720, 0xffffff, TRUE);*/
 	if (g_player_x >= 600)g_scroll_x = g_player_x - 600;
 	else g_scroll_x = 0;
 

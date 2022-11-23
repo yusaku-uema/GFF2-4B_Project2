@@ -4,6 +4,7 @@
 #include"Title.h" //タイトル
 #include"GameMain.h" //
 #include"Gameover.h"
+#include"Gameclear.h"
 
 
 #define MAP_HIGHT 20
@@ -28,6 +29,7 @@ int g_cursor_image; //カーソルの画像
 int g_haikei_image; //１ステージの背景
 int g_Title_images; //タイトル画像
 int g_GameOver_images; //ゲームオーバー背景
+int g_GameClear_images; //ゲームクリア背景
 int g_white_image; //白い画像
 
 int g_block_image[20]; //ブロック画像
@@ -49,6 +51,7 @@ Fps fps; //FPS管理
 Title title; //タイトル
 GameMain gamemain;
 Gameover gameover;
+GameClear gameclear;
 
 
 /***********************************************
@@ -86,13 +89,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			title.Update(); //ゲームタイトル描画処理
 			break;
 		case 1:
-			gamemain.GameMain_Init();
+			gamemain.GameMain_Init(); //初期化して case2に自動移行
 			break;
 		case 2:
-			gamemain.Update();
+			gamemain.Update(); //ゲーム処理
 			break;
 		case 3:
-			// DrawHelp();
+			gameclear.Draw(); //ゲームクリア
 			break;
 		case 4:
 			gameover.Draw(); //ゲームオーバー
@@ -135,10 +138,11 @@ int LoadImages()
 {
 	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
-	if ((g_haikei_image = LoadGraph("images/team/haikei.png")) == -1)return -1;
+	if ((g_haikei_image = LoadGraph("images/abc.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
+	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -165,9 +169,15 @@ int GetArrayImages(int type, int num)
 	case Title_Images: //タイトル画像
 		return g_Title_images;
 		break;
+
 	case GameOver_Images: //ゲームオーバー画像
 		return g_GameOver_images;
 		break;
+
+	case GameClear_Images: //ゲームクリア背景
+		return g_GameClear_images;
+		break;
+
 	case Player_Images: //プレイヤー画像
 		if (0 <= num && num < 4) {
 			return g_player_image[num];
@@ -200,6 +210,7 @@ int GetArrayImages(int type, int num)
 	case  Pickaxe_Images: //つるはし画像
 		return g_hammer_image;
 		break;
+
 	case Item_cursor: //アイテムカーソル
 		if (0 <= num && num < 3) {
 			return g_item_cursor_image[num];
