@@ -18,7 +18,8 @@ void GameMain::GameMain_Init()
 	g_block_count = 0;
 	g_item_selection = 0;
 	g_score = 0;
-
+	fps_cunt = 0;
+	TimeLimit = 200;//§ŒÀŠÔ
 	g_player_image_type = 0;
 
 
@@ -113,14 +114,22 @@ void GameMain::Update()
 	Stage();
 	Player_Sousa(); //©‹@‚Ì‘€ì
 	Ui();
+	Draw();
 }
 
 /***********************************************
-* ƒV[ƒ“Ø‚è‘Ö‚¦
+* §ŒÀŠÔ
 ************************************************/
 void GameMain::Draw() 
 {
-	
+	if (++fps_cunt % 60 == 0) {
+		--TimeLimit;
+	}
+	if (TimeLimit <= 0)
+	{
+		SetGameState(4);
+	}
+
 }
 
 
@@ -160,8 +169,10 @@ void GameMain::Ui()
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UI‚Ì˜g
 
 	DrawFormatString(15, 634, 0xffffff, "Score");
+	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
 	SetFontSize(50);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
+	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
@@ -381,8 +392,9 @@ void GameMain::Player_Sousa()
 	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
-		g_player_x = 30, g_player_y = 550;
-		g_player_flg = WALK;
+		/*g_player_x = 30, g_player_y = 550;
+		g_player_flg = WALK;*/
+		SetGameState(4);
 	}
 
 	if (g_player_flg != DIE)

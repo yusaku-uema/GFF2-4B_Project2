@@ -5,6 +5,10 @@
 class GameMain
 {
 private:
+
+	int TimeLimit;
+	int fps_cunt;
+
 	int AX, AY; //キーの値
 
 	int g_player_x, g_player_y; //プレイヤーの座標
