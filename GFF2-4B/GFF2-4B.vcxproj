@@ -155,6 +155,7 @@
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="Gameclear.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="Gameover.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
