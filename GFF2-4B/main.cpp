@@ -138,7 +138,7 @@ int LoadImages()
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item.png", 3, 3, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
 
@@ -192,6 +192,12 @@ int GetArrayImages(int type, int num)
 
 	case  Pickaxe_Images: //‚Â‚é‚Í‚µ‰æ‘œ
 		return g_hammer_image;
+		break;
+	case Item_cursor:
+		if (0 <= num && num < 3) {
+			return g_item_cursor_image[num];
+		}
+		else { return -1; }
 		break;
 
 	default:
