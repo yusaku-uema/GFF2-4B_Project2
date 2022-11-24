@@ -47,7 +47,7 @@ void Title::Draw()
 	SetFontSize(60);
 	DrawString(500, 280, "Game Start", GetColor(255, 0, 0));
 	DrawString(500, 340, "Help", GetColor(255, 0, 0));
-	DrawString(500, 400, "Ranking,", GetColor(255, 0, 0));
+	DrawString(500, 400, "Ranking", GetColor(255, 0, 0));
 	DrawString(500, 460, "CreditÅ@", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30);

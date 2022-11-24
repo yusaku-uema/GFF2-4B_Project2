@@ -135,8 +135,8 @@ void GameMain::Time()
 	{
 		SetGameState(4);
 	}
-	DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
-	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);
+	/*DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);*/
 	
 }
 
