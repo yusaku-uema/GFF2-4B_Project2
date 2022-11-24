@@ -34,7 +34,7 @@ int g_white_image; //白い画像
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
-int g_item_image[3]; //アイテム画像
+int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
 
 /***********************************************
@@ -146,7 +146,7 @@ int LoadImages()
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
 
@@ -198,7 +198,7 @@ int GetArrayImages(int type, int num)
 		break;
 
 	case Item_Images: //アイテム画像
-		if (0 <= num && num < 3) {
+		if (0 <= num && num < 5) {
 			return g_item_image[num];
 		}
 		else { return -1; }
