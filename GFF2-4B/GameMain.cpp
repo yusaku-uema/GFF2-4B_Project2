@@ -331,11 +331,11 @@ void GameMain::Hammer()
 						DrawCircle(g_hammer_x - g_scroll_x, g_hammer_y, 3, 0xffffff, false);
 					}
 
-					if (g_hammer_power < 50)g_hammer_power++; //パワーゲージを動かす
-					else g_hammer_power = 0; //パワーゲージが50たまったら0にする
+					//if (g_hammer_power < 50)g_hammer_power++; //パワーゲージを動かす
+					//else g_hammer_power = 0; //パワーゲージが50たまったら0にする
 
-					DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + g_hammer_power) - g_scroll_x, (g_player_y + 20) + 20, 0xf00fff, TRUE);
-					DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + 50) - g_scroll_x, (g_player_y + 20) + 20, 0xffffff, FALSE);
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + g_hammer_power) - g_scroll_x, (g_player_y + 20) + 20, 0xf00fff, TRUE);
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + 50) - g_scroll_x, (g_player_y + 20) + 20, 0xffffff, FALSE);
 				}
 			}
 		}
