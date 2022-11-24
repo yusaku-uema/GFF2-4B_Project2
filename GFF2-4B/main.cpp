@@ -60,6 +60,7 @@ GameClear gameclear;
  ***********************************************/
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow) {
+	/////
 
 	// タイトルを test に変更
 	SetMainWindowText("掘れ掘れダンジョン君");

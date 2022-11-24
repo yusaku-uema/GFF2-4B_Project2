@@ -6,6 +6,7 @@
 #include"Player.h"
 
 
+
 /***********************************************
 *  ƒQ[ƒ€ˆ—
 ************************************************/
@@ -15,10 +16,12 @@ void GameMain::Update()
 	Draw_Item();
 	Stage();
 	Player_Sousa(); //Ž©‹@‚Ì‘€ì
+	Bom();
 	Ui();
 	Time();
 	Clear();
 }
+
 
 /***********************************************
 *  ‰Šú‰»ˆ—
@@ -133,19 +136,7 @@ void GameMain::GameMain_Init()
 }
 
 
-/***********************************************
-*  ƒQ[ƒ€ˆ—
-************************************************/
-void GameMain::Update()
-{
-	Key();
-	Draw_Item();
-	Stage();
-	Player_Sousa(); //Ž©‹@‚Ì‘€ì
-	Bom();
-	Ui();
-	Draw();
-}
+
 
 
 /***********************************************
@@ -163,6 +154,10 @@ void GameMain::Time()
 	/*DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
 	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);*/
 	
+}
+
+void GameMain::Clear()
+{
 	if (g_player_x >= 2985 && g_player_y >= 555)
 	{
 		SetGameState(3);
