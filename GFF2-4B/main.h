@@ -4,7 +4,7 @@
 #define MAP_WIDTH 86
 #define PLAYER_SIZE  30
 
-enum ArrayImages { Title_Images, Player_Images, GameMain_Images, Block_Images, Player_CursorImages, Item_Images,Pickaxe_Images}; //‰æ‘œŒÄ‚Ño‚µ–¼
+enum ArrayImages { Title_Images, Player_Images, GameMain_Images, Block_Images, Player_CursorImages, Item_Images,Pickaxe_Images,Box_images,Box2_images}; //‰æ‘œŒÄ‚Ño‚µ–¼
 enum Sounds { Title_SE}; //BGM‚È‚çA›Z_BGM, SE‚È‚ç
 
 

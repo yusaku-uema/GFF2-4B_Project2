@@ -4,6 +4,7 @@
 #include"Title.h" //タイトル
 #include"GameMain.h"
 #include"Credit.h"
+#include"GameReward.h"
 
 
 #define MAP_HIGHT 20
@@ -28,6 +29,9 @@ int g_cursor_image; //カーソルの画像
 int g_haikei_image; //１ステージの背景
 int g_Title_images; //タイトル画像
 int g_white_image; //白い画像
+int g_Box_images;//宝箱画像
+int g_Box2_images;//宝箱画像
+
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
@@ -47,7 +51,8 @@ int g_Title_SE; //タイトルSE
 Fps fps; //FPS管理
 Title title; //タイトル
 GameMain gamemain;
-Credit credit;
+Credit credit;//クレジット
+GameReward gamereward;//ご褒美画面
 
 
 /***********************************************
@@ -94,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			credit.Draw();
 			break;
 		case 4:
-			//DrawEnd();
+			gamereward.Update();
 			break;
 		case 5:
 			//GameMain();
@@ -137,6 +142,8 @@ int LoadImages()
 	if ((g_haikei_image = LoadGraph("images/team/haikei.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
+	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
+	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/team/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -194,6 +201,13 @@ int GetArrayImages(int type, int num)
 
 	case  Pickaxe_Images: //つるはし画像
 		return g_hammer_image;
+		break;
+
+	case Box_images:
+		return g_Box_images;
+		break;
+	case Box2_images:
+		return g_Box2_images;
 		break;
 
 	default:

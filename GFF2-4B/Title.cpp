@@ -45,6 +45,7 @@ void Title::Draw()
 	DrawGraph(0, 0, GetArrayImages(Title_Images,0), TRUE);
 	DrawTriangle(470, 295 + g_MenuY, 490, 310 + g_MenuY, 470, 325 + g_MenuY, GetColor(255, 0, 0), TRUE); //カーソル
 	SetFontSize(60);
+	DrawString(500,200,"タイトル",GetColor(255,255,0));
 	DrawString(500, 280, "Game Start", GetColor(255, 0, 0));
 	DrawString(500, 340, "Help", GetColor(255, 0, 0));
 	DrawString(500, 400, "Ranking,", GetColor(255, 0, 0));
@@ -61,6 +62,7 @@ void Title::ChangeScen()
 	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
 	///*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(3);
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4) SetGameState(4);
 	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return ; //強制終了
 
 
