@@ -186,12 +186,11 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UI‚Ì˜g
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UI‚Ì˜g
 	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
 	SetFontSize(50);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
-
+	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
