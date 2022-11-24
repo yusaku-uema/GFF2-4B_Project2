@@ -146,10 +146,10 @@ int LoadImages()
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 
-	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
+	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item_cursor.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
 
 /***********************************************
