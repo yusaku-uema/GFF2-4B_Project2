@@ -157,6 +157,7 @@
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Gameover.cpp" />
+    <ClCompile Include="GameReward.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Gameclear.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="Gameover.h" />
+    <ClInclude Include="GameReward.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
