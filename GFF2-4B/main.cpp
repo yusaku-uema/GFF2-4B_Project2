@@ -36,6 +36,7 @@ int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
 int g_item_image[4]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
+int g_life;
 
 /***********************************************
 *  サウンド変数
@@ -143,6 +144,7 @@ int LoadImages()
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
+	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/block3.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -176,6 +178,9 @@ int GetArrayImages(int type, int num)
 
 	case GameClear_Images: //ゲームクリア背景
 		return g_GameClear_images;
+		break;
+	case  Life_Images:
+		return g_life;
 		break;
 
 	case Player_Images: //プレイヤー画像
