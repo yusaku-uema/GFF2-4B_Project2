@@ -18,7 +18,7 @@ void GameReward::Update()
 	}*/
 	g_OldKey = g_NowKey;
 	g_NowKey = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	g_KeyFlg = g_NowKey & ~g_OldKey;
+	g_KeyFlg = g_NowKey & ~g_OldKey;//一回だけ判定される
 	g_NowKey = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	if (g_KeyFlg & PAD_INPUT_RIGHT)
@@ -37,37 +37,37 @@ void GameReward::Update()
 }
 void GameReward::Draw()
 {
-	DrawTriangle(g_MenuX + 95, 370, g_MenuX + 110, 390, g_MenuX + 125, 370, GetColor(255, 0, 0), TRUE); //カーソル
+	DrawTriangle(g_MenuX + 95, 400, g_MenuX + 110, 380, g_MenuX + 125, 400, GetColor(255, 0, 0), TRUE); //カーソル
 	//DrawTriangle(295, 470 + g_MenuX, 310, 490 + g_MenuX, 325, 470 + g_MenuX, GetColor(255, 0, 0), TRUE); //カーソル
 	if (takara == false)
 	{
-		DrawRotaGraph(120, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);
+		DrawRotaGraph(120, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);//開く前の宝箱の描画
 	}
 	if (takara1 == false)
 	{
-		DrawRotaGraph(240, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);
+		DrawRotaGraph(240, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);//開く前の宝箱の描画
 	}
 	if (takara2 == false)
 	{
-		DrawRotaGraph(360, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);
+		DrawRotaGraph(360, 300, 2.0, 0.0, GetArrayImages(Box_images, 0), TRUE);//開く前の宝箱の描画
 	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_BoxNumber == 0)takara=TRUE, --test;
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_BoxNumber == 1)takara1 = TRUE, --test;
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B && g_BoxNumber == 2)takara2 = TRUE, --test;
+	if (g_KeyFlg & PAD_INPUT_B && g_BoxNumber == 0 && test > 0)takara=TRUE, --test;
+	if (g_KeyFlg & PAD_INPUT_B && g_BoxNumber == 1 && test > 0)takara1 = TRUE, --test;
+	if (g_KeyFlg & PAD_INPUT_B && g_BoxNumber == 2 && test > 0)takara2 = TRUE, --test;
 
-	if (takara == TRUE && test > 0)
+	if (takara == TRUE )
 	{
 		/*DrawGraph(120, 300, GetArrayImages(Box2_images, 0), TRUE);*/
 		DrawRotaGraph(120, 300, 2.0, 0.0, GetArrayImages(Box2_images, 0), TRUE);
 		
 	}
-	if (takara1 == TRUE && test > 0)
+	if (takara1 == TRUE )
 	{
 		/*DrawGraph(120, 300, GetArrayImages(Box2_images, 0), TRUE);*/
 		DrawRotaGraph(240, 300, 2.0, 0.0, GetArrayImages(Box2_images, 0), TRUE);
 		
 	}
-	if (takara2 == TRUE && test > 0)
+	if (takara2 == TRUE )
 	{
 		/*DrawGraph(120, 300, GetArrayImages(Box2_images, 0), TRUE);*/
 		DrawRotaGraph(360, 300, 2.0, 0.0, GetArrayImages(Box2_images, 0), TRUE);
