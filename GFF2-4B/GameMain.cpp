@@ -81,6 +81,7 @@ void GameMain::GameMain_Init()
 	g_player_flg = WALK;
 	g_break_block_count = 0;
 	g_bom_count = 0;
+	g_chara_life = 3;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -189,6 +190,22 @@ void GameMain::Ui()
 	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
+	if (g_chara_life == 3)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+
 	SetFontSize(50);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
@@ -196,6 +213,7 @@ void GameMain::Ui()
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
 	SetFontSize(30);
+
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -412,9 +430,12 @@ void GameMain::Player_Sousa()
 	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
-		/*g_player_x = 30, g_player_y = 550;
-		g_player_flg = WALK;*/
-		SetGameState(4);
+		if (--g_chara_life > 0)
+		{
+			g_player_x = 30, g_player_y = 550;
+			g_player_flg = WALK;
+		}
+		else SetGameState(4);
 	}
 
 	if (g_player_flg != DIE)

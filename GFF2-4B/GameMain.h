@@ -42,6 +42,8 @@ private:
 	int g_kagi_count;
 	int g_score;
 
+	int g_chara_life;
+
 	int g_bom_count;
 
 
