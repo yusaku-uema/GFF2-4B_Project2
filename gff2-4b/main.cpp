@@ -34,7 +34,7 @@ int g_white_image; //白い画像
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
-int g_item_image[4]; //アイテム画像
+int g_item_image[3]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
 
 /***********************************************
@@ -198,7 +198,7 @@ int GetArrayImages(int type, int num)
 		break;
 
 	case Item_Images: //アイテム画像
-		if (0 <= num && num < 4) {
+		if (0 <= num && num < 3) {
 			return g_item_image[num];
 		}
 		else { return -1; }
