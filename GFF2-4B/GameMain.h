@@ -38,7 +38,11 @@ private:
 
 	int g_item_selection;
 
+	int g_item_count;
+	int g_kagi_count;
 	int g_score;
+
+	int g_chara_life;
 
 	int g_bom_count;
 
@@ -122,8 +126,6 @@ public:
 	int HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a);
 	void Ui();
 	void Item();
-
-	int LoadImages();
 	void Block_Collision(int a, int b); //つるはしを投げた時の当たり判定
 
 	int Player_Hit_Front(int a, int b);
@@ -132,7 +134,8 @@ public:
 	int Player_Hit_Up(int a, int b);
 	void GameMain_Init(); //初期化
 	void Update(); //描画以外の更新を実行
-	void Draw(); //描画に関することを実装
+	void Time(); //制限時間
+	void Clear(); //ゲームクリア
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];

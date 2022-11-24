@@ -127,13 +127,14 @@ void GameMain::Update()
 	Player_Sousa(); //自機の操作
 	Bom();
 	Ui();
-	Draw();
+	Time();
+	Clear();
 }
 
 /***********************************************
 * 制限時間&ゲームクリア急ぎで作った。
 ************************************************/
-void GameMain::Draw() 
+void GameMain::Time() 
 {
 	if (++fps_cunt % 60 == 0) {
 		--TimeLimit;
@@ -144,6 +145,11 @@ void GameMain::Draw()
 	}
 	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
 	
+	
+}
+
+void GameMain::Clear()
+{
 	if (g_player_x >= 2985 && g_player_y >= 555)
 	{
 		SetGameState(3);
