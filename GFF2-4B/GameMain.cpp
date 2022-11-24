@@ -30,6 +30,8 @@ void GameMain::GameMain_Init()
 	g_hammer_power = 0;
 	g_scroll_x = 0;
 	g_block_count = 0;
+	g_item_count = 0;
+	g_kagi_count = 0;
 	g_item_selection = 0;
 	g_score = 0;
 	fps_cunt = 0;
@@ -183,11 +185,11 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UI‚Ì˜g
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UI‚Ì˜g
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UI‚Ì˜g
-
+	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
+	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
 	SetFontSize(50);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
@@ -240,6 +242,8 @@ void  GameMain::Draw_Item()
 			{
 				g_item[i].flg = FALSE;
 				if (g_item[i].type == 3)g_bom_count++;
+				else if (g_item[i].type == 1)g_kagi_count++;
+				else g_item_count++;
 			}
 			if (MAP_DATA[(g_item[i].y + PLAYER_SIZE) / 30][g_item[i].x / 30] <= 0)
 			{

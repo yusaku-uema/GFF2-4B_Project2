@@ -38,6 +38,8 @@ private:
 
 	int g_item_selection;
 
+	int g_item_count;
+	int g_kagi_count;
 	int g_score;
 
 	int g_bom_count;
