@@ -155,8 +155,10 @@
     <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
+    <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameReward.cpp" />
+    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />

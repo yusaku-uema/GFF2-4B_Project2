@@ -48,7 +48,7 @@ void Title::Draw()
 	DrawString(500,200,"タイトル",GetColor(255,255,0));
 	DrawString(500, 280, "Game Start", GetColor(255, 0, 0));
 	DrawString(500, 340, "Help", GetColor(255, 0, 0));
-	DrawString(500, 400, "Ranking,", GetColor(255, 0, 0));
+	DrawString(500, 400, "Ranking", GetColor(255, 0, 0));
 	DrawString(500, 460, "Credit　", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30);
@@ -61,9 +61,8 @@ void Title::ChangeScen()
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0) SetGameState(1); //ゲームメイン移行
 	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
 	///*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(3);
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4) SetGameState(4);
-	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return ; //強制終了
+	////if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)return  new クレジット
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)SetGameState(999); //強制終了
 
 
 }

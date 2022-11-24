@@ -5,8 +5,6 @@
 #include"GameMain.h" //
 #include"Gameover.h"
 #include"Gameclear.h"
-#include"Credit.h"
-#include"GameReward.h"
 
 
 #define MAP_HIGHT 20
@@ -33,9 +31,6 @@ int g_Title_images; //タイトル画像
 int g_GameOver_images; //ゲームオーバー背景
 int g_GameClear_images; //ゲームクリア背景
 int g_white_image; //白い画像
-int g_Box_images;//宝箱画像
-int g_Box2_images;//宝箱画像
-
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
@@ -56,8 +51,6 @@ int g_Title_SE; //タイトルSE
 Fps fps; //FPS管理
 Title title; //タイトル
 GameMain gamemain;
-Credit credit;//クレジット
-GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
 
@@ -153,8 +146,6 @@ int LoadImages()
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
-	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
-	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -221,13 +212,6 @@ int GetArrayImages(int type, int num)
 
 	case  Pickaxe_Images: //つるはし画像
 		return g_hammer_image;
-		break;
-
-	case Box_images:
-		return g_Box_images;
-		break;
-	case Box2_images:
-		return g_Box2_images;
 		break;
 
 	case Item_cursor: //アイテムカーソル

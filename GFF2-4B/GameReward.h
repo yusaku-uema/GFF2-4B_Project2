@@ -1,6 +1,6 @@
 #pragma once
 #include"main.h"
-class GameReward 
+class GameReward
 {
 private:
     bool takara;
@@ -24,4 +24,5 @@ public:
     void Draw();
 };
 
+};
 
