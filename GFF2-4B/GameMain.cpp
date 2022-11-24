@@ -134,7 +134,8 @@ void GameMain::Time()
 	{
 		SetGameState(4);
 	}
-	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_image_type);
+	DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);
 	
 }
 
@@ -144,7 +145,7 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 2985 && g_player_y >= 555)
+	if (g_player_x >= 3160 && g_player_y >=255)
 	{
 		SetGameState(3);
 	}
