@@ -107,8 +107,6 @@ public:
 	int HitBoxPlayer(int px, int py, ITEM* i);
 	void Ui();
 	void Item();
-
-	int LoadImages();
 	void Block_Collision(int a, int b); //‚Â‚é‚Í‚µ‚ð“Š‚°‚½Žž‚Ì“–‚½‚è”»’è
 
 	int Player_Hit_Front(int a, int b);

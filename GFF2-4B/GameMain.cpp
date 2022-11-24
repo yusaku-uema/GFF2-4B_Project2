@@ -36,7 +36,7 @@ void GameMain::GameMain_Init()
 	g_score = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//§ŒÀŽžŠÔ
-	g_player_image_type = 1;
+	g_player_image_type = 0;
 
 
 	//ƒtƒ@ƒCƒ‹
@@ -489,7 +489,7 @@ void  GameMain::Walk()
 			if (++g_image_time >= 5)
 			{
 				g_player_image_type++;
-				if (g_player_image_type > 3)g_player_image_type = 1;
+				if (g_player_image_type > 3)g_player_image_type = 0;
 				g_image_time = 0;
 			}
 		}
