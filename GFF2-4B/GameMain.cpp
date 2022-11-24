@@ -7,6 +7,20 @@
 
 
 /***********************************************
+*  ゲーム処理
+************************************************/
+void GameMain::Update()
+{
+	Key();
+	Draw_Item();
+	Stage();
+	Player_Sousa(); //自機の操作
+	Ui();
+	Time();
+	Clear();
+}
+
+/***********************************************
 *  初期化処理
 ************************************************/
 void GameMain::GameMain_Init()
@@ -20,7 +34,7 @@ void GameMain::GameMain_Init()
 	g_score = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
-	g_player_image_type = 0;
+	g_player_image_type = 1;
 
 
 	//ファイル
@@ -104,23 +118,12 @@ void GameMain::GameMain_Init()
 }
 
 
-/***********************************************
-*  ゲーム処理
-************************************************/
-void GameMain::Update()
-{
-	Key();
-	Draw_Item();
-	Stage();
-	Player_Sousa(); //自機の操作
-	Ui();
-	Draw();
-}
+
 
 /***********************************************
-* 制限時間&ゲームクリア急ぎで作った。
+* 制限時間
 ************************************************/
-void GameMain::Draw() 
+void GameMain::Time() 
 {
 	if (++fps_cunt % 60 == 0) {
 		--TimeLimit;
@@ -129,8 +132,16 @@ void GameMain::Draw()
 	{
 		SetGameState(4);
 	}
-	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_image_type);
 	
+}
+
+/***********************************************
+* ゲームクリア急ぎで作った。
+************************************************/
+
+void GameMain::Clear()
+{
 	if (g_player_x >= 2985 && g_player_y >= 555)
 	{
 		SetGameState(3);
@@ -475,7 +486,7 @@ void  GameMain::Walk()
 			if (++g_image_time >= 5)
 			{
 				g_player_image_type++;
-				if (g_player_image_type > 3)g_player_image_type = 0;
+				if (g_player_image_type > 3)g_player_image_type = 1;
 				g_image_time = 0;
 			}
 		}

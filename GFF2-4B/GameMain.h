@@ -115,7 +115,8 @@ public:
 	int Player_Hit_Up(int a, int b);
 	void GameMain_Init(); //初期化
 	void Update(); //描画以外の更新を実行
-	void Draw(); //描画に関することを実装
+	void Time(); //制限時間
+	void Clear(); //ゲームクリア
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
