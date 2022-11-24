@@ -78,6 +78,14 @@ private:
 		DIE, //€–S
 	};
 
+	enum BOM_STATE
+	{
+		NONE = 0, //‚È‚¢
+		NOMAL,    //•’Êó‘Ô
+		ANGRY, //“{‚èó‘Ô
+		FLY, //“Š‚°‚Ä‚éó‘Ô
+	};
+
 	enum PLAYER_DIRECTION
 	{
 		RIGHT = -1, //•à‚«ó‘Ô
@@ -93,6 +101,14 @@ private:
 	};
 	struct ITEM g_item[10];
 
+	struct BOM {
+		int flg;
+		int x;
+		int y;
+		int time;
+	};
+	struct BOM g_bom[10];
+
 
 
 public:
@@ -106,7 +122,8 @@ public:
 	void Walk();
 	void Fall();
 	void Draw_Item();
-	int HitBoxPlayer(int px, int py, ITEM* i);
+	void Bom();
+	int HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a);
 	void Ui();
 	void Item();
 	void Block_Collision(int a, int b); //‚Â‚é‚Í‚µ‚ğ“Š‚°‚½‚Ì“–‚½‚è”»’è
