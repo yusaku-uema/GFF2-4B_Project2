@@ -18,7 +18,8 @@
 #define KEYCONFIG_INPUT_CAMERA_DOWN     (7)         // カメラ用方向入力下
 #define KEYCONFIG_INPUT_ATTACK          (8)         // 攻撃ボタン
 #define KEYCONFIG_INPUT_JUMP            (9)         // ジャンプボタン
-#define KEYCONFIG_INPUT_NUM             (10)        // 入力タイプの数
+#define KEYCONFIG_INPUT_TEST            (10)         // testボタン
+#define KEYCONFIG_INPUT_NUM             (11)        // 入力タイプの数
 
 class KeyConfig {
 public:
