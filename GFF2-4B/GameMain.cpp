@@ -6,6 +6,23 @@
 #include"Player.h"
 
 
+
+/***********************************************
+*  ゲーム処理
+************************************************/
+void GameMain::Update()
+{
+	Key();
+	Draw_Item();
+	Stage();
+	Player_Sousa(); //自機の操作
+	Bom();
+	Ui();
+	Time();
+	Clear();
+}
+
+
 /***********************************************
 *  初期化処理
 ************************************************/
@@ -16,12 +33,13 @@ void GameMain::GameMain_Init()
 	g_hammer_power = 0;
 	g_scroll_x = 0;
 	g_block_count = 0;
+	g_item_count = 0;
+	g_kagi_count = 0;
 	g_item_selection = 0;
 	g_score = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
 	g_player_image_type = 0;
-	g_walk_start_time = 0;
 
 
 	//ファイル
@@ -66,6 +84,7 @@ void GameMain::GameMain_Init()
 	g_player_flg = WALK;
 	g_break_block_count = 0;
 	g_bom_count = 3;
+	g_chara_life = 3;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -117,23 +136,11 @@ void GameMain::GameMain_Init()
 }
 
 
-/***********************************************
-*  ゲーム処理
-************************************************/
-void GameMain::Update()
-{
-	Key();
-	Draw_Item();
-	Stage();
-	Player_Sousa(); //自機の操作
-	Bom();
-	Ui();
-	Time();
-	Clear();
-}
+
+
 
 /***********************************************
-* 制限時間&ゲームクリア急ぎで作った。
+* 制限時間
 ************************************************/
 void GameMain::Time() 
 {
@@ -144,8 +151,8 @@ void GameMain::Time()
 	{
 		SetGameState(4);
 	}
-	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
-	
+	/*DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);*/
 	
 }
 
@@ -157,22 +164,15 @@ void GameMain::Clear()
 	}
 }
 
-void GameMain::Key()
-{
-	g_old_BX_flg = BX;
-	g_old_BY_flg = BY;
-	g_old_AX_flg = AX;
-	g_old_AY_flg = AY;
 
+void GameMain:: Key()
+{
 	GetJoypadAnalogInput(&AX, &AY, DX_INPUT_PAD1); // 入力状態を取得
-	GetJoypadAnalogInputRight(&BX, &BY, DX_INPUT_PAD1);
 	g_old_bkey_flg = g_bkey_flg;
 	g_old_akey_flg = g_akey_flg;
 	g_old_xkey_flg = g_xkey_flg;
 	g_old_lkey_flg = g_lkey_flg;
 	g_old_rkey_flg = g_rkey_flg;
-	g_old_rightkey_flg = g_rightkey_flg;
-	g_old_leftkey_flg = g_leftkey_flg;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
@@ -199,17 +199,33 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-
+	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
-	SetFontSize(50);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
-	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
+	if (g_chara_life == 3)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
 
+	SetFontSize(50);
+	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
+	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
 	SetFontSize(30);
+
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -278,10 +294,10 @@ void  GameMain::Item()
 	{
 		if (g_block_count > 0)
 		{
-			if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && ITEM_DATA[g_cursory / 30][g_cursorx /30] == 0)
+			if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)
 			{
 				MAP_DATA[g_cursory / 30][g_cursorx / 30] = 4;
-				//g_block_count--;
+				g_block_count--;
 			}
 		}
 	}
@@ -309,6 +325,20 @@ void GameMain:: Bom()
 				g_bom[i].flg = NONE;
 				g_bom_count++;
 			}
+			if (MAP_DATA[(g_bom[i].y + PLAYER_SIZE) / 30][g_bom[i].x / 30] <= 0)
+			{
+				if (MAP_DATA[g_bom[i].y / 30][g_bom[i].x / 30] <= 0) g_bom[i].y++;
+			}
+			else g_bom[i].y = (g_bom[i].y / PLAYER_SIZE) * PLAYER_SIZE;
+
+			if (g_hammer_flg == TRUE)
+			{
+				if (HitBoxPlayer(g_hammer_x, g_hammer_y, g_bom[i].x, g_bom[i].y, PLAYER_SIZE, 50, FALSE))
+				{
+					g_bom[i].flg = ANGRY;
+				}
+			}
+
 			if (g_bom[i].flg == NOMAL)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images,3), TRUE);
 		}
 		if (g_bom[i].flg == ANGRY)
@@ -321,7 +351,7 @@ void GameMain:: Bom()
 				{
 					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)
 					{
-						MAP_DATA[a][j] = 0;
+						//MAP_DATA[a][j] = 0;
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
 						{
@@ -332,6 +362,13 @@ void GameMain:: Bom()
 				g_bom[i].time = 300;
 				g_bom[i].flg = NONE;
 			}
+
+			if (MAP_DATA[(g_bom[i].y + PLAYER_SIZE) / 30][g_bom[i].x / 30] <= 0)
+			{
+				if (MAP_DATA[g_bom[i].y / 30][g_bom[i].x / 30] <= 0) g_bom[i].y++;
+			}
+			else g_bom[i].y = (g_bom[i].y / PLAYER_SIZE) * PLAYER_SIZE;
+
 			if (g_bom[i].flg == ANGRY)
 			{
 				DrawBox(g_bom[i].x - 90 - g_scroll_x, ((g_bom[i].y - 90) / 30) * 30, g_bom[i].x + 120 - g_scroll_x, ((g_bom[i].y + 120) / 30) * 30, 0xffffff, FALSE);
@@ -358,76 +395,108 @@ void GameMain:: Bom()
 				}
 			}
 		}
-		//DrawFormatString( - g_scroll_x,0 + (25* i), 0xffffff, "%d %d", i, g_bom[i].flg);
-		if (MAP_DATA[(g_bom[i].y + PLAYER_SIZE) / 30][g_bom[i].x / 30] == 0)
-		{
-			if (MAP_DATA[g_bom[i].y / 30][g_bom[i].x / 30] == 0) g_bom[i].y++;
-		}
-		else g_bom[i].y = (g_bom[i].y / PLAYER_SIZE) * PLAYER_SIZE;
-		ITEM_DATA[(g_bom[i].y - 1)/ 30][g_bom[i].x / 30] = 0;
-		ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
-		ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
+		//DrawFormatString(0 - g_scroll_x,0 + (25* i), 0xffffff, "%d %d", i, g_bom[i].flg);
 	}
 }
 
 void GameMain::Hammer()
 {
-	if (g_hammer_flg == TRUE)// つるはしを投げているとき
+	if (g_hammer_flg == FALSE)//ハンマーが使われてないとき
+	{
+		if (AX != 0 || AY != 0)//スティックが操作されてたら
+		{
+			if (AY >= 0)
+			{
+				g_hammer_speed_x = (AX / 20);
+				g_hammer_speed_y = (AY / 18);
+				g_hammer_x = g_player_x;
+				g_hammer_y = g_player_y;
+
+				if (g_bkey_flg) //角度を調整してBボタンが押されたとき
+				{
+					g_hammer_flg = TRUE; // bボタンが押されたら
+					g_hammer_power = (g_hammer_power / (50 / 3)) + 1;
+					if (g_hammer_power == 4)g_hammer_power = 3;
+					g_hammer_angle = 0;
+				}
+				else //左スティックで角度を調整しているときつるはしの軌道が描かれる
+				{
+					while (g_hammer_y < 720)
+					{
+						g_hammer_y -= (g_hammer_speed_y / 3);
+						g_hammer_x -= (g_hammer_speed_x / 3);
+
+						g_hammer_speed_y -= 1;
+
+						DrawCircle(g_hammer_x - g_scroll_x, g_hammer_y, 3, 0xffffff, false);
+					}
+
+					//if (g_hammer_power < 50)g_hammer_power++; //パワーゲージを動かす
+					//else g_hammer_power = 0; //パワーゲージが50たまったら0にする
+
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + g_hammer_power) - g_scroll_x, (g_player_y + 20) + 20, 0xf00fff, TRUE);
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + 50) - g_scroll_x, (g_player_y + 20) + 20, 0xffffff, FALSE);
+				}
+			}
+		}
+		else //スティックを動かしてないとき
+		{
+			if ((g_bkey_flg == TRUE) && (g_old_bkey_flg == FALSE))//Bボタンが押されたら
+			{
+				if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)
+				{
+					MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0;
+					//g_score += 5;
+					g_break_block_count++;//カーソルのブロックを壊す（地面ブロックなら一発で壊す）
+					if ((g_break_block_count % 50) == 0) g_block_count++;
+				}
+				else if (MAP_DATA[g_cursory / 30][g_cursorx / 30] > 0 && MAP_DATA[g_cursory / 30][g_cursorx / 30] < 5)
+				{
+					MAP_DATA[g_cursory / 30][g_cursorx / 30]--;//その他のブロックならダメージを一ずつ加える
+					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)
+					{
+						//g_score += 5;
+						g_break_block_count++;
+						if ((g_break_block_count % 50) == 0) g_block_count++;
+					}
+				}
+			}
+		}
+	}
+	else// つるはしを投げているとき
 	{
 		//Block_Collision(g_hammer_y, g_hammer_x);
-		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
-		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
-		Block_Collision(g_hammer_y, g_hammer_x + 7, TRUE);
-		Block_Collision(g_hammer_y + 7, g_hammer_x + 7, TRUE);
-		Block_Collision(g_hammer_y + 7, g_hammer_x, TRUE);
-		Block_Collision(g_hammer_y + 7, g_hammer_x - 7, TRUE);
-		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
-		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
+		Block_Collision(g_hammer_y - 7, g_hammer_x);
+		Block_Collision(g_hammer_y - 7, g_hammer_x + 7);
+		Block_Collision(g_hammer_y, g_hammer_x + 7);
+		Block_Collision(g_hammer_y + 7, g_hammer_x + 7);
+		Block_Collision(g_hammer_y + 7, g_hammer_x);
+		Block_Collision(g_hammer_y + 7, g_hammer_x - 7);
+		Block_Collision(g_hammer_y, g_hammer_x - 7);
+		Block_Collision(g_hammer_y - 7, g_hammer_x - 7);
 
-		g_hammer_y -= (g_hammer_orbit_y / 3); //ボールのy軸の移動する速さ
-		g_hammer_x -= (g_hammer_orbit_x / 3);
-		g_hammer_orbit_y -= 1;
+		g_hammer_y -= (g_hammer_speed_y / 3); //ボールのy軸の移動する速さ
+		g_hammer_x -= (g_hammer_speed_x / 3);
+		g_hammer_speed_y -= 1;
 
 		g_hammer_angle += 10;
 		if (g_hammer_angle > 360)g_hammer_angle = 0;
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
-
-		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
-
 	}
-	else
-	{
-		if ((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE))//Bボタンが押されたら
-		{
-			Block_Collision(g_cursory, g_cursorx, FALSE);
-		}
-	}
+	DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images,0), TRUE, false);
 }
 
-void GameMain::Block_Collision(int a, int b, bool c)
+void GameMain::Block_Collision(int a, int b)
 {
-	if ((a / 30) < MAP_HIGHT && (a / 30) >= 0) //マップの範囲内の
+	if ((a / 30) < MAP_HIGHT && (b / 30) >= 0) //マップの範囲内の
 	{
-		if ((b / 30) < MAP_WIDTH && (b / 30) >= 0)//マップの範囲内の
+		if ((a / 30) < MAP_WIDTH - 2 && (b / 30) >= 0)//マップの範囲内の
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
-				if(c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;
-				else
-				{
-					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;
-					else
-					{
-						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;//その他のブロックならダメージを一ずつ加える
-						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
-					}
-				}
-				//ブロックを壊したカウントを足す
+				MAP_DATA[a / 30][b / 30] = 0;
+				g_break_block_count++;//ブロックを壊したカウントを足す
 				if ((g_break_block_count % 50) == 0) g_block_count++;
-			}
-			for (int i = 0; i < 10; i++)
-			{
-				if((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && g_bom[i].flg == NOMAL)g_bom[i].flg = ANGRY;
 			}
 		}
 	}
@@ -438,45 +507,32 @@ void GameMain::Player_Sousa()
 	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
-		g_player_x = 30, g_player_y = 550;
-		g_player_flg = WALK;
-		//SetGameState(4);
+		if (--g_chara_life > 0)
+		{
+			g_player_x = 30, g_player_y = 550;
+			g_player_flg = WALK;
+		}
+		else SetGameState(4);
 	}
 
 	if (g_player_flg != DIE)
 	{
-		if (AX == 0 && AY == 0)
+		if ((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE))
 		{
-			if ((g_leftkey_flg == TRUE) && (g_old_leftkey_flg == FALSE))
-			{
-				if (g_item_selection == 0)g_item_selection = 2;
-				else g_item_selection--;
-			}
-			if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
-			{
-				if (g_item_selection == 2)g_item_selection = 0;
-				else g_item_selection++;
-			}
+			if (g_item_selection == 0)g_item_selection = 2;
+			else g_item_selection--;
+		}
+		if ((g_rkey_flg == TRUE) && (g_old_rkey_flg == FALSE))
+		{
+			if (g_item_selection == 2)g_item_selection = 0;
+			else g_item_selection++;
 		}
 
-		
-		if ((AX < 0 && AY > 0) || (AX < 0 && AY < 0))
-		{
-			if (AX < 0 && AY > 0)g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE, g_cursorx = g_player_x - PLAYER_SIZE;
-			else if (AX < 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE, g_cursorx = g_player_x - PLAYER_SIZE;
-			g_direction = LEFT;
-		}
-		else if ((AX > 0 && AY > 0) || (AX > 0 && AY < 0))
-		{
-			if(AX > 0 && AY > 0)g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE, g_cursorx = g_player_x + PLAYER_SIZE;
-			else if (AX > 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE, g_cursorx = g_player_x + PLAYER_SIZE;
-			g_direction = RIGHT;
-		}
-		else if ((AX == 0 && AY > 0) || (AX == 0 && AY < 0))
+		if (g_upkey_flg || g_downkey_flg)
 		{
 			g_cursorx = g_player_x;
-			if (AX == 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
-			else if (AX == 0 && AY > 0) g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE;
+			if (g_upkey_flg)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
+			else if (g_downkey_flg) g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE;
 		}
 		else
 		{
@@ -485,37 +541,16 @@ void GameMain::Player_Sousa()
 			else g_cursorx = Player_Hit_Front(g_player_x, 0) - PLAYER_SIZE;
 		}
 
-		if (BX != 0 || BY != 0)//スティックが操作されてたら
-		{
-			DrawFormatString(0, 0, 0xffffff, "%d = y", BY);
-			DrawFormatString(0, 25, 0xffffff, "%d = x", BX);
-
-			if (BY <= 0)
-			{
-				int x = g_player_x, y = g_player_y;
-				int g_orbit_y = -1*(BY / 18), g_orbit_x =-1*(BX / 20);
-				
-				while (y < 720)
-				{
-					y -= (g_orbit_y / 3);
-					x -= (g_orbit_x / 3);
-					g_orbit_y -= 1;
-					DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
-				}
-				if ((g_lkey_flg) && (g_hammer_flg == FALSE)) //角度を調整してBボタンが押されたとき
-				{
-					g_hammer_flg = TRUE; // bボタンが押されたら
-					g_hammer_x = g_player_x, g_hammer_y = g_player_y;
-					g_hammer_orbit_x = -1*(BX / 20), g_hammer_orbit_y = -1*(BY / 18);
-				}
-			}
-		}
-
 		if (g_player_flg == WALK)Walk();
 		else if (g_player_flg == JUMP) Jump();
 		else if (g_player_flg == FALL) Fall();
 
-		Hammer();
+		if ((g_hammer_flg == TRUE) ||
+			(g_bkey_flg == TRUE) && (g_old_bkey_flg == FALSE) ||
+			(AX != 0 || AY != 0))
+		{
+			Hammer();
+		}
 
 		if ((g_item_flg == TRUE) ||
 			(g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
@@ -533,41 +568,34 @@ void GameMain::Player_Sousa()
 
 void  GameMain::Walk()
 {
-	if ((AX > 0 && AY == 0) || (AX < 0 && AY == 0))
+	if (AX == 0 && AY == 0)
 	{
-		if (AX > 0 && AY == 0)
+		if (g_rightkey_flg || g_leftkey_flg)
 		{
-			g_direction = RIGHT;
-			//if (g_old_AX_flg > 0 && AY == 0)g_walk_start_time++;
-			//else g_walk_start_time = 0;
-			if (g_rkey_flg == FALSE)
+			if (g_rightkey_flg)
 			{
+				g_direction = RIGHT;
 				g_player_x += 2;
 				if (MAP_DATA[g_player_y / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
 			}
-		}
-		else if (AX < 0 && AY == 0)
-		{
-			g_direction = LEFT;
-			//if (g_old_AX_flg < 0 && AY == 0)g_walk_start_time++;
-			//else g_walk_start_time = 0;
-			if (g_rkey_flg == FALSE)
+			else if (g_leftkey_flg)
 			{
+				g_direction = LEFT;
 				g_player_x -= 2;
 				if (MAP_DATA[g_player_y / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
 			}
-		}
 
-		if ((++g_image_time >= 5) &&(g_rkey_flg == FALSE))
-		{
-			g_player_image_type++;
-			if (g_player_image_type > 3)g_player_image_type = 0;
-			g_image_time = 0;
+			if (++g_image_time >= 5)
+			{
+				g_player_image_type++;
+				if (g_player_image_type > 3)g_player_image_type = 0;
+				g_image_time = 0;
+			}
 		}
 	}
 
-	if (((MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -3) / PLAYER_SIZE] <= 0) &&
-		(MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -3) / PLAYER_SIZE] <= 0)) || (g_player_y > 600))
+	if (((MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE] <= 0) &&
+		(MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE] <= 0)) || (g_player_y > 600))
 	{
 		g_player_flg = FALL;
 	}
@@ -597,13 +625,15 @@ void GameMain::Jump()
 		g_player_y = ((g_player_y / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 		g_move_speed_y = -5;
 	}
-	
-	if (AX > 0 && AY == 0)g_player_x += 1, g_direction = RIGHT;
-	if (AX < 0 && AY == 0)g_player_x -= 1, g_direction = LEFT;
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	if (AX == 0 && AY == 0)
+	{
+		if (g_rightkey_flg)g_player_x += 1, g_direction = RIGHT;
+		if (g_leftkey_flg)g_player_x -= 1, g_direction = LEFT;
+		if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	}
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -624,12 +654,15 @@ void GameMain::Fall()
 			g_player_flg = WALK;//プレイヤーのflgをWAKLにする
 		}
 	}
-	if (AX > 0 && AY == 0)g_player_x += 1, g_direction = RIGHT;//落下中に右ボタンが押されたら右に進む（移動量は歩いているときの半分）
-	if (AX < 0 && AY == 0)g_player_x -= 1, g_direction = LEFT;//落下中に左ボタンが押されたら右に進む（移動量は歩いているときの半分）
-	if (MAP_DATA[(Player_Hit_Up(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[(Player_Hit_Under(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	if (AX == 0 && AY == 0)
+	{
+		if (g_rightkey_flg)g_player_x += 1, g_direction = RIGHT;//落下中に右ボタンが押されたら右に進む（移動量は歩いているときの半分）
+		if (g_leftkey_flg)g_player_x -= 1, g_direction = LEFT;//落下中に左ボタンが押されたら右に進む（移動量は歩いているときの半分）
+		if (MAP_DATA[(Player_Hit_Up(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[(Player_Hit_Under(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	}
 
 	DrawFormatString(100, 100, 0xffffff, "fall");
 }
