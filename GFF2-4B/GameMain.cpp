@@ -6,6 +6,7 @@
 #include"Player.h"
 
 
+
 /***********************************************
 *  ゲーム処理
 ************************************************/
@@ -15,10 +16,12 @@ void GameMain::Update()
 	Draw_Item();
 	Stage();
 	Player_Sousa(); //自機の操作
+	Bom();
 	Ui();
 	Time();
 	Clear();
 }
+
 
 /***********************************************
 *  初期化処理
@@ -30,6 +33,8 @@ void GameMain::GameMain_Init()
 	g_hammer_power = 0;
 	g_scroll_x = 0;
 	g_block_count = 0;
+	g_item_count = 0;
+	g_kagi_count = 0;
 	g_item_selection = 0;
 	g_score = 0;
 	fps_cunt = 0;
@@ -79,6 +84,7 @@ void GameMain::GameMain_Init()
 	g_player_flg = WALK;
 	g_break_block_count = 0;
 	g_bom_count = 3;
+	g_chara_life = 3;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -131,8 +137,10 @@ void GameMain::GameMain_Init()
 
 
 
+
+
 /***********************************************
-* 制限時間&ゲームクリア急ぎで作った。
+* 制限時間
 ************************************************/
 void GameMain::Time() 
 {
@@ -143,9 +151,13 @@ void GameMain::Time()
 	{
 		SetGameState(4);
 	}
-	//DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	/*DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
+	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);*/
 	
-	
+}
+
+void GameMain::Clear()
+{
 	if (g_player_x >= 2985 && g_player_y >= 555)
 	{
 		SetGameState(3);
@@ -187,17 +199,33 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-
+	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
-	SetFontSize(50);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
-	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
+	if (g_chara_life == 3)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
 
+	SetFontSize(50);
+	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
+	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
 	SetFontSize(30);
+
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -403,11 +431,11 @@ void GameMain::Hammer()
 						DrawCircle(g_hammer_x - g_scroll_x, g_hammer_y, 3, 0xffffff, false);
 					}
 
-					if (g_hammer_power < 50)g_hammer_power++; //パワーゲージを動かす
-					else g_hammer_power = 0; //パワーゲージが50たまったら0にする
+					//if (g_hammer_power < 50)g_hammer_power++; //パワーゲージを動かす
+					//else g_hammer_power = 0; //パワーゲージが50たまったら0にする
 
-					DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + g_hammer_power) - g_scroll_x, (g_player_y + 20) + 20, 0xf00fff, TRUE);
-					DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + 50) - g_scroll_x, (g_player_y + 20) + 20, 0xffffff, FALSE);
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + g_hammer_power) - g_scroll_x, (g_player_y + 20) + 20, 0xf00fff, TRUE);
+					//DrawBox((g_player_x - 25) - g_scroll_x, g_player_y + 20, ((g_player_x - 25) + 50) - g_scroll_x, (g_player_y + 20) + 20, 0xffffff, FALSE);
 				}
 			}
 		}
@@ -479,9 +507,12 @@ void GameMain::Player_Sousa()
 	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
-		/*g_player_x = 30, g_player_y = 550;
-		g_player_flg = WALK;*/
-		SetGameState(4);
+		if (--g_chara_life > 0)
+		{
+			g_player_x = 30, g_player_y = 550;
+			g_player_flg = WALK;
+		}
+		else SetGameState(4);
 	}
 
 	if (g_player_flg != DIE)
