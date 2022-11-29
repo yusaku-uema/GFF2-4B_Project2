@@ -154,38 +154,39 @@
     <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
+    <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Gameover.cpp" />
+    <ClCompile Include="GameReward.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="KeyConfig.cpp" />
     <ClCompile Include="KeyConfigScene.cpp" />
+    <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="InputRankingScene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Title.cpp" />
-    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="Gameclear.h" />
-    <ClInclude Include="InputData.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="Gameover.h" />
+    <ClInclude Include="GameReward.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="KeyConfig.h" />
     <ClInclude Include="KeyConfigScene.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="InputRankingScene.h" />
-    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tkara.h" />
-    <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

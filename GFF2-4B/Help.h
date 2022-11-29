@@ -1,9 +1,7 @@
 #pragma once
-#include "AbstractScene.h"
+#include"main.h"
 
-
-class Help :
-    public AbstractScene
+class Help 
 {
 private:
 
@@ -13,8 +11,10 @@ public:
     //デストラクタ
     ~Help() {}
     //描画以外の更新を実行
-    AbstractScene* Update() override;
+    void  Update() ;
     //描画に関することを実装
-    void Draw() const override;
+    void Draw() ;
+    //シーン切り替え
+    void  ChangeScene();
 };
 

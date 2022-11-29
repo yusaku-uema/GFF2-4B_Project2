@@ -1,51 +1,55 @@
-#include"DxLib.h"
-#include"Map.h"
-#include"InputData.h"
-
-Map::Map()
-{
-    g_stage_x = 0;
-    g_block_quantity = 20;// ブロックの数
-	if ((g_haikei_image = LoadGraph("images/stage.png")) == -1);
-	if (LoadDivGraph("images/block2.png", 4, 4, 1, 30, 30, g_block_image) == -1);
-}
-
-void Map::Stage()
-{
-   
-
-}
-
-void Map::MapInit()
-{
-    for (int i = 0; i < MAP_HIGHT; i++)
-    {
-        for (int j = 0; j < MAP_WIDTH; j++)
-        {
-            MAP_DATA[i][j] = MAP_DATA_INIT[i][j];
- 
-        }
-    }
-
-}
-
-void Map::Draw() const
-{
-	DrawGraph(0, 120, g_haikei_image, TRUE);
-
-    for (int i = 0; i < MAP_HIGHT; i++)
-    {
-       for (int j = 0; j < MAP_WIDTH; j++)
-        {
-           if (MAP_DATA[i][j] != 0)
-           {
-               if (MAP_DATA[i][j] <= g_block_quantity)DrawGraph(30 * j
-                , 120+(30 * i), g_block_image[MAP_DATA[i][j]-1], TRUE);
-
-           }
-        }
-    }
-    SetDrawArea(0, 0, 1280, 600);
-    
- 
-}
+//#include "Map.h"
+//
+//void Map::InitMap(int y, int x)
+//{
+//	MAP_DATA[y][x] = MAP_DATA_INIT[y][x];
+//}
+//
+///***********************************************
+//*  ステージ情報取得　　　
+//************************************************/
+//int Map::GetMap(int y, int x)
+//{
+//	if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return MAP_DATA[y][x];
+//}
+//
+///***********************************************
+//*  ステージ書き換え　　
+//************************************************/
+//
+//void Map::SetMap(int y, int x, int  type, bool a)
+//{
+//	if (false == a ) {
+//		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))MAP_DATA[y][x] =type;
+//	}
+//	else
+//	{
+//		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))MAP_DATA[y][x] =- type;
+//	}
+//}
+//
+///***********************************************
+//*  アイテムのステージ情報取得　　　
+//************************************************/
+//
+//int Map::GetItemMap(int y, int x, bool a)
+//{
+//	if (false) {
+//		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return ITEM_DATA[y][x];
+//	}
+//	else
+//	{
+//		if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))return ITEM_DATA_INIT[y][x];
+//	}
+//
+//}
+//
+///***********************************************
+//*  アイテムのステージ書き換え　　　
+//************************************************/
+//void Map::SetItmeMap(int y, int x, int type)
+//{
+//	if ((y >= 0 && MAP_HIGHT >= y) && (x >= 0 && MAP_WIDTH >= x))ITEM_DATA[y][x] = type;
+//}
+//
+//
