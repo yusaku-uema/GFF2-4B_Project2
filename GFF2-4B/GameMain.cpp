@@ -450,11 +450,10 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				
 				if ((g_break_block_count % 50) == 0) g_block_count++;
-
-				for (int i = 0; i < 10; i++)
-				{
-					if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && g_bom[i].flg == NOMAL)g_bom[i].flg = ANGRY;
-				}
+			}
+			for (int i = 0; i < 10; i++)
+			{
+				if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].flg = ANGRY;
 			}
 		}
 	}
