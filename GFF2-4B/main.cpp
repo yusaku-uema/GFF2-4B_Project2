@@ -7,14 +7,6 @@
 #include"Gameclear.h"
 
 
-#define MAP_HIGHT 20
-#define MAP_WIDTH 103
-
-#define DRAW_MAP_HIGHT 20
-#define DRAW_MAP_WIDTH 35
-
-#define BLOCK_WIDTH 30
-
 /***********************************************
 *  ïœêî
 ************************************************/

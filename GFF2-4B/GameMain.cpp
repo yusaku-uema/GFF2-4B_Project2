@@ -19,7 +19,7 @@ void GameMain::Update()
 	Bom();
 	Ui();
 	//Time();
-	Clear();
+	//Clear();
 }
 
 
@@ -45,7 +45,7 @@ void GameMain::GameMain_Init()
 
 	//ƒtƒ@ƒCƒ‹
 	FILE* fp = NULL;
-	if (fopen_s(&fp, "data/item1.txt", "r") != 0)
+	if (fopen_s(&fp, "data/item2.txt", "r") != 0)
 	{
 		throw "Data/item1.txt";
 	}
@@ -60,7 +60,7 @@ void GameMain::GameMain_Init()
 	fclose(fp);
 	fp = NULL;
 
-	if (fopen_s(&fp, "data/map1.txt", "r") != 0)
+	if (fopen_s(&fp, "data/map2.txt", "r") != 0)
 	{
 		throw "Data/map1.txt";
 	}
@@ -448,7 +448,6 @@ void GameMain::Block_Collision(int a, int b, bool c)
 						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
 					}
 				}
-				
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
 			for (int i = 0; i < 10; i++)
@@ -500,7 +499,7 @@ void GameMain::Player_Sousa()
 			else if (AX > 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE, g_cursorx = g_player_x + PLAYER_SIZE;
 			g_direction = RIGHT;
 		}
-		else if ((AX == 0 && AY > 0) || (AX == 0 && AY < 0))
+		else if ((AX == 0 && AY > 0) || (AX == 0 && AY < 0)) //ã‰º‚ðŒü‚¢‚Ä‚¢‚é‚Æ‚«
 		{
 			g_cursorx = g_player_x;
 			if (AX == 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
@@ -539,17 +538,14 @@ void GameMain::Player_Sousa()
 				}
 			}
 		}
+
+		if ((g_item_flg == TRUE) || (g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
+		Hammer();
+		
 		if (g_player_flg == WALK)Walk();
 		else if (g_player_flg == JUMP)Jump();
 		else Fall();
 
-			Hammer();
-
-		if ((g_item_flg == TRUE) ||
-			(g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
-		{
-			Item();
-		}
 	}
 
 	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages,0), TRUE);
@@ -566,8 +562,6 @@ void  GameMain::Walk()
 		if (AX > 0)
 		{
 				g_direction = RIGHT;
-				//if (g_old_AX_flg > 0 && AY == 0)g_walk_start_time++;
-				//else g_walk_start_time = 0;
 				if (g_rkey_flg == FALSE)
 				{ 
 					g_direction = RIGHT;
@@ -578,8 +572,6 @@ void  GameMain::Walk()
 		else if (AX < 0)
 		{
 			g_direction = LEFT;
-			//if (g_old_AX_flg < 0 && AY == 0)g_walk_start_time++;
-			//else g_walk_start_time = 0;
 			if (g_rkey_flg == FALSE)
 			{
 				g_player_x -= 2;
@@ -634,7 +626,6 @@ void GameMain::Jump()
 	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
 	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
