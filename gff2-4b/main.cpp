@@ -1,6 +1,6 @@
 #include"DxLib.h"
 #include"main.h"
-#include"fps_fixed.h" //FPS管理
+#include"TimeBaseLoopExecuter.h"//FPS管理
 #include"Title.h" //タイトル
 #include"GameMain.h" //
 #include"Gameover.h"
@@ -45,7 +45,7 @@ int g_Title_SE; //タイトルSE
 *  クラス？？
 ************************************************/
 
-Fps fps; //FPS管理
+TimeBaseLoopExecuter timebaseloopexecuter; //fps
 Title title; //タイトル
 GameMain gamemain;
 Credit credit;//クレジット
@@ -74,6 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		/*最初からクラス化、シーンマネージャーで書きましょう*/
 		/*誰が見ても分かるように変数にコメント付けましょう*/
 
+
 	// ゲームループ
 	while (ProcessMessage() == 0 && g_forcedtermination != true && g_GameState != 999) {
 
@@ -81,7 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			g_forcedtermination = true;//強制終了
 		}
 
-		fps.Avg(); //FPS
+		timebaseloopexecuter.TimeAdjustment();// fps管理
 
 		ClearDrawScreen();		// 画面の初期化
 		switch (g_GameState) {
@@ -114,8 +115,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
 
-
-		fps.Wait(); //FPSに合わせて待機
 	}
 
 	DxLib_End();	// DXライブラリ使用の終了処理
