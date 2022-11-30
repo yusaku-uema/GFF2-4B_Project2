@@ -424,7 +424,6 @@ void GameMain::Hammer()
 
 		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 		
-		PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 	}
 	else
 	{
@@ -443,7 +442,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ƒuƒƒbƒN‚É“–‚½‚Á‚½Žž
 			{
-				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;
+				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++ , PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 				else
 				{
 					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;
@@ -452,6 +451,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;
 						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
 					}
+					
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			
