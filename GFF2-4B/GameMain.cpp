@@ -30,9 +30,8 @@ void GameMain::GameMain_Init()
 {
 
 	g_player_x = 30, g_player_y = 550;
-	g_hammer_power = 0;
 	g_scroll_x = 0;
-	g_block_count = 0;
+	g_block_count = 99;
 	g_item_count = 0;
 	g_kagi_count = 0;
 	g_item_selection = 0;
@@ -41,6 +40,11 @@ void GameMain::GameMain_Init()
 	TimeLimit = 200;//êßå¿éûä‘
 	g_player_image_type = 0;
 	g_walk_start_time = 0;
+	g_direction = RIGHT;
+	g_player_flg = WALK;
+	g_break_block_count = 0;
+	g_bom_count = 3;
+	g_chara_life = 3;
 
 
 	//ÉtÉ@ÉCÉã
@@ -74,18 +78,6 @@ void GameMain::GameMain_Init()
 	}
 	fclose(fp);
 	fp = NULL;
-
-
-	g_direction = RIGHT;
-	g_bkey_flg = FALSE;
-	g_akey_flg = FALSE;
-	g_xkey_flg = FALSE;
-	g_lkey_flg = FALSE;
-	g_rkey_flg = FALSE;
-	g_player_flg = WALK;
-	g_break_block_count = 0;
-	g_bom_count = 3;
-	g_chara_life = 3;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -306,7 +298,7 @@ void  GameMain::Item()
 			if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0)
 			{
 				MAP_DATA[g_cursory / 30][g_cursorx / 30] = 4;
-				//g_block_count--;
+				g_block_count--;
 			}
 		}
 	}
@@ -322,7 +314,8 @@ void  GameMain::Item()
 
 void GameMain:: Bom()
 {
-	bool g_bom_count_flg = TRUE;
+	bool g_bom_count_flg = FALSE;
+	if(g_bom_count > 0)g_bom_count_flg = TRUE;
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -380,6 +373,7 @@ void GameMain:: Bom()
 							g_bom[i].y = (g_cursory / 30) * 30;
 							g_bom[i].flg = ANGRY;
 							g_bom_count_flg = FALSE;
+							g_bom_count--;
 						}
 					}
 				}
@@ -419,7 +413,6 @@ void GameMain::Hammer()
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 
 		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
-
 	}
 	else
 	{
@@ -480,38 +473,26 @@ void GameMain::Player_Sousa()
 				if (g_item_selection == 0)g_item_selection = 2;
 				else g_item_selection--;
 			}
-			if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
+			else if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
 			{
 				if (g_item_selection == 2)g_item_selection = 0;
 				else g_item_selection++;
 			}
 		}
-		if ((AX < 0 && AY > 0) || (AX < 0 && AY < 0))
+		else if(AY != 0)
 		{
-			if (AX < 0 && AY > 0)g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE, g_cursorx = g_player_x - PLAYER_SIZE;
-			else if (AX < 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE, g_cursorx = g_player_x - PLAYER_SIZE;
-			g_direction = LEFT;
-		}
+			if (AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
+			else g_cursory = Player_Hit_Up(g_player_y, 0) + PLAYER_SIZE;
 
-		else if ((AX > 0 && AY > 0) || (AX > 0 && AY < 0))
-		{
-				if(AX > 0 && AY > 0)g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE, g_cursorx = g_player_x + PLAYER_SIZE;
-			else if (AX > 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE, g_cursorx = g_player_x + PLAYER_SIZE;
-			g_direction = RIGHT;
-		}
-		else if ((AX == 0 && AY > 0) || (AX == 0 && AY < 0)) //è„â∫Çå¸Ç¢ÇƒÇ¢ÇÈÇ∆Ç´
-		{
-			g_cursorx = g_player_x;
-			if (AX == 0 && AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
-			else if (AX == 0 && AY > 0) g_cursory = Player_Hit_Under(g_player_y, 0) + PLAYER_SIZE;
+			if (AX < 0)g_cursorx = g_player_x - PLAYER_SIZE, g_direction = LEFT;
+			else if(AX > 0)g_cursorx = g_player_x + PLAYER_SIZE, g_direction = RIGHT;
+			else g_cursorx = g_player_x;
 		}
 		else
 		{
 			g_cursory = g_player_y;
-			if (g_direction == RIGHT)g_cursorx = Player_Hit_Front(g_player_x, 0) + PLAYER_SIZE;
-			else g_cursorx = Player_Hit_Front(g_player_x, 0) - PLAYER_SIZE;
+			g_cursorx = Player_Hit_Front(g_player_x, 0) - (PLAYER_SIZE * g_direction);
 		}
-
 
 		if (BX != 0 || BY != 0)
 		{
@@ -564,7 +545,6 @@ void  GameMain::Walk()
 				g_direction = RIGHT;
 				if (g_rkey_flg == FALSE)
 				{ 
-					g_direction = RIGHT;
 					g_player_x += 2;
 					if (MAP_DATA[g_player_y / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
 				}
