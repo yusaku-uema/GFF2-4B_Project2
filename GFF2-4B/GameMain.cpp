@@ -31,6 +31,7 @@ void GameMain::GameMain_Init()
 
 	g_player_x = 30, g_player_y = 550;
 	g_hammer_power = 0;
+	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -162,7 +163,7 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 2985 && g_player_y >= 555)
+	if (g_player_x >= 3160 && g_player_y >=255)
 	{
 		SetGameState(3);
 	}
@@ -412,6 +413,9 @@ void GameMain:: Bom()
 
 void GameMain::Hammer()
 {
+
+	
+
 	if (g_hammer_flg == TRUE)
 	{
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
@@ -432,7 +436,7 @@ void GameMain::Hammer()
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 
 		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
-
+		
 	}
 	else
 	{
@@ -451,7 +455,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ƒuƒƒbƒN‚É“–‚½‚Á‚½Žž
 			{
-				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;
+				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++ , PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 				else
 				{
 					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;
@@ -460,8 +464,10 @@ void GameMain::Block_Collision(int a, int b, bool c)
 						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;
 						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
 					}
+					
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
+			
 			}
 			for (int i = 0; i < 10; i++)
 			{

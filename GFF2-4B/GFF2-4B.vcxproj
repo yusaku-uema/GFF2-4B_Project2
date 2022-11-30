@@ -151,13 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Credit.cpp" />
     <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameMain.cpp" />
-    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="GameReward.cpp" />
+    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
@@ -168,12 +169,12 @@
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Credit.h" />
     <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="Gameclear.h" />
     <ClInclude Include="GameMain.h" />
-    <ClInclude Include="Gameover.h" />
     <ClInclude Include="GameReward.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="main.h" />
