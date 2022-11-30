@@ -154,7 +154,6 @@
     <ClCompile Include="Credit.cpp" />
     <ClCompile Include="DrawRankingScene.cpp" />
     <ClCompile Include="End.cpp" />
-    <ClCompile Include="fps_fixed.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameReward.cpp" />
@@ -166,13 +165,13 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="InputRankingScene.cpp" />
+    <ClCompile Include="TimeBaseLoopExecuter.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Credit.h" />
     <ClInclude Include="DrawRankingScene.h" />
     <ClInclude Include="End.h" />
-    <ClInclude Include="fps_fixed.h" />
     <ClInclude Include="Gameclear.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameReward.h" />
@@ -182,6 +181,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="InputRankingScene.h" />
+    <ClInclude Include="TimeBaseLoopExecuter.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tkara.h" />
   </ItemGroup>
