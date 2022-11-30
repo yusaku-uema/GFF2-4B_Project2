@@ -23,8 +23,6 @@ private:
 	bool g_hammer_flg = FALSE;//ハンマーが使われているかどうか
 	bool g_item_flg = FALSE;
 
-	int g_hammer_power;
-
 	int g_player_image_type;
 	int g_image_time;
 
