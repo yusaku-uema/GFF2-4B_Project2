@@ -39,9 +39,12 @@ private:
 
 	int g_item_selection;
 
-	int g_item_count;
+	int g_hukuro_count;
 	int g_kagi_count;
 	int g_score;
+	int g_score2;
+	int g_score3;
+	int g_score4;
 
 	int g_chara_life;
 
