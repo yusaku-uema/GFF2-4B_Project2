@@ -28,6 +28,7 @@ void GameMain::GameMain_Init()
 
 	g_player_x = 30, g_player_y = 550;
 	g_hammer_power = 0;
+	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_item_count = 0;
@@ -337,6 +338,7 @@ void GameMain::Hammer()
 					g_hammer_power = (g_hammer_power / (50 / 3)) + 1;
 					if (g_hammer_power == 4)g_hammer_power = 3;
 					g_hammer_angle = 0;
+					//PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE); //ブロック破壊音再生
 				}
 				else //左スティックで角度を調整しているときつるはしの軌道が描かれる
 				{
@@ -367,7 +369,10 @@ void GameMain::Hammer()
 					MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0;
 					//g_score += 5;
 					g_break_block_count++;//カーソルのブロックを壊す（地面ブロックなら一発で壊す）
-					if ((g_break_block_count % 50) == 0) g_block_count++;
+					if ((g_break_block_count % 50) == 0)
+					{
+						g_block_count++; 
+					}
 				}
 				else if (MAP_DATA[g_cursory / 30][g_cursorx / 30] > 0 && MAP_DATA[g_cursory / 30][g_cursorx / 30] < 5)
 				{
@@ -415,9 +420,11 @@ void GameMain::Block_Collision(int a, int b)
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
+				PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE); //ブロック破壊音再
 				MAP_DATA[a / 30][b / 30] = 0;
 				g_break_block_count++;//ブロックを壊したカウントを足す
 				if ((g_break_block_count % 50) == 0) g_block_count++;
+			
 			}
 		}
 	}

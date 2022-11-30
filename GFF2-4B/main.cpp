@@ -110,6 +110,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			gameover.Draw(); //ゲームオーバー
 			break;
 		case 5:
+			credit.Draw();
 			//GameMain();
 			break;
 		case 6:
