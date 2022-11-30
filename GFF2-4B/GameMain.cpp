@@ -33,7 +33,6 @@ void GameMain::GameMain_Init()
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
 	g_scroll_x = 0;
 	g_block_count = 99;
-	g_item_count = 0;
 	g_hukuro_count = 0;
 	g_kagi_count = 0;
 	g_item_selection = 0;
