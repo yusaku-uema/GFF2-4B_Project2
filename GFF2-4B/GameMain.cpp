@@ -552,8 +552,7 @@ void  GameMain::Walk()
 	{
 		if (g_direction == RIGHT)g_player_x += 2;
 		else g_player_x -= 2;
-		if (MAP_DATA[g_player_y / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-
+		if (Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 		if (++g_image_time >= 5)
 		{
 			g_player_image_type++;
@@ -561,16 +560,15 @@ void  GameMain::Walk()
 			g_image_time = 0;
 		}
 	}
-
-	if (((MAP_DATA[Player_Hit_Under(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] == 0) &&
-		(MAP_DATA[Player_Hit_Under(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] == 0)) || (g_player_y > 600))
+	if ((Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
+		(Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0) || (g_player_y > 600))
 	{
 		g_player_flg = FALL;
 	}
 	else if ((g_akey_flg) && !(g_old_akey_flg))
 	{
-		if ((MAP_DATA[Player_Hit_Up(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] == 0) &&
-			(MAP_DATA[Player_Hit_Up(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] == 0)) //プレイヤーの上になにもなえれば
+		if ((Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
+			(Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0))
 		{
 			g_move_speed_y = 50, g_player_flg = JUMP;
 		}
@@ -587,8 +585,9 @@ void GameMain::Jump()
 	}
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
-	if ((MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0) ||
-		(MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0))
+
+	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0))
 	{
 		g_player_y = ((g_player_y / BLOCK_SIZE) * BLOCK_SIZE) + 12;
 		g_move_speed_y = -5;
@@ -596,10 +595,11 @@ void GameMain::Jump()
 	
 	if (AX > 0)g_player_x += 1;
 	else if (AX < 0)g_player_x -= 1;
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+
+	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0)||
+	    (Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0)||
+	    (Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)||
+	    (Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -610,8 +610,9 @@ void GameMain::Fall()
 {
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーを落とす
 	if (g_move_speed_y >= -35)g_move_speed_y -= 2;
-	if ((MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0) ||
-		(MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)) //地面に落ちたら
+
+	if ((Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) //地面に落ちたら
 	{
 		if (g_player_y <= 600)
 		{
@@ -620,14 +621,21 @@ void GameMain::Fall()
 			g_player_flg = WALK;//プレイヤーのflgをWAKLにする
 		}
 	}
+
 	if (AX > 0)g_player_x += 1;
 	else if (AX < 0)g_player_x -= 1;
-	if (MAP_DATA[(Player_Hit_Up(g_player_y, 0)) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[(Player_Hit_Under(g_player_y, 0)) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[Player_Hit_Up(g_player_y,0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-	if (MAP_DATA[Player_Hit_Under(g_player_y,0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+
+	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	DrawFormatString(100, 100, 0xffffff, "fall");
+}
+
+int GameMain::Get_MapData(int y, int x)
+{
+	return MAP_DATA[y / BLOCK_SIZE][x / BLOCK_SIZE];
 }
 
 int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a)

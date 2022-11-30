@@ -142,6 +142,7 @@ public:
 	void Update(); //描画以外の更新を実行
 	void Time(); //制限時間
 	void Clear(); //ゲームクリア
+	int Get_MapData(int y, int x);
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
