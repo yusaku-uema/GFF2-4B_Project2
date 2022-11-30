@@ -421,6 +421,7 @@ void GameMain::Block_Collision(int a, int b)
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
 				PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE); //ブロック破壊音再
+				//PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE); //ブロック破壊音再
 				MAP_DATA[a / 30][b / 30] = 0;
 				g_break_block_count++;//ブロックを壊したカウントを足す
 				if ((g_break_block_count % 50) == 0) g_block_count++;
