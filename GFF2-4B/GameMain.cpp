@@ -400,6 +400,9 @@ void GameMain:: Bom()
 
 void GameMain::Hammer()
 {
+
+	
+
 	if (g_hammer_flg == TRUE)
 	{
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
@@ -420,7 +423,8 @@ void GameMain::Hammer()
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 
 		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
-
+		
+		PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 	}
 	else
 	{
