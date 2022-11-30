@@ -1,10 +1,12 @@
 #include"DxLib.h"
 #include"main.h"
-#include"fps_fixed.h" //FPS管理
+#include"TimeBaseLoopExecuter.h"//FPS管理
 #include"Title.h" //タイトル
 #include"GameMain.h" //
 #include"Gameover.h"
 #include"Gameclear.h"
+#include"Credit.h"
+#include"GameReward.h"
 
 
 /***********************************************
@@ -23,6 +25,9 @@ int g_Title_images; //タイトル画像
 int g_GameOver_images; //ゲームオーバー背景
 int g_GameClear_images; //ゲームクリア背景
 int g_white_image; //白い画像
+int g_Box_images;//宝箱画像
+int g_Box2_images;//宝箱画像
+
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
@@ -40,9 +45,11 @@ int g_Title_SE; //タイトルSE
 *  クラス？？
 ************************************************/
 
-Fps fps; //FPS管理
+TimeBaseLoopExecuter timebaseloopexecuter; //fps
 Title title; //タイトル
 GameMain gamemain;
+Credit credit;//クレジット
+GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
 
@@ -67,6 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		/*最初からクラス化、シーンマネージャーで書きましょう*/
 		/*誰が見ても分かるように変数にコメント付けましょう*/
 
+
 	// ゲームループ
 	while (ProcessMessage() == 0 && g_forcedtermination != true && g_GameState != 999) {
 
@@ -74,7 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			g_forcedtermination = true;//強制終了
 		}
 
-		fps.Avg(); //FPS
+		timebaseloopexecuter.TimeAdjustment();// fps管理
 
 		ClearDrawScreen();		// 画面の初期化
 		switch (g_GameState) {
@@ -94,6 +102,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			gameover.Draw(); //ゲームオーバー
 			break;
 		case 5:
+			credit.Draw();
 			//GameMain();
 			break;
 		case 6:
@@ -106,8 +115,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
 
-
-		fps.Wait(); //FPSに合わせて待機
 	}
 
 	DxLib_End();	// DXライブラリ使用の終了処理
@@ -137,6 +144,8 @@ int LoadImages()
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
+	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
+	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -203,6 +212,13 @@ int GetArrayImages(int type, int num)
 
 	case  Pickaxe_Images: //つるはし画像
 		return g_hammer_image;
+		break;
+
+	case Box_images:
+		return g_Box_images;
+		break;
+	case Box2_images:
+		return g_Box2_images;
 		break;
 
 	case Item_cursor: //アイテムカーソル

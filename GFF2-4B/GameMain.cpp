@@ -30,12 +30,17 @@ void GameMain::GameMain_Init()
 {
 
 	g_player_x = 30, g_player_y = 550;
+	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
 	g_block_count = 99;
 	g_item_count = 0;
+	g_hukuro_count = 0;
 	g_kagi_count = 0;
 	g_item_selection = 0;
 	g_score = 0;
+	g_score2 = 0;
+	g_score3 = 0;
+	g_score4 = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
 	g_player_image_type = 0;
@@ -151,7 +156,7 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 2985 && g_player_y >= 555)
+	if (g_player_x >= 3160 && g_player_y >=255)
 	{
 		SetGameState(3);
 	}
@@ -200,7 +205,11 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-	g_score = (g_break_block_count * 5) + (g_item_count * 300) + (g_kagi_count * 1000);
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	g_score3 = ((TimeLimit / 10) * 100) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
 	if (g_chara_life == 3)
@@ -225,6 +234,10 @@ void GameMain::Ui()
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
+	DrawFormatString(100, 60, 0xffffff, "アイテムとブロック　%d", g_score);
+	DrawFormatString(100, 120, 0xffffff, "アイテムとブロックと時間　%d", g_score2);
+	DrawFormatString(100, 180, 0xffffff, "アイテムと時間　%d", g_score3);
+	DrawFormatString(100, 240, 0xffffff, "アイテムとブロック　%d", g_score4);
 	SetFontSize(30);
 
 
@@ -272,6 +285,8 @@ void  GameMain::Draw_Item()
 			if (HitBoxPlayer(g_player_x, g_player_y, g_item[i].x, g_item[i].y, PLAYER_SIZE, PLAYER_SIZE, TRUE))
 			{
 				g_item[i].flg = FALSE;
+				if (g_item[i].type == 1)g_kagi_count++;
+				if (g_item[i].type == 2)g_hukuro_count++;
 			}
 			if (MAP_DATA[(g_item[i].y + PLAYER_SIZE) / 30][g_item[i].x / 30] <= 0)
 			{
@@ -393,6 +408,9 @@ void GameMain:: Bom()
 
 void GameMain::Hammer()
 {
+
+	
+
 	if (g_hammer_flg == TRUE)
 	{
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
@@ -431,7 +449,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
-				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;
+				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++ , PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 				else
 				{
 					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;
@@ -440,8 +458,10 @@ void GameMain::Block_Collision(int a, int b, bool c)
 						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;
 						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
 					}
+					
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
+			
 			}
 			for (int i = 0; i < 10; i++)
 			{
