@@ -18,7 +18,7 @@ void GameMain::Update()
 	Player_Sousa(); //é©ã@ÇÃëÄçÏ
 	Bom();
 	Ui();
-	//Time();
+	Time();
 	//Clear();
 }
 
@@ -214,8 +214,8 @@ void GameMain::Ui()
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIÇÃòg
 	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	g_score3 = ((TimeLimit / 10) * 100) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000)+ ((TimeLimit / 10) * 100);
+	g_score4 = (g_break_block_count * 3) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
