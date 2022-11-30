@@ -9,14 +9,6 @@
 #include"GameReward.h"
 
 
-#define MAP_HIGHT 20
-#define MAP_WIDTH 103
-
-#define DRAW_MAP_HIGHT 20
-#define DRAW_MAP_WIDTH 35
-
-#define BLOCK_WIDTH 30
-
 /***********************************************
 *  変数
 ************************************************/
@@ -39,7 +31,7 @@ int g_Box2_images;//宝箱画像
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
-int g_item_image[4]; //アイテム画像
+int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
 int g_life;
 
@@ -67,7 +59,6 @@ GameClear gameclear;
  ***********************************************/
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow) {
-	/////
 
 	// タイトルを test に変更
 	SetMainWindowText("掘れ掘れダンジョン君");
@@ -159,8 +150,8 @@ int LoadImages()
 
 	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 }
 
 /***********************************************
@@ -214,7 +205,7 @@ int GetArrayImages(int type, int num)
 		break;
 
 	case Item_Images: //アイテム画像
-		if (0 <= num && num < 4) {
+		if (0 <= num && num < 5) {
 			return g_item_image[num];
 		}
 		else { return -1; }

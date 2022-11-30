@@ -1,7 +1,7 @@
 #pragma once
 
 #define MAP_HIGHT 21
-#define MAP_WIDTH 106
+#define MAP_WIDTH 150
 
 #define PLAYER_SIZE  30
 
