@@ -39,6 +39,7 @@ int g_life;
 *  サウンド変数
 ************************************************/
 int g_Title_SE; //タイトルSE
+int g_Stage_BGM; //ステージBGM
 
 
 /***********************************************
@@ -157,7 +158,8 @@ int LoadImages()
 ************************************************/
 int LoadSounds(void)
 {
-	if ((g_Title_SE = LoadSoundMem("BGM/decision.mp3")) == -1)return -1;
+	if ((g_Title_SE = LoadSoundMem("BGM/Title.mp3")) == -1)return -1; //	タイトルSE
+	if ((g_Stage_BGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3")) == -1)return -1; //ステージBGM
 }
 
 
@@ -239,5 +241,8 @@ int GetArrayImages(int type, int num)
 int GetSounds(int type) {
 
 	if (Title_SE == type)return g_Title_SE;
+	return 0;
+
+	if (Stage_BGM == type)return g_Stage_BGM;
 	return 0;
 }
