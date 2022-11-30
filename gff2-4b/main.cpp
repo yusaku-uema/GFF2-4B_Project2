@@ -138,7 +138,7 @@ int LoadImages()
 {
 	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
-	if ((g_haikei_image = LoadGraph("images/abc.png")) == -1)return -1;
+	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
