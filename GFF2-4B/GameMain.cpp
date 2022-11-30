@@ -28,7 +28,7 @@ void GameMain::Update()
 ************************************************/
 void GameMain::GameMain_Init()
 {
-
+	g_player_move_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
@@ -281,17 +281,17 @@ void  GameMain::Draw_Item()
 	{
 		if (g_item[i].flg == TRUE)
 		{
-			if (HitBoxPlayer(g_player_x, g_player_y, g_item[i].x, g_item[i].y, PLAYER_SIZE, PLAYER_SIZE, TRUE))
+			if (HitBoxPlayer(g_player_x, g_player_y, g_item[i].x, g_item[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))
 			{
 				g_item[i].flg = FALSE;
 				if (g_item[i].type == 1)g_kagi_count++;
 				if (g_item[i].type == 2)g_hukuro_count++;
 			}
-			if (MAP_DATA[(g_item[i].y + PLAYER_SIZE) / 30][g_item[i].x / 30] <= 0)
+			if (MAP_DATA[(g_item[i].y + BLOCK_SIZE) / 30][g_item[i].x / 30] <= 0)
 			{
 				if (MAP_DATA[g_item[i].y / 30][g_item[i].x / 30] <= 0) g_item[i].y++;
 			}
-			else g_item[i].y = (g_item[i].y / PLAYER_SIZE) * PLAYER_SIZE;
+			else g_item[i].y = (g_item[i].y / BLOCK_SIZE) * BLOCK_SIZE;
 			DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
 		}
 	}
@@ -336,7 +336,7 @@ void GameMain:: Bom()
 		if (g_bom[i].flg > 750) g_bom[i].flg = NONE;
 		if (g_bom[i].flg == NOMAL)
 		{
-			if (HitBoxPlayer(g_player_x, g_player_y, g_bom[i].x, g_bom[i].y, PLAYER_SIZE, PLAYER_SIZE, TRUE))
+			if (HitBoxPlayer(g_player_x, g_player_y, g_bom[i].x, g_bom[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))
 			{
 				g_bom[i].flg = NONE;
 				g_bom_count++;
@@ -394,11 +394,11 @@ void GameMain:: Bom()
 			}
 		}
 		//DrawFormatString(0 - g_scroll_x,0 + (25* i), 0xffffff, "%d %d", i, g_bom[i].flg);
-		if (MAP_DATA[(g_bom[i].y + PLAYER_SIZE) / 30][g_bom[i].x / 30] == 0)
+		if (MAP_DATA[(g_bom[i].y + BLOCK_SIZE) / 30][g_bom[i].x / 30] == 0)
 		{
 			if (MAP_DATA[g_bom[i].y / 30][g_bom[i].x / 30] == 0) g_bom[i].y++;
 		}
-		else g_bom[i].y = (g_bom[i].y / PLAYER_SIZE) * PLAYER_SIZE;
+		else g_bom[i].y = (g_bom[i].y / BLOCK_SIZE) * BLOCK_SIZE;
 		ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
 		ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
 		ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
@@ -483,119 +483,94 @@ void GameMain::Player_Sousa()
 		else SetGameState(4);
 	}
 
-	if (g_player_flg != DIE)
+	if (AX < 0)g_direction = LEFT;
+	else if(AX > 0)g_direction = RIGHT;
+	g_cursory = g_player_y;
+	g_cursorx = Player_Hit_Front(g_player_x, 0) - (BLOCK_SIZE * g_direction);
+	if (AX == 0 && AY == 0)
 	{
-		if (AX == 0 && AY == 0)
+		if ((g_leftkey_flg == TRUE) && (g_old_leftkey_flg == FALSE))
 		{
-			if ((g_leftkey_flg == TRUE) && (g_old_leftkey_flg == FALSE))
-			{
-				if (g_item_selection == 0)g_item_selection = 2;
-				else g_item_selection--;
-			}
-			else if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
-			{
-				if (g_item_selection == 2)g_item_selection = 0;
-				else g_item_selection++;
-			}
+			if (g_item_selection == 0)g_item_selection = 2;
+			else g_item_selection--;
 		}
-		else if(AY != 0)
+		else if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
 		{
-			if (AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - PLAYER_SIZE;
-			else g_cursory = Player_Hit_Up(g_player_y, 0) + PLAYER_SIZE;
-
-			if (AX < 0)g_cursorx = g_player_x - PLAYER_SIZE, g_direction = LEFT;
-			else if(AX > 0)g_cursorx = g_player_x + PLAYER_SIZE, g_direction = RIGHT;
-			else g_cursorx = g_player_x;
+			if (g_item_selection == 2)g_item_selection = 0;
+			else g_item_selection++;
 		}
-		else
-		{
-			g_cursory = g_player_y;
-			g_cursorx = Player_Hit_Front(g_player_x, 0) - (PLAYER_SIZE * g_direction);
-		}
+	}
+	else if (AY != 0)
+	{
+		if (AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - BLOCK_SIZE;
+		else g_cursory = Player_Hit_Under(g_player_y, 0) + BLOCK_SIZE;
 
-		if (BX != 0 || BY != 0)
-		{
-			DrawFormatString(0, 0, 0xffffff, "%d = y", BY);
-			DrawFormatString(0, 25, 0xffffff, "%d = x", BX);
-
-			if (BY <= 0)
-			{
-				int x = g_player_x, y = g_player_y;
-				int g_orbit_y = -1 * (BY / 18), g_orbit_x = -1 * (BX / 20);
-
-				while (y < 720)
-				{
-					y -= (g_orbit_y / 3);
-					x -= (g_orbit_x / 3);
-					g_orbit_y -= 1;
-					DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
-				}
-				if ((g_lkey_flg) && (g_hammer_flg == FALSE)) 
-				{
-					g_hammer_flg = TRUE; 
-					g_hammer_x = g_player_x, g_hammer_y = g_player_y;
-					g_hammer_orbit_x = -1 * (BX / 20), g_hammer_orbit_y = -1 * (BY / 18);
-				}
-			}
-		}
-
-		if ((g_item_flg == TRUE) || (g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
-		Hammer();
-		
-		if (g_player_flg == WALK)Walk();
-		else if (g_player_flg == JUMP)Jump();
-		else Fall();
-
+		if (AX < 0)g_cursorx = g_player_x - BLOCK_SIZE;
+		else if (AX > 0)g_cursorx = g_player_x + BLOCK_SIZE;
+		else g_cursorx = g_player_x;
 	}
 
+	if (BX != 0 || BY != 0)
+	{
+		int x = g_player_x, y = g_player_y;
+		int g_orbit_y = -(BY / 18), g_orbit_x = -(BX / 20);
+		while (y < 720)
+		{
+			y -= (g_orbit_y / 3);
+			x -= (g_orbit_x / 3);
+			g_orbit_y -= 1;
+			DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
+		}
+		if ((g_lkey_flg) && (g_hammer_flg == FALSE))
+		{
+			g_hammer_flg = TRUE;
+			g_hammer_x = g_player_x, g_hammer_y = g_player_y;
+			g_hammer_orbit_x = -1 * (BX / 20), g_hammer_orbit_y = -1 * (BY / 18);
+		}
+
+		/*if (BY <= 0)
+		{
+			
+		}*/
+	}
+
+	if ((g_item_flg == TRUE) || (g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
+	Hammer();
+
+	if (g_player_flg == WALK)Walk();
+	else if (g_player_flg == JUMP)Jump();
+	else Fall();
 	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages,0), TRUE);
 
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
-
-	//DrawLine(g_player_x - g_scroll_x, g_player_y, g_player_x + (AX / 5) - g_scroll_x, g_player_y + (AY / 5), 0xffffff, TRUE);
+	DrawFormatString(0, 200, 0xffffff, "%d", g_player_x);
 }
 
 void  GameMain::Walk()
 {
-	if (AX > 0 || AX < 0)
+	if ((AX != 0) && (g_rkey_flg == FALSE))
 	{
-		if (AX > 0)
-		{
-				g_direction = RIGHT;
-				if (g_rkey_flg == FALSE)
-				{ 
-					g_player_x += 2;
-					if (MAP_DATA[g_player_y / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
-				}
-		}
-		else if (AX < 0)
-		{
-			g_direction = LEFT;
-			if (g_rkey_flg == FALSE)
-			{
-				g_player_x -= 2;
-				if (MAP_DATA[g_player_y / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + ((PLAYER_SIZE / 2));
-			}
-		}
+		if (g_direction == RIGHT)g_player_x += 2;
+		else g_player_x -= 2;
+		if (MAP_DATA[g_player_y / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
-		if ((++g_image_time >= 5) && (g_rkey_flg == FALSE))
+		if (++g_image_time >= 5)
 		{
 			g_player_image_type++;
 			if (g_player_image_type > 3)g_player_image_type = 0;
 			g_image_time = 0;
-
 		}
 	}
 
-	if (((MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -3) / PLAYER_SIZE] <= 0) &&
-		(MAP_DATA[Player_Hit_Under(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -3) / PLAYER_SIZE] <= 0)) || (g_player_y > 600))
+	if (((MAP_DATA[Player_Hit_Under(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] == 0) &&
+		(MAP_DATA[Player_Hit_Under(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] == 0)) || (g_player_y > 600))
 	{
 		g_player_flg = FALL;
 	}
 	else if ((g_akey_flg) && !(g_old_akey_flg))
 	{
-		if ((MAP_DATA[Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE] <= 0) &&
-			(MAP_DATA[Player_Hit_Up(g_player_y, 1) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE] <= 0)) //プレイヤーの上になにもなえれば
+		if ((MAP_DATA[Player_Hit_Up(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] == 0) &&
+			(MAP_DATA[Player_Hit_Up(g_player_y, 1) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] == 0)) //プレイヤーの上になにもなえれば
 		{
 			g_move_speed_y = 50, g_player_flg = JUMP;
 		}
@@ -612,19 +587,19 @@ void GameMain::Jump()
 	}
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
-	if ((MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE] > 0) ||
-		(MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE] > 0))
+	if ((MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0) ||
+		(MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0))
 	{
-		g_player_y = ((g_player_y / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+		g_player_y = ((g_player_y / BLOCK_SIZE) * BLOCK_SIZE) + 12;
 		g_move_speed_y = -5;
 	}
 	
-	if (AX > 0)g_player_x += 1, g_direction = RIGHT;
-	if (AX < 0)g_player_x -= 1, g_direction = LEFT;
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	if (AX > 0)g_player_x += 1;
+	else if (AX < 0)g_player_x -= 1;
+	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[Player_Hit_Up(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -635,22 +610,22 @@ void GameMain::Fall()
 {
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーを落とす
 	if (g_move_speed_y >= -35)g_move_speed_y -= 2;
-	if ((MAP_DATA[Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Front(g_player_x, -5) / PLAYER_SIZE] > 0) ||
-		(MAP_DATA[Player_Hit_Under(g_player_y, 0) / PLAYER_SIZE][Player_Hit_Back(g_player_x, -5) / PLAYER_SIZE] > 0)) //地面に落ちたら
+	if ((MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0) ||
+		(MAP_DATA[Player_Hit_Under(g_player_y, 0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)) //地面に落ちたら
 	{
 		if (g_player_y <= 600)
 		{
-			g_player_y = ((g_player_y / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);//プレイヤーのy軸を整える
+			g_player_y = ((g_player_y / BLOCK_SIZE) * BLOCK_SIZE) + 17;//プレイヤーのy軸を整える
 			g_move_speed_y = 0;
 			g_player_flg = WALK;//プレイヤーのflgをWAKLにする
 		}
 	}
-	if (AX > 0)g_player_x += 1, g_direction = RIGHT;
-	if (AX < 0)g_player_x -= 1, g_direction = LEFT;
-	if (MAP_DATA[(Player_Hit_Up(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[(Player_Hit_Under(g_player_y, -5)) / PLAYER_SIZE][Player_Hit_Front(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Up(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
-	if (MAP_DATA[Player_Hit_Under(g_player_y, -5) / PLAYER_SIZE][Player_Hit_Back(g_player_x, 0) / PLAYER_SIZE] > 0)g_player_x = ((g_player_x / PLAYER_SIZE) * PLAYER_SIZE) + (PLAYER_SIZE / 2);
+	if (AX > 0)g_player_x += 1;
+	else if (AX < 0)g_player_x -= 1;
+	if (MAP_DATA[(Player_Hit_Up(g_player_y, 0)) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[(Player_Hit_Under(g_player_y, 0)) / BLOCK_SIZE][Player_Hit_Front(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[Player_Hit_Up(g_player_y,0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if (MAP_DATA[Player_Hit_Under(g_player_y,0) / BLOCK_SIZE][Player_Hit_Back(g_player_x, 0) / BLOCK_SIZE] > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	DrawFormatString(100, 100, 0xffffff, "fall");
 }
@@ -689,23 +664,23 @@ int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, 
 
 int GameMain::Player_Hit_Front(int a, int b)
 {
-	if (g_direction == RIGHT) return (a + ((PLAYER_SIZE / 2) - 1) + b);
-	else return (a - ((PLAYER_SIZE / 2)) - b);
+	if (g_direction == RIGHT) return (a + (PLAY_SIZE / 2) + b);
+	else return (a - ((PLAY_SIZE / 2)+ 1) - b);
 }
 
 int GameMain::Player_Hit_Back(int a, int b)
 {
-	if (g_direction == RIGHT) return (a - (PLAYER_SIZE / 2) - b);
-	else return (a + ((PLAYER_SIZE / 2) - 1) + b);
+	if (g_direction == RIGHT) return (a - ((PLAY_SIZE / 2) + 1) - b);
+	else return (a + (PLAY_SIZE / 2) + b);
 }
 
 int GameMain::Player_Hit_Under(int a, int b)
 {
-	return (a + ((PLAYER_SIZE / 2) - 1) + b);
+	return (a + (PLAY_SIZE / 2) + b);
 }
 
 int GameMain::Player_Hit_Up(int a, int b)
 {
-	return (a - (PLAYER_SIZE / 2) - b);
+	return (a - (PLAY_SIZE / 2) - b);
 }
 

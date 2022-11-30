@@ -3,7 +3,8 @@
 #define MAP_HIGHT 21
 #define MAP_WIDTH 150
 
-#define PLAYER_SIZE  30
+#define BLOCK_SIZE  30
+#define PLAY_SIZE  25
 
 enum ArrayImages { Title_Images, Player_Images, GameMain_Images, Block_Images, Player_CursorImages, Item_Images,Pickaxe_Images,Item_cursor, Box_images, Box2_images,
     GameOver_Images, GameClear_Images, Life_Images}; //‰æ‘œŒÄ‚Ño‚µ–¼
