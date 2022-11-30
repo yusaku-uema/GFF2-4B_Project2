@@ -12,6 +12,11 @@
 ************************************************/
 void GameMain::Update()
 {
+	if (CheckSoundMem(g_Stage_BGM) != 1) {   //SE‚ª—¬‚ê‚Ä‚¢‚È‚©‚Á‚½‚çÄ¶
+		ChangeVolumeSoundMem(255 * 20 / 100, GetSounds(Stage_BGM)); //BGM‰¹—Ê’²® 255Å‘å‰¹—Ê‚©‚ç80%Ä¶
+		ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
+		PlaySoundMem(g_Stage_BGM, DX_PLAYTYPE_LOOP, TRUE); //BGMÄ¶
+	}
 	Key();
 	Draw_Item();
 	Stage();
@@ -31,6 +36,7 @@ void GameMain::GameMain_Init()
 
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
+	g_Stage_BGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3");
 	g_scroll_x = 0;
 	g_block_count = 99;
 	g_hukuro_count = 0;

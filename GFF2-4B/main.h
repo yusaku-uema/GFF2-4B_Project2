@@ -8,7 +8,7 @@
 enum ArrayImages { Title_Images, Player_Images, GameMain_Images, Block_Images, Player_CursorImages, Item_Images,Pickaxe_Images,Item_cursor, Box_images, Box2_images,
     GameOver_Images, GameClear_Images, Life_Images}; //画像呼び出し名
 
-enum Sounds { Title_SE}; //BGMなら、○〇_BGM, SEなら
+enum Sounds { Title_SE, Stage_BGM}; //BGMなら、○〇_BGM, SEなら
 
 
 void  SetGameState(int a); //シーン切り替え
