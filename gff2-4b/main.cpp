@@ -102,8 +102,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			gameover.Draw(); //ゲームオーバー
 			break;
 		case 5:
-			credit.Draw();
-			//GameMain();
+			credit.Draw(); //クレジット
 			break;
 		case 6:
 			// InputRanking();
@@ -140,7 +139,7 @@ int LoadImages()
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
 	if ((g_haikei_image = LoadGraph("images/abc.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
-	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
+	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
