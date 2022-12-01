@@ -244,7 +244,7 @@ void GameMain::Ui()
 	SetFontSize(20);
 	DrawFormatString(100, 60, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
 	DrawFormatString(100, 80, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
-	DrawFormatString(100, 100, 0xff, "袋300点×%d+鍵1000点×%d=%d", g_hukuro_count, g_kagi_count, g_score3);
+	DrawFormatString(100, 100, 0xff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_hukuro_count, g_kagi_count, g_score3);
 	DrawFormatString(100, 120, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 	SetFontSize(30);
 
