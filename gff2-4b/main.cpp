@@ -14,6 +14,7 @@
 *  変数
 ************************************************/
 int g_GameState; //ゲームシーン管理
+int g_Score = 0; //スコア
 bool g_forcedtermination; //強制終了
 
 /***********************************************
@@ -132,6 +133,16 @@ void  SetGameState(int a)
 	g_GameState = a; //引数で指定した値をg_GameStateに代入
 }
 
+//スコアを読むコム
+int GetScore()
+{
+	return g_Score;
+}
+
+void SetScore(int a)
+{
+	g_Score = a;
+}
 
 /***********************************************
 *  画像読込み
