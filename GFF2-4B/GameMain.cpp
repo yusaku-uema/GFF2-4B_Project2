@@ -21,6 +21,7 @@ void GameMain::Update()
 	Draw_Item();
 	Stage();
 	Player_Sousa(); //自機の操作
+	
 	Bom();
 	Ui();
 	//Time();
@@ -278,7 +279,7 @@ void  GameMain::Stage()
 
 void  GameMain::Draw_Item()
 {
-	DrawGraph(0, 0, GetArrayImages(GameMain_Images, 0), TRUE);
+	DrawGraph(-(g_scroll_x / 5), 0, GetArrayImages(GameMain_Images, 0), TRUE);
 	/*DrawBox(0, 0, 1280, 720, 0xffffff, TRUE);*/
 	if (g_player_x >= 600)g_scroll_x = g_player_x - 600;
 	else g_scroll_x = 0;
@@ -322,89 +323,75 @@ void  GameMain::Item()
 			}
 		}
 	}
-	//if (g_item_selection == 2)//アイテム使用（爆弾）
-	//{
-	//	if (g_bom_count > 0)
-	//	{
-
-	//		g_bom_count--;
-	//	}
-	//}
 }
 
-void GameMain:: Bom()
+void GameMain::Bom()
 {
 	bool g_bom_count_flg = FALSE;
 	if(g_bom_count > 0)g_bom_count_flg = TRUE;
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (g_bom[i].flg > 750) g_bom[i].flg = NONE;
-		if (g_bom[i].flg == NOMAL)
+		if (g_bom[i].flg > 700) g_bom[i].flg = NONE; //爆弾が画面外に落ちたらNONEにする
+		if (g_bom[i].flg == NOMAL)//NOMAL状態の時
 		{
-			if (HitBoxPlayer(g_player_x, g_player_y, g_bom[i].x, g_bom[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))
+			if (HitBoxPlayer(g_player_x, g_player_y, g_bom[i].x, g_bom[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))//プレイヤーが取ると
 			{
-				g_bom[i].flg = NONE;
-				g_bom_count++;
+				g_bom[i].flg = NONE;//状態がNONE（消える）になる
+				g_bom_count++;//使用できるボム数が増える
 			}
-
-			if (g_bom[i].flg == NOMAL)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images,3), TRUE);
+			else DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images,3), TRUE);
 		}
-		if (g_bom[i].flg == ANGRY)
+		if (g_bom[i].flg == ANGRY)//爆弾がANGRY状態の時
 		{
-			g_bom[i].time--;
-			
-			if (g_bom[i].time <= 0)
+			g_bom[i].time--;//カウントダウンが始まる
+			if (g_bom[i].time <= 0)//カウントダウンが0になったら
 			{
-				for (int a = (g_bom[i].y - 90) / 30; a < (g_bom[i].y + 120) / 30; a++)
+				for (int a = (g_bom[i].y - 90) / 30; a < (g_bom[i].y + 120) / 30; a++)//縦7マス
 				{
-					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)
+					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)//横7マスの
 					{
-						MAP_DATA[a][j] = 0;
+						MAP_DATA[a][j] = 0;//ブロックを消す
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
 						{
+							//爆発の範囲にプレイヤーがいたら
 							DrawFormatString(g_player_x, g_player_y, 0xffffff, "ghs");
 						}
 					}
 				}
-				g_bom[i].time = 300;
-				g_bom[i].flg = NONE;
+				g_bom[i].time = 300;//タイムを300にする
+				g_bom[i].flg = NONE;//爆弾の状態をNONEにする
 			}
-
-			if (g_bom[i].flg == ANGRY)
+			else
 			{
 				DrawBox(g_bom[i].x - 90 - g_scroll_x, ((g_bom[i].y - 90) / 30) * 30, g_bom[i].x + 120 - g_scroll_x, ((g_bom[i].y + 120) / 30) * 30, 0xffffff, FALSE);
 				DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 				DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 			}
 		}
-		if (g_bom[i].flg == NONE)
+		if (g_bom[i].flg == NONE)//爆弾の状態がNONEの時
 		{
-			if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
+			if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE) && (g_item_selection == 2))//Xキーが押されたら
 			{
-				if (g_item_selection == 2)
+				if (g_bom_count_flg == TRUE)//手持ちの爆弾があったら
 				{
-					if (g_bom_count_flg == TRUE)
+					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)//そこに何もなければ
 					{
-						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)
-						{
-							g_bom[i].x = (g_cursorx / 30) * 30,
-							g_bom[i].y = (g_cursory / 30) * 30;
-							g_bom[i].flg = ANGRY;
-							g_bom_count_flg = FALSE;
-							g_bom_count--;
-						}
+						g_bom[i].x = (g_cursorx / 30) * 30; //爆弾を配置
+						g_bom[i].y = (g_cursory / 30) * 30;
+						g_bom[i].flg = ANGRY; //状態はANGRY
+						g_bom_count_flg = FALSE;
+						g_bom_count--;//手持ち爆弾を一つ減らす
 					}
 				}
 			}
 		}
-		//DrawFormatString(0 - g_scroll_x,0 + (25* i), 0xffffff, "%d %d", i, g_bom[i].flg);
-		if (MAP_DATA[(g_bom[i].y + BLOCK_SIZE) / 30][g_bom[i].x / 30] == 0)
+		if ((Get_MapData(g_bom[i].y + BLOCK_SIZE, g_bom[i].x) == 0) && (Get_MapData(g_bom[i].y, g_bom[i].x) == 0))
 		{
-			if (MAP_DATA[g_bom[i].y / 30][g_bom[i].x / 30] == 0) g_bom[i].y++;
+			g_bom[i].y++; //爆弾が埋まってなくて、下にブロックがなかったら爆弾を落とす
 		}
-		else g_bom[i].y = (g_bom[i].y / BLOCK_SIZE) * BLOCK_SIZE;
+		else g_bom[i].y = (g_bom[i].y / BLOCK_SIZE) * BLOCK_SIZE; //爆弾が埋まっているか、下にブロックがあったら爆弾の縦軸を整える
 		ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
 		ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
 		ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
@@ -413,9 +400,6 @@ void GameMain:: Bom()
 
 void GameMain::Hammer()
 {
-
-	
-
 	if (g_hammer_flg == TRUE)
 	{
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
@@ -435,15 +419,9 @@ void GameMain::Hammer()
 		if (g_hammer_angle > 360)g_hammer_angle = 0;
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 
-		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.8, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	}
-	else
-	{
-		if ((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE))
-		{
-			Block_Collision(g_cursory, g_cursorx, FALSE);
-		}
-	}
+	else Block_Collision(g_cursory, g_cursorx, FALSE);
 }
 
 void GameMain::Block_Collision(int a, int b, bool c)
@@ -463,10 +441,8 @@ void GameMain::Block_Collision(int a, int b, bool c)
 						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;
 						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;
 					}
-					
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
-			
 			}
 			for (int i = 0; i < 10; i++)
 			{
@@ -519,7 +495,7 @@ void GameMain::Player_Sousa()
 	if (BX != 0 || BY != 0)
 	{
 		int x = g_player_x, y = g_player_y;
-		int g_orbit_y = -(BY / 18), g_orbit_x = -(BX / 20);
+		int g_orbit_x = -(BX / 20), g_orbit_y = -(BY / 18);
 		while (y < 720)
 		{
 			y -= (g_orbit_y / 3);
@@ -531,25 +507,20 @@ void GameMain::Player_Sousa()
 		{
 			g_hammer_flg = TRUE;
 			g_hammer_x = g_player_x, g_hammer_y = g_player_y;
-			g_hammer_orbit_x = -1 * (BX / 20), g_hammer_orbit_y = -1 * (BY / 18);
-		}
-
-		/*if (BY <= 0)
-		{
-			
-		}*/
+			g_hammer_orbit_x = -(BX / 20), g_hammer_orbit_y = -(BY / 18);
+		}	
 	}
 
-	if ((g_item_flg == TRUE) || (g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
-	Hammer();
+	if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
+	if (((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE)) || (g_hammer_flg == TRUE))Hammer();
 
 	if (g_player_flg == WALK)Walk();
 	else if (g_player_flg == JUMP)Jump();
 	else Fall();
 	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages,0), TRUE);
-
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
-	DrawFormatString(0, 200, 0xffffff, "%d", g_player_x);
+
+	//DrawFormatString(0, 200, 0xffffff, "%d", g_player_x);
 }
 
 void  GameMain::Walk()
@@ -559,7 +530,7 @@ void  GameMain::Walk()
 		if (g_direction == RIGHT)g_player_x += 2;
 		else g_player_x -= 2;
 		if (Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
-		if (++g_image_time >= 5)
+		if (++g_image_time >= 7)
 		{
 			g_player_image_type++;
 			if (g_player_image_type > 3)g_player_image_type = 0;
@@ -569,14 +540,14 @@ void  GameMain::Walk()
 	if ((Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
 		(Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0) || (g_player_y > 600))
 	{
-		g_player_flg = FALL;
+		g_player_flg = FALL; //足元が空白なら状態をFALLにする
 	}
 	else if ((g_akey_flg) && !(g_old_akey_flg))
 	{
 		if ((Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
 			(Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0))
 		{
-			g_move_speed_y = 50, g_player_flg = JUMP;
+			g_move_speed_y = 50, g_player_flg = JUMP; //Bキーが押されたとき、足元が空白じゃなく、頭上が空白なら状態をJUMPにする
 		}
 	}
 
@@ -585,10 +556,8 @@ void  GameMain::Walk()
 
 void GameMain::Jump()
 {
-	if (g_akey_flg == FALSE)
-	{
-		if (g_old_akey_flg && g_move_speed_y > 10)g_move_speed_y = 10;
-	}
+	if (g_akey_flg == FALSE && g_move_speed_y > 10)g_move_speed_y = 10;
+	
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
 
@@ -618,16 +587,15 @@ void GameMain::Fall()
 	if (g_move_speed_y >= -35)g_move_speed_y -= 2;
 
 	if ((Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
-		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) //地面に落ちたら
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) //地面に当たったら
 	{
-		if (g_player_y <= 600)
+		if (g_player_y <= 600)//画面内なら
 		{
 			g_player_y = ((g_player_y / BLOCK_SIZE) * BLOCK_SIZE) + 17;//プレイヤーのy軸を整える
 			g_move_speed_y = 0;
 			g_player_flg = WALK;//プレイヤーのflgをWAKLにする
 		}
 	}
-
 	if (AX > 0)g_player_x += 1;
 	else if (AX < 0)g_player_x -= 1;
 
@@ -664,14 +632,8 @@ int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, 
 	int dy1 = ey + 10;
 	int dy2 = ey + (esize - 10);
 
-	//DrawBox(dx1, dy1, dx2, dy2, 0xfffff, false);
-	//DrawBox(sx1, sy1, sx2, sy2, 0xfffff, false);
-
 	//矩形が重なっていれば当たり
-	if (sx1 < dx2 && dx1 < sx2 && sy1 < dy2 && dy1 < sy2)
-	{
-		return TRUE;
-	}
+	if (sx1 < dx2 && dx1 < sx2 && sy1 < dy2 && dy1 < sy2) return TRUE;
 
 	return FALSE;
 }
