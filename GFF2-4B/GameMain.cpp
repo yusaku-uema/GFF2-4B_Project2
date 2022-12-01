@@ -240,12 +240,12 @@ void GameMain::Ui()
 	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	SetFontSize(20);
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	DrawFormatString(100, 60, 0xffffff, "アイテムとブロック　%d", g_score);
-	DrawFormatString(100, 120, 0xffffff, "アイテムとブロックと時間　%d", g_score2);
-	DrawFormatString(100, 180, 0xffffff, "アイテムと時間　%d", g_score3);
-	DrawFormatString(100, 240, 0xffffff, "アイテムとブロック　%d", g_score4);
+	SetFontSize(20);
+	DrawFormatString(100, 60, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
+	DrawFormatString(100, 80, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
+	DrawFormatString(100, 100, 0xff, "袋300点×%d+鍵1000点×%d=%d", g_hukuro_count, g_kagi_count, g_score3);
+	DrawFormatString(100, 120, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 	SetFontSize(30);
 
 
