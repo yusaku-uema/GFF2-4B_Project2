@@ -204,11 +204,6 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	g_score3 = ((TimeLimit / 10) * 100) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
 	if (g_chara_life == 3)
@@ -226,17 +221,21 @@ void GameMain::Ui()
 	{
 		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
-
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000)+((TimeLimit / 10) * 100);
+	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	SetFontSize(50);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	DrawFormatString(100, 60, 0xffffff, "アイテムとブロック　%d", g_score);
-	DrawFormatString(100, 120, 0xffffff, "アイテムとブロックと時間　%d", g_score2);
-	DrawFormatString(100, 180, 0xffffff, "アイテムと時間　%d", g_score3);
-	DrawFormatString(100, 240, 0xffffff, "アイテムとブロック　%d", g_score4);
+	SetFontSize(20);
+	DrawFormatString(100, 60, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count,g_score);
+	DrawFormatString(100, 80, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
+	DrawFormatString(100, 100, 0xff, "袋300点×%d+鍵1000点×%d=%d", g_hukuro_count, g_kagi_count, g_score3);
+	DrawFormatString(100, 120, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 	SetFontSize(30);
 
 
@@ -574,7 +573,7 @@ void  GameMain::Walk()
 		}
 	}
 
-	DrawFormatString(100, 100, 0xffffff, "walk");
+
 }
 
 void GameMain::Jump()
@@ -603,7 +602,7 @@ void GameMain::Jump()
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
-	DrawFormatString(100, 100, 0xffffff, "jump");
+	
 }
 
 void GameMain::Fall()
@@ -630,7 +629,7 @@ void GameMain::Fall()
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
-	DrawFormatString(100, 100, 0xffffff, "fall");
+
 }
 
 int GameMain::Get_MapData(int y, int x)
