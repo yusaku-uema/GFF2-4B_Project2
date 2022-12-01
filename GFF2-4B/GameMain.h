@@ -151,4 +151,3 @@ public:
 	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 
 };
-
