@@ -7,12 +7,14 @@
 #include"Gameclear.h"
 #include"Credit.h"
 #include"GameReward.h"
+#include"Ranking.h"
 
 
 /***********************************************
 *  変数
 ************************************************/
 int g_GameState; //ゲームシーン管理
+int g_Score = 0; //スコア
 bool g_forcedtermination; //強制終了
 
 /***********************************************
@@ -53,6 +55,7 @@ Credit credit;//クレジット
 GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
+RANKING ranking;
 
 
 /***********************************************
@@ -106,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			credit.Draw(); //クレジット
 			break;
 		case 6:
-			// InputRanking();
+			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
 			// Pause();
@@ -130,6 +133,16 @@ void  SetGameState(int a)
 	g_GameState = a; //引数で指定した値をg_GameStateに代入
 }
 
+//スコアを読むコム
+int GetScore()
+{
+	return g_Score;
+}
+
+void SetScore(int a)
+{
+	g_Score = a;
+}
 
 /***********************************************
 *  画像読込み

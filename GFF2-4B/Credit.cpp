@@ -13,5 +13,5 @@ ChangeScen();
 
 void Credit::ChangeScen()
 {
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)SetGameState(0);
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)SetGameState(0);
 }
