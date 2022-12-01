@@ -7,6 +7,7 @@
 #include"Gameclear.h"
 #include"Credit.h"
 #include"GameReward.h"
+#include"Ranking.h"
 
 
 /***********************************************
@@ -53,6 +54,7 @@ Credit credit;//クレジット
 GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
+RANKING ranking;
 
 
 /***********************************************
@@ -106,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			credit.Draw(); //クレジット
 			break;
 		case 6:
-			// InputRanking();
+			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
 			// Pause();
