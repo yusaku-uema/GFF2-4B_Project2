@@ -1,5 +1,6 @@
 #pragma once
 #include"DxLib.h"
+#include"main.h"
 
 const int FONT_X = 100;
 const int FONT_Y = 200;
@@ -44,8 +45,8 @@ public:
     ~RANKING() {}
 
 	void InputRanking();
-    void InputRankingDraw()const;
-	void DrawRanking()const;
+    void InputRankingDraw();
+	void DrawRanking();
     void SortRanking(void);		//ランキング並べ替え
     int  SaveRanking(void);		//ランキングデータの保存
     int  ReadRanking(void);		//ランキングデータ読み込み
