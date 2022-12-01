@@ -211,10 +211,7 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	g_score3 = ((TimeLimit / 10) * 100) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	
 
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
@@ -239,6 +236,11 @@ void GameMain::Ui()
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
 	float size[3];
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	SetFontSize(20);
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
 	DrawFormatString(100, 60, 0xffffff, "アイテムとブロック　%d", g_score);
 	DrawFormatString(100, 120, 0xffffff, "アイテムとブロックと時間　%d", g_score2);
