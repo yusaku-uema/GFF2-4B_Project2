@@ -15,6 +15,8 @@ enum Sounds { Title_SE, Stage_BGM}; //BGMなら、○〇_BGM, SEなら
 void  SetGameState(int a); //シーン切り替え
 int GetArrayImages(int type, int num); //画像呼び出し
 int GetSounds(int type); //BGMやSE呼び出し
+int GetScore(); //スコア取得
+void SetScore(int a); //スコアを変更
 
 int LoadImages(); //画像読込み
 int LoadSounds(void); //BGM,SEを読込み

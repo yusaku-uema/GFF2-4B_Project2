@@ -2,7 +2,7 @@
 #include "GameMain.h"
 #include"main.h"
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include<math.h>
 #include"Player.h"
 
 
@@ -24,8 +24,8 @@ void GameMain::Update()
 	
 	Bom();
 	Ui();
-	//Time();
-	//Clear();
+	Time();
+	Clear();
 }
 
 
@@ -149,18 +149,19 @@ void GameMain::Time()
 	}
 	if (TimeLimit <= 0)
 	{
+		SetScore(g_score4);
 		StopSoundMem(Stage_BGM);
 		SetGameState(4);
 	}
-	/*DrawFormatString(500, 500, 0xffffff, "%d", g_player_x);
-	DrawFormatString(570, 500, 0xffffff, "%d", g_player_y);*/
 	
 }
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 3160 && g_player_y >=255)
+
+	if (g_player_x >= 4477 && g_player_y >=586)
 	{
+		SetScore(g_score4);
 		StopSoundMem(Stage_BGM);
 		SetGameState(3);
 	}
@@ -462,7 +463,7 @@ void GameMain::Player_Sousa()
 			g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else StopSoundMem(Stage_BGM),SetGameState(4);
+		else SetScore(g_score4),StopSoundMem(Stage_BGM),SetGameState(4);
 	}
 
 	if (AX < 0)g_direction = LEFT;
