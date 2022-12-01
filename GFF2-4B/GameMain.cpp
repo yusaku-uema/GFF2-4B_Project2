@@ -349,7 +349,7 @@ void GameMain::Bom()
 				{
 					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)//横7マスの
 					{
-						if(MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
+						if((MAP_DATA[a][j] != 6) &&(a < MAP_HIGHT && a >= 0) && (j < MAP_WIDTH && j >= 0))MAP_DATA[a][j] = 0;//ブロックを消す
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
 						{
