@@ -239,11 +239,11 @@ void GameMain::Ui()
 	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	SetFontSize(20);
-	DrawFormatString(100, 60, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
-	DrawFormatString(100, 80, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
-	DrawFormatString(100, 100, 0xff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点=%d", g_hukuro_count, g_kagi_count, g_score3);
-	DrawFormatString(100, 120, 0xff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d=%d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
+	SetFontSize(30);
+	DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
+	DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
+	DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
+	DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 	SetFontSize(30);
 
 
@@ -551,7 +551,7 @@ void  GameMain::Walk()
 		}
 	}
 
-	DrawFormatString(100, 100, 0xffffff, "walk");
+	//DrawFormatString(100, 100, 0xffffff, "walk");
 }
 
 void GameMain::Jump()
@@ -578,7 +578,7 @@ void GameMain::Jump()
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
-	DrawFormatString(100, 100, 0xffffff, "jump");
+	/*DrawFormatString(100, 100, 0xffffff, "jump");*/
 }
 
 void GameMain::Fall()
@@ -604,7 +604,7 @@ void GameMain::Fall()
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
-	DrawFormatString(100, 100, 0xffffff, "fall");
+	/*DrawFormatString(100, 100, 0xffffff, "fall");*/
 }
 
 int GameMain::Get_MapData(int y, int x)
