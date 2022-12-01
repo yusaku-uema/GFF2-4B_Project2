@@ -129,7 +129,6 @@ void GameMain::GameMain_Init()
 					g_bom[g_bom_counnt].flg = NOMAL;
 					g_bom_counnt++;
 				}
-				
 			}
 			MAP_DATA[i][j] = MAP_DATA_INIT[i][j];
 			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;
@@ -138,9 +137,6 @@ void GameMain::GameMain_Init()
 
 	SetGameState(2); //ゲームメイン移行
 }
-
-
-
 
 
 /***********************************************
@@ -351,7 +347,7 @@ void GameMain::Bom()
 				{
 					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)//横7マスの
 					{
-						MAP_DATA[a][j] = 0;//ブロックを消す
+						if(MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
 						{
