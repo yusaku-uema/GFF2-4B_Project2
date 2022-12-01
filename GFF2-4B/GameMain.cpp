@@ -424,13 +424,14 @@ void GameMain::Hammer()
 
 		DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 1.0, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 		
-		PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
+		
 	}
 	else
 	{
 		if ((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE))
 		{
 			Block_Collision(g_cursory, g_cursorx, FALSE);
+			
 		}
 	}
 }
@@ -454,6 +455,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 					}
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
+					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);//”j‰ó‰¹SE
 			
 			}
 			for (int i = 0; i < 10; i++)
