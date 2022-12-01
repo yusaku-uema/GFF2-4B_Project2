@@ -17,8 +17,6 @@ RANKING::RANKING() {
     red = GetColor(255, 0, 0);
     white = GetColor(255, 255, 255);
     fontno = 0;
-    if (g_RankingInputImage = LoadGraph("images/rankingnyuuryoku.png"));
-    if (g_DrawRankingImage = LoadGraph("images/rankingnyuuryoku.png"));
     ReadRanking();
 }
 
@@ -32,10 +30,10 @@ void RANKING::InputRankingInit(void)
 
 }
 
-void RANKING::DrawRanking(void)const
+void RANKING::DrawRanking(void)
 {
     //ランキング画像表示
-    DrawGraph(0, 0, g_DrawRankingImage, FALSE);
+    DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
 
     //ランキング一覧を表示
     SetFontSize(30);
@@ -43,7 +41,13 @@ void RANKING::DrawRanking(void)const
         DrawFormatString(120, 170 + i * 25, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
     }
     SetFontSize(30);
-    DrawString(50, 450, "----Aボタン押してタイトルに戻る----", 0xffffff, 0);
+    DrawString(50, 450, "----Bボタン押してタイトルに戻る----", 0xffffff, 0);
+
+    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)
+    {
+        SetGameState(0);
+    }
+
 }
 
 void RANKING::InputRanking() {
@@ -139,7 +143,7 @@ void RANKING::InputRanking() {
     
 }
 
-void RANKING::InputRankingDraw() const{
+void RANKING::InputRankingDraw(){
     int color=white;
     int g_fontX=100;
     int  g_fontY=200;
