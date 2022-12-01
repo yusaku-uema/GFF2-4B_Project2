@@ -134,6 +134,7 @@ public:
 	void Ui();
 	void Item();
 	void Block_Collision(int a, int b, bool c); //‚Â‚é‚Í‚µ‚ð“Š‚°‚½Žž‚Ì“–‚½‚è”»’è
+	void Draw();
 
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
