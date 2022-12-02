@@ -9,7 +9,6 @@ private:
 	int TimeLimit;
 	int fps_cunt;
 	int BreakBGM;
-	int g_Stage_BGM;
 
 	int AX, AY; //ƒL[‚Ì’l
 	int BX, BY;

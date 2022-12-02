@@ -256,6 +256,4 @@ int GetSounds(int type) {
 	if (Title_SE == type)return g_Title_SE;
 	return 0;
 
-	if (Stage_BGM == type)return g_Stage_BGM;
-	return 0;
 }

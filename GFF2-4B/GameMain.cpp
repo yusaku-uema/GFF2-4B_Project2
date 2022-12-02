@@ -12,11 +12,7 @@
 ************************************************/
 void GameMain::Update()
 {
-	if (CheckSoundMem(g_Stage_BGM) != 1) {   //SE‚ª—¬‚ê‚Ä‚¢‚È‚©‚Á‚½‚çÄ¶
-		ChangeVolumeSoundMem(255 * 20 / 100, GetSounds(Stage_BGM)); //BGM‰¹—Ê’²® 255Å‘å‰¹—Ê‚©‚ç80%Ä¶
-		ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
-		PlaySoundMem(g_Stage_BGM, DX_PLAYTYPE_LOOP, TRUE); //BGMÄ¶
-	}
+	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 	
 	Player_Sousa(); //©‹@‚Ì‘€ì
@@ -37,7 +33,6 @@ void GameMain::GameMain_Init()
 	g_player_move_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
-	g_Stage_BGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3");
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -150,7 +145,6 @@ void GameMain::Time()
 	if (TimeLimit <= 0)
 	{
 		SetScore(g_score4);
-		StopSoundMem(Stage_BGM);
 		SetGameState(4);
 	}
 	
@@ -162,7 +156,6 @@ void GameMain::Clear()
 	if (g_player_x >= 4477 && g_player_y >=586)
 	{
 		SetScore(g_score4);
-		StopSoundMem(Stage_BGM);
 		SetGameState(3);
 	}
 }
@@ -491,7 +484,7 @@ void GameMain::Player_Sousa()
 			g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(g_score4),StopSoundMem(Stage_BGM),SetGameState(4);
+		else SetScore(g_score4),SetGameState(4);
 	}
 
 	if (AX < 0)g_direction = LEFT;
