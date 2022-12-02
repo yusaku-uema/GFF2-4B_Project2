@@ -5,6 +5,7 @@
 #include"GameMain.h" //
 #include"Gameover.h"
 #include"Gameclear.h"
+#include"KeyConfigScene.h"
 
 
 #define MAP_HIGHT 20
@@ -53,6 +54,7 @@ Title title; //タイトル
 GameMain gamemain;
 Gameover gameover;
 GameClear gameclear;
+KeyConfigScene keyconfigscene;
 
 
 /***********************************************
@@ -108,8 +110,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			// InputRanking();
 			break;
 		case 7:
+			//DrawRanking();
+		case 8:
 			// Pause();
 			break;
+		case 9:
+			keyconfigscene.Update();
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映

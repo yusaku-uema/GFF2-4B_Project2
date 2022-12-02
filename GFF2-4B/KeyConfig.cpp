@@ -19,12 +19,7 @@
 #define DIRECTINPUT_TYPE_BUTTON     (7)             // ボタン
 #define DIRECTINPUT_TYPE_KEY        (8)             // キーボードのキー
 
-// キーボードの１キー辺りの情報
-struct KEYINFO
-{
-    int             KeyInput;           // 入力コード( KEY_INPUT_LEFT など )
-    const char* Name;               // キーの名前
-};
+
 
 // ゲームでの入力とキーやパッドなどの入力との対応情報
 struct KEYCONFIGINFO
@@ -87,127 +82,7 @@ static int g_PadIDTable[MAX_GAMEPAD_NUM] =
     DX_INPUT_PAD16,
 };
 
-// キーコードの情報
-static KEYINFO g_KeyInfoTable[] =
-{
-    KEY_INPUT_BACK,         "BACK",         // バックスペースキー
-    KEY_INPUT_TAB,          "TAB",          // タブキー
-    KEY_INPUT_RETURN,       "ENTER",        // エンターキー
 
-    KEY_INPUT_LSHIFT,       "L SHIFT",      // 左シフトキー
-    KEY_INPUT_RSHIFT,       "R SHIFT",      // 右シフトキー
-    KEY_INPUT_LCONTROL,     "L CONTROL",    // 左コントロールキー
-    KEY_INPUT_RCONTROL,     "R CONTROL",    // 右コントロールキー
-    KEY_INPUT_ESCAPE,       "ESCAPE",       // エスケープキー
-    KEY_INPUT_SPACE,        "SPACE",        // スペースキー
-    KEY_INPUT_PGUP,         "PAGE UP",      // ＰａｇｅＵＰキー
-    KEY_INPUT_PGDN,         "PAGE DOWN",    // ＰａｇｅＤｏｗｎキー
-    KEY_INPUT_END,          "END",          // エンドキー
-    KEY_INPUT_HOME,         "HOME",         // ホームキー
-    KEY_INPUT_LEFT,         "LEFT",         // 左キー
-    KEY_INPUT_UP,           "UP",           // 上キー
-    KEY_INPUT_RIGHT,        "RIGHT",        // 右キー
-    KEY_INPUT_DOWN,         "DOWN",         // 下キー
-    KEY_INPUT_INSERT,       "INSERT",       // インサートキー
-    KEY_INPUT_DELETE,       "DELETE",       // デリートキー
-
-    KEY_INPUT_MINUS,        "-",            // －キー
-    KEY_INPUT_YEN,          "\\",           // ￥キー
-    KEY_INPUT_PREVTRACK,    "^",            // ＾キー
-    KEY_INPUT_PERIOD,       ".",            // ．キー
-    KEY_INPUT_SLASH,        "/",            // ／キー
-    KEY_INPUT_LALT,         "L ALT",        // 左ＡＬＴキー
-    KEY_INPUT_RALT,         "R ALT",        // 右ＡＬＴキー
-    KEY_INPUT_SCROLL,       "SCROLL LOCK",  // ScrollLockキー
-    KEY_INPUT_SEMICOLON,    ";",            // ；キー
-    KEY_INPUT_COLON,        ":",            // ：キー
-    KEY_INPUT_LBRACKET,     "[",            // ［キー
-    KEY_INPUT_RBRACKET,     "]",            // ］キー
-    KEY_INPUT_AT,           "@",            // ＠キー
-    KEY_INPUT_BACKSLASH,    "BACK SLASH",   // ＼キー
-    KEY_INPUT_COMMA,        ",",            // ，キー
-    KEY_INPUT_KANJI,        "KANJI",        // 漢字キー
-    KEY_INPUT_CONVERT,      "CONVERT",      // 変換キー
-    KEY_INPUT_NOCONVERT,    "NO CONVERT",   // 無変換キー
-    KEY_INPUT_KANA,         "KANA",         // カナキー
-    KEY_INPUT_APPS,         "APPS",         // アプリケーションメニューキー
-    KEY_INPUT_CAPSLOCK,     "CAPS LOCK",    // CaspLockキー
-    KEY_INPUT_SYSRQ,        "PRINT SCREEN", // PrintScreenキー
-    KEY_INPUT_PAUSE,        "PAUSE BREAK",  // PauseBreakキー
-    KEY_INPUT_LWIN,         "L WIN",        // 左Ｗｉｎキー
-    KEY_INPUT_RWIN,         "R WIN",        // 右Ｗｉｎキー
-
-    KEY_INPUT_NUMLOCK,      "NUM LOCK",     // テンキー０
-    KEY_INPUT_NUMPAD0,      "NUMPAD 0",     // テンキー０
-    KEY_INPUT_NUMPAD1,      "NUMPAD 1",     // テンキー１
-    KEY_INPUT_NUMPAD2,      "NUMPAD 2",     // テンキー２
-    KEY_INPUT_NUMPAD3,      "NUMPAD 3",     // テンキー３
-    KEY_INPUT_NUMPAD4,      "NUMPAD 4",     // テンキー４
-    KEY_INPUT_NUMPAD5,      "NUMPAD 5",     // テンキー５
-    KEY_INPUT_NUMPAD6,      "NUMPAD 6",     // テンキー６
-    KEY_INPUT_NUMPAD7,      "NUMPAD 7",     // テンキー７
-    KEY_INPUT_NUMPAD8,      "NUMPAD 8",     // テンキー８
-    KEY_INPUT_NUMPAD9,      "NUMPAD 9",     // テンキー９
-    KEY_INPUT_MULTIPLY,     "NUMPAD *",     // テンキー＊キー
-    KEY_INPUT_ADD,          "NUMPAD +",     // テンキー＋キー
-    KEY_INPUT_SUBTRACT,     "NUMPAD -",     // テンキー－キー
-    KEY_INPUT_DECIMAL,      "NUMPAD .",     // テンキー．キー
-    KEY_INPUT_DIVIDE,       "NUMPAD /",     // テンキー／キー
-    KEY_INPUT_NUMPADENTER,  "NUMPAD ENTER", // テンキーのエンターキー
-
-    KEY_INPUT_F1,           "F1",           // Ｆ１キー
-    KEY_INPUT_F2,           "F2",           // Ｆ２キー
-    KEY_INPUT_F3,           "F3",           // Ｆ３キー
-    KEY_INPUT_F4,           "F4",           // Ｆ４キー
-    KEY_INPUT_F5,           "F5",           // Ｆ５キー
-    KEY_INPUT_F6,           "F6",           // Ｆ６キー
-    KEY_INPUT_F7,           "F7",           // Ｆ７キー
-    KEY_INPUT_F8,           "F8",           // Ｆ８キー
-    KEY_INPUT_F9,           "F9",           // Ｆ９キー
-    KEY_INPUT_F10,          "F10",          // Ｆ１０キー
-    KEY_INPUT_F11,          "F11",          // Ｆ１１キー
-    KEY_INPUT_F12,          "F12",          // Ｆ１２キー
-
-    KEY_INPUT_A,            "A",            // Ａキー
-    KEY_INPUT_B,            "B",            // Ｂキー
-    KEY_INPUT_C,            "C",            // Ｃキー
-    KEY_INPUT_D,            "D",            // Ｄキー
-    KEY_INPUT_E,            "E",            // Ｅキー
-    KEY_INPUT_F,            "F",            // Ｆキー
-    KEY_INPUT_G,            "G",            // Ｇキー
-    KEY_INPUT_H,            "H",            // Ｈキー
-    KEY_INPUT_I,            "I",            // Ｉキー
-    KEY_INPUT_J,            "J",            // Ｊキー
-    KEY_INPUT_K,            "K",            // Ｋキー
-    KEY_INPUT_L,            "L",            // Ｌキー
-    KEY_INPUT_M,            "M",            // Ｍキー
-    KEY_INPUT_N,            "N",            // Ｎキー
-    KEY_INPUT_O,            "O",            // Ｏキー
-    KEY_INPUT_P,            "P",            // Ｐキー
-    KEY_INPUT_Q,            "Q",            // Ｑキー
-    KEY_INPUT_R,            "R",            // Ｒキー
-    KEY_INPUT_S,            "S",            // Ｓキー
-    KEY_INPUT_T,            "T",            // Ｔキー
-    KEY_INPUT_U,            "U",            // Ｕキー
-    KEY_INPUT_V,            "V",            // Ｖキー
-    KEY_INPUT_W,            "W",            // Ｗキー
-    KEY_INPUT_X,            "X",            // Ｘキー
-    KEY_INPUT_Y,            "Y",            // Ｙキー
-    KEY_INPUT_Z,            "Z",            // Ｚキー
-
-    KEY_INPUT_0,            "0",            // ０キー
-    KEY_INPUT_1,            "1",            // １キー
-    KEY_INPUT_2,            "2",            // ２キー
-    KEY_INPUT_3,            "3",            // ３キー
-    KEY_INPUT_4,            "4",            // ４キー
-    KEY_INPUT_5,            "5",            // ５キー
-    KEY_INPUT_6,            "6",            // ６キー
-    KEY_INPUT_7,            "7",            // ７キー
-    KEY_INPUT_8,            "8",            // ８キー
-    KEY_INPUT_9,            "9",            // ９キー
-
-    -1,                     NULL,
-};
 
 KeyConfig::KeyConfig() {
    
@@ -234,8 +109,7 @@ void KeyConfig::Initialize(void)
         GetJoypadDirectInputState(g_PadIDTable[i], &g_KeyConfSys.NeutralDirectInputState[i]);
     }
 
-    // キー入力の初期状態を取得する
-    GetHitKeyStateAll(g_KeyConfSys.NeutralKeyInput);
+    
 }
 
 // KeyConfig_InputProcess 用の軸入力タイプの処理を行う補助関数
@@ -297,8 +171,7 @@ void KeyConfig::InputProcess(void)
         GetJoypadDirectInputState(g_PadIDTable[i], &g_KeyConfSys.DirectInputState[i]);
     }
 
-    // 現在のキーの入力状態を取得する
-    GetHitKeyStateAll(g_KeyConfSys.KeyInput);
+    
 
     // ゲームで使用する入力情報を構築する
     KCInfo = g_KeyConfSys.KeyConfigInfo;
@@ -627,21 +500,7 @@ int KeyConfig::UpdateInputTypeInfo(int UpdateInputType)
         Result = TRUE;
     }
 
-    // キーの入力状態をチェック
-    for (i = 0; i < KEY_STATE_BUFFER_SIZE; i++)
-    {
-        // 入力が初期状態と異なるかをチェック
-        if (g_KeyConfSys.KeyInput[i] != g_KeyConfSys.NeutralKeyInput[i])
-        {
-            // 情報を保存する
-            KCInfo->PadNo = -1;
-            KCInfo->DirectInputType = DIRECTINPUT_TYPE_KEY;
-            KCInfo->SubInfo[0] = i;
-
-            // 戻り値を『入力があった』にする
-            Result = TRUE;
-        }
-    }
+    
 
     // 入力があったかどうかを返す
     return Result;
@@ -674,11 +533,7 @@ int KeyConfig::CheckInput(void)
         }
     }
 
-    // キーの入力状態が初期状態と異なる場合はキーの入力があるということなので TRUE を返す
-    if (memcmp(g_KeyConfSys.NeutralKeyInput, g_KeyConfSys.KeyInput, sizeof(g_KeyConfSys.NeutralKeyInput)) != 0)
-    {
-        return TRUE;
-    }
+   
 
     // ここに来たということは何も入力が無かったということなので FALSE を返す
     return FALSE;
@@ -688,27 +543,10 @@ int KeyConfig::CheckInput(void)
 void KeyConfig::GetInputTypeString(int InputType, char* InputString)
 {
     KEYCONFIGINFO* KCInfo = &g_KeyConfSys.KeyConfigInfo[InputType];
-    KEYINFO* KInfo;
+
     char           String[256];
 
-    // キーボード入力かどうかで処理を分岐
-    if (KCInfo->DirectInputType == DIRECTINPUT_TYPE_KEY)
-    {
-        // キーコードの情報テーブルに無いキーコードである場合に備えて、最初は UNKNOWN を代入しておく
-        strcpy(InputString, "Key UNKNOWN");
-
-        // 一致するキーコード情報をテーブルから探す
-        for (KInfo = g_KeyInfoTable; KInfo->Name != NULL; KInfo++)
-        {
-            if (KInfo->KeyInput == KCInfo->SubInfo[0])
-            {
-                sprintf(InputString, "Key %s", KInfo->Name);
-                break;
-            }
-        }
-    }
-    else
-    {
+   
         // パッドの入力名は先頭にパッドの番号を付ける
         sprintf(String, "Pad No.%d", KCInfo->PadNo);
 
@@ -747,6 +585,6 @@ void KeyConfig::GetInputTypeString(int InputType, char* InputString)
             sprintf(InputString, "%s BUTTON %d", String, KCInfo->SubInfo[0]);
             break;
         }
-    }
+    
 }
 

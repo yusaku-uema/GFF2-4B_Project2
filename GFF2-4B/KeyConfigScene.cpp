@@ -1,5 +1,6 @@
 #include"KeyConfigScene.h"
-#include"Title.h"
+#include"main.h"
+#include"DxLib.h"
 
 #define KEYCONFIG_FILE_NAME     "dat/KeyConfig.txt"     // キーコンフィグデータのファイル名
 #define INFO_X                  (10)                // 情報の描画開始座標
@@ -23,21 +24,26 @@ static const char* g_KeyConfigMenuTable[KEYCONFIG_INPUT_NUM] =
     "カメラ下旋回",
     "攻撃",
     "ジャンプ",
+    "テスト",
 };
 
-KeyConfigScene::KeyConfigScene(int GameState) {
-    g_KeyCongifGameState = GameState;
+KeyConfigScene::KeyConfigScene() {
 
     // キーコンフィグ処理の初期化を行う
    keyconfig.Initialize();
 
+   // キーコンフィグファイルを読み込む
+   if (keyconfig.Load(KEYCONFIG_FILE_NAME) == FALSE)
+   {
+       // コンフィグファイルが読み込めなかったらデフォルト設定にする
+       keyconfig.SetDefault();
+   }
 
     // 「何か入力があったら何もしない」フラグを倒す
     InputWait = FALSE;
 }
 
-AbstractScene* KeyConfigScene::Update(){
-    if (g_KeyCongifGameState == 1) {
+void  KeyConfigScene::Update(){
         // キーコンフィグの入力処理を行う
         keyconfig.InputProcess();
 
@@ -45,12 +51,14 @@ AbstractScene* KeyConfigScene::Update(){
         if (InputWait == TRUE)
         {
             // 何も入力が無かったら「何か入力があったら何もしない」フラグを倒す
-            if (keyconfig.CheckInput() == FALSE)
+            if (keyconfig.CheckInput() == TRUE)
             {
+                WaitTimer(250);
                 InputWait = FALSE;
             }
+
         }
-        else
+        else 
         {
             // キーやパッドの押下状態をチェックして、押下されていたらキーコンフィグ設定に反映させる
             if (keyconfig.UpdateInputTypeInfo(TargetIndex))
@@ -64,8 +72,8 @@ AbstractScene* KeyConfigScene::Update(){
         }
 
         // 項目の数だけ繰り返し
-        DrawY = INFO_Y;
-        for (i = 0; i < KEYCONFIG_INPUT_NUM; i++)
+        int DrawY = INFO_Y;
+        for (int i = 0; i < KEYCONFIG_INPUT_NUM; i++)
         {
             int DrawColor;
             char InputString[256];
@@ -74,7 +82,7 @@ AbstractScene* KeyConfigScene::Update(){
             DrawColor = TargetIndex == i ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 
             // 項目名の描画
-            DrawString(INFO_X, DrawY, g_KeyConfigMenuTable[i], DrawColor);
+            DrawString(INFO_X, DrawY, g_KeyConfigMenuTable[i],  DrawColor);
 
             // 入力に割り当てられている入力名を取得する
             keyconfig.GetInputTypeString(i, InputString);
@@ -91,17 +99,11 @@ AbstractScene* KeyConfigScene::Update(){
             g_KeyCongifGameState=2;
         }
 
-        return this;
-    }
     if (g_KeyCongifGameState == 2) {
         // キーコンフィグ設定を保存する
         keyconfig.Save(KEYCONFIG_FILE_NAME);
-        return new Title();
+        SetGameState(1);
     }
 
-    return nullptr;
 }
 
-void KeyConfigScene::Draw() const {
-
-}

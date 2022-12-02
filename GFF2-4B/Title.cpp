@@ -35,13 +35,6 @@ void Title::Update()
 			PlaySoundMem(GetSounds(Title_SE), DX_PLAYTYPE_NORMAL, TRUE); //SE再生
 		}
 	}
-
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 0)return new GameMain; //ゲームメイン移行
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
-	/*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3)return  new KeyConfigScene(1);/*クレジット*/
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)return  nullptr; //強制終了
-
 	
 	g_MenuY = g_MenuNumber * 60; //　カーソル位置60
 
@@ -68,8 +61,8 @@ void Title::ChangeScen()
 {
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0) SetGameState(1); //ゲームメイン移行
 	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
-	///*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
-	////if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)return  new クレジット
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)SetGameState(6); //ランキング入力
+	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)SetGameState(9); //キーコンフィグ
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)SetGameState(999); //強制終了
 
 

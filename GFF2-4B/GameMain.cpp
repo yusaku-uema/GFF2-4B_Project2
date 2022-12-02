@@ -5,6 +5,7 @@
 #include <math.h>
 #include"Player.h"
 
+#define KEYCONFIG_FILE_NAME     "dat/KeyConfig.txt"     // キーコンフィグデータのファイル名
 
 
 /***********************************************
@@ -168,6 +169,8 @@ void GameMain::Clear()
 
 void GameMain:: Key()
 {
+	int Input;
+
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
 	g_old_AX_flg = AX;
@@ -182,19 +185,22 @@ void GameMain:: Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
+	// 入力状態を取得する
+	Input = keyconfig.GetInput();
+
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT))g_rightkey_flg = TRUE;
-	else g_rightkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT))g_leftkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 1)))g_leftkey_flg = TRUE;
 	else g_leftkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP))g_upkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 2)))g_rightkey_flg = TRUE;
+	else g_rightkey_flg = FALSE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 3)))g_upkey_flg = TRUE;
 	else g_upkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN))g_downkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 4)))g_downkey_flg = TRUE;
 	else g_downkey_flg = FALSE;
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)g_lkey_flg = TRUE;
 	else g_lkey_flg = FALSE;
