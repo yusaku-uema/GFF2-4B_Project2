@@ -39,7 +39,7 @@ void GameMain::GameMain_Init()
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_Stage_BGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3");
 	g_scroll_x = 0;
-	g_block_count = 99;
+	g_block_count = 0;
 	g_hukuro_count = 0;
 	g_kagi_count = 0;
 	g_item_selection = 0;
@@ -54,7 +54,7 @@ void GameMain::GameMain_Init()
 	g_direction = RIGHT;
 	g_player_flg = WALK;
 	g_break_block_count = 0;
-	g_bom_count = 3;
+	g_bom_count = 0;
 	g_chara_life = 3;
 
 
@@ -385,11 +385,12 @@ void GameMain::Bom()
 						{
 							if(MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
 						}
-						//if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
-						//	((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
-						//{
-						//	//爆発の範囲にプレイヤーがいたら
-						//}
+						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
+							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
+						{
+							//爆発の範囲にプレイヤーがいたら
+							g_player_flg = DIE;
+						}
 					}
 				}
 				g_bom[i].time = 300;//タイムを300にする
