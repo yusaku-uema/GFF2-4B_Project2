@@ -190,7 +190,7 @@ void GameMain:: Key()
 
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & Input & 9))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
