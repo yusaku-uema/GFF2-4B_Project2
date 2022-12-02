@@ -243,6 +243,7 @@ void GameMain::Draw()
 			DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
+	DrawFormatString(0, 0, 0xFFFFFF, "%d", g_rkey_flg);
 }
 
 void GameMain::Ui()
