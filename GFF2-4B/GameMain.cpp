@@ -287,7 +287,7 @@ void GameMain::Ui()
 	DrawFormatString(100, 90, 0xffffff, "‰ó‚µ‚½ƒuƒƒbƒN5“_~%d+‘Ü300“_~%d+Œ®1000“_~%d+Žc‚èŽžŠÔ10•b100“_ = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
 	DrawFormatString(100, 120, 0xffffff, "‘Ü300“_~%d+Œ®1000“_~%d+Žc‚èŽžŠÔ10•b100“_           =            %d", g_hukuro_count, g_kagi_count, g_score3);
 	DrawFormatString(100, 150, 0xffffff, "‰ó‚µ‚½ƒuƒƒbƒN5“_~%d+‘Ü300“_~%d+Œ®1000“_~%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
-	DrawFormatString(100, 170, 0xffffff, "X%dY%d", g_player_x, g_player_y);
+	DrawFormatString(100, 170, 0xffffff, "X%dY%d", g_player_x, g_player_x);
 
 	
 
@@ -466,11 +466,7 @@ void GameMain::Player_Sousa()
 	{
 		if (--g_chara_life > 0)
 		{
-			if (g_player_x >= 2460)
-			{
-				g_player_x = 2359, g_player_y = 550;
-			}
-			else  g_player_x = 3, g_player_y = 587;
+			g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
 		else SetScore(g_score4),SetGameState(4);
