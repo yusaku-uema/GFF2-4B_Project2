@@ -41,7 +41,6 @@ int g_life;
 *  サウンド変数
 ************************************************/
 int g_Title_SE; //タイトルSE
-int g_Stage_BGM; //ステージBGM
 
 
 /***********************************************
@@ -172,7 +171,6 @@ int LoadImages()
 int LoadSounds(void)
 {
 	if ((g_Title_SE = LoadSoundMem("BGM/Title.mp3")) == -1)return -1; //	タイトルSE
-	if ((g_Stage_BGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3")) == -1)return -1; //ステージBGM
 }
 
 
