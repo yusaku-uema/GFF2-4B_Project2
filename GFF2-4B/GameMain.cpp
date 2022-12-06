@@ -272,6 +272,17 @@ void GameMain::Ui()
 	else if (g_chara_life == 1)
 	{
 		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
 
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
