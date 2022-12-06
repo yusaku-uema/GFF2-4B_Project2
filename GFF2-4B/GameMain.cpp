@@ -14,7 +14,7 @@ void GameMain::Update()
 {
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
-	
+
 	Player_Sousa(); //自機の操作
 	Draw_Item();
 	Draw();
@@ -137,7 +137,7 @@ void GameMain::GameMain_Init()
 /***********************************************
 * 制限時間
 ************************************************/
-void GameMain::Time() 
+void GameMain::Time()
 {
 	if (++fps_cunt % 60 == 0) {
 		--TimeLimit;
@@ -146,19 +146,19 @@ void GameMain::Time()
 	{
 		SetScore(g_score4);
 		SetGameState(4);
-	}	
+	}
 }
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 4477 && g_player_y >=586)
+	if (g_player_x >= 4477 && g_player_y >= 586)
 	{
 		SetScore(g_score4);
 		SetGameState(3);
 	}
 }
 
-void GameMain:: Key()
+void GameMain::Key()
 {
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
@@ -222,7 +222,7 @@ void GameMain::Draw()
 	}
 
 	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
-	
+
 	if (BX != 0 || BY != 0)
 	{
 		int x = g_player_x, y = g_player_y;
@@ -252,7 +252,7 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-	
+
 
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
@@ -264,7 +264,7 @@ void GameMain::Ui()
 
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
-	
+
 	float size[3];
 	//g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
@@ -281,7 +281,7 @@ void GameMain::Ui()
 	{
 		size[i] = 0.6;
 		if (g_item_selection == i)size[i] = 0.8;
-		DrawRotaGraph(530 + (110 * i), 675, size[i], M_PI / 180 * 0, GetArrayImages(Item_cursor,i), TRUE, FALSE);
+		DrawRotaGraph(530 + (110 * i), 675, size[i], M_PI / 180 * 0, GetArrayImages(Item_cursor, i), TRUE, FALSE);
 		if ((g_item_selection == 1 && i == 1) || (g_item_selection == 2 && i == 2))
 		{
 			DrawCircle(530 + (110 * i) + 37, 699, 15, 0x000000, TRUE);
@@ -374,7 +374,7 @@ void  GameMain::Draw_Item()
 				g_bom[i].y++; //爆弾が埋まってなくて、下にブロックがなかったら爆弾を落とす
 			}
 			else g_bom[i].y = (g_bom[i].y / BLOCK_SIZE) * BLOCK_SIZE; //爆弾が埋まっているか、下にブロックがあったら爆弾の縦軸を整える
-			if((g_bom[i].y - 1) / 30 < MAP_HIGHT)ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
+			if ((g_bom[i].y - 1) / 30 < MAP_HIGHT)ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
 			if (g_bom[i].y / 30 < MAP_HIGHT)ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
 			if ((g_bom[i].y + 29) / 30 < MAP_HIGHT)ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
 		}
@@ -394,7 +394,7 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
-		g_hammer_y -= (g_hammer_orbit_y / 3); 
+		g_hammer_y -= (g_hammer_orbit_y / 3);
 		g_hammer_x -= (g_hammer_orbit_x / 3);
 		g_hammer_orbit_y -= 1;
 
@@ -454,11 +454,11 @@ void GameMain::Player_Sousa()
 			g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(g_score4),SetGameState(4);
+		else SetScore(g_score4), SetGameState(4);
 	}
 
 	if (AX < 0)g_direction = LEFT;
-	else if(AX > 0)g_direction = RIGHT;
+	else if (AX > 0)g_direction = RIGHT;
 	g_cursory = g_player_y;
 	g_cursorx = Player_Hit_Front(g_player_x, 0) - (BLOCK_SIZE * g_direction);
 	if (AX == 0 && AY == 0)
@@ -495,7 +495,7 @@ void GameMain::Player_Sousa()
 			{
 				g_bom[i].hit_flg = TRUE;
 			}
-		}	
+		}
 	}
 
 	if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
@@ -554,7 +554,7 @@ void  GameMain::Walk()
 void GameMain::Jump()
 {
 	if (g_akey_flg == FALSE && g_move_speed_y > 10)g_move_speed_y = 10;
-	
+
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
 
@@ -564,14 +564,14 @@ void GameMain::Jump()
 		g_player_y = ((g_player_y / BLOCK_SIZE) * BLOCK_SIZE) + 12;
 		g_move_speed_y = -5;
 	}
-	
+
 	if (AX > 0)g_player_x += 1;
 	else if (AX < 0)g_player_x -= 1;
 
-	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0)||
-	    (Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0)||
-	    (Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)||
-	    (Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -609,14 +609,14 @@ int GameMain::Get_MapData(int y, int x)
 	return MAP_DATA[y / BLOCK_SIZE][x / BLOCK_SIZE];
 }
 
-int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a)
+int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize, int esize, bool a)
 {
 	int sx1 = px - ((psize / 2) - 10);
 	int sx2 = px + ((psize / 2) - 10);
 	int sy1 = py - ((psize / 2) - 10);
 	int sy2 = py + ((psize / 2) - 10);
 
-	if(a == FALSE)
+	if (a == FALSE)
 	{
 		int sx1 = ex + 10;
 		int sx2 = ex + (psize - 10);
@@ -638,7 +638,7 @@ int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, 
 int GameMain::Player_Hit_Front(int a, int b)
 {
 	if (g_direction == RIGHT) return (a + (PLAY_SIZE / 2) + b);
-	else return (a - ((PLAY_SIZE / 2)+ 1) - b);
+	else return (a - ((PLAY_SIZE / 2) + 1) - b);
 }
 
 int GameMain::Player_Hit_Back(int a, int b)
