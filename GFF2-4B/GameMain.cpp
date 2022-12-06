@@ -133,6 +133,7 @@ void GameMain::GameMain_Init()
 	SetGameState(2); //ゲームメイン移行
 }
 
+
 /***********************************************
 * 制限時間
 ************************************************/
@@ -145,11 +146,13 @@ void GameMain::Time()
 	{
 		SetScore(g_score4);
 		SetGameState(4);
-	}	
+	}
+	
 }
 
 void GameMain::Clear()
 {
+
 	if (g_player_x >= 4477 && g_player_y >=586)
 	{
 		SetScore(g_score4);
@@ -213,7 +216,7 @@ void GameMain::Draw()
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			if (MAP_DATA[i][j] > 0)
+			if (MAP_DATA[i][j] != 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
 			}
@@ -255,10 +258,31 @@ void GameMain::Ui()
 
 	DrawFormatString(15, 634, 0xffffff, "Score");
 	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
-
-	for (int i = 0; i < g_chara_life; i++)
+	if (g_chara_life == 3)
 	{
-		DrawGraph(1000 + (60 * (i + 1)), 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1120, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if(g_chara_life ==2)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
+		DrawGraph(1060, 630, GetArrayImages(Life_Images, 0), TRUE);
+	}
+	else if (g_chara_life == 1)
+	{
+		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
 
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
@@ -274,7 +298,9 @@ void GameMain::Ui()
 	DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
 	DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
 	DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
+	DrawFormatString(100, 170, 0xffffff, "X%dY%d", g_player_x, g_player_x);
 
+	
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -336,7 +362,7 @@ void  GameMain::Draw_Item()
 					{
 						if ((a < MAP_HIGHT && a >= 0) && (j < MAP_WIDTH && j >= 0))
 						{
-							if (MAP_DATA[a][j] != 6 && MAP_DATA[a][j] > 0)MAP_DATA[a][j] = 0;//ブロックを消す
+							if (MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
 						}
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
@@ -368,7 +394,7 @@ void  GameMain::Draw_Item()
 		}
 		else
 		{
-			if ((Get_MapData(g_bom[i].y + BLOCK_SIZE, g_bom[i].x) <= 0) && (Get_MapData(g_bom[i].y, g_bom[i].x) <= 0))
+			if ((Get_MapData(g_bom[i].y + BLOCK_SIZE, g_bom[i].x) == 0) && (Get_MapData(g_bom[i].y, g_bom[i].x) == 0))
 			{
 				g_bom[i].y++; //爆弾が埋まってなくて、下にブロックがなかったら爆弾を落とす
 			}
@@ -410,7 +436,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 	{
 		if ((b / 30) < MAP_WIDTH && (b / 30) >= 0)//マップの範囲内の
 		{
-			if (MAP_DATA[a / 30][b / 30] >= 1 && MAP_DATA[a / 30][b / 30] <= 4)//ブロックに当たった時
+			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
 				if (c == TRUE)
 				{
@@ -432,7 +458,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			else if (MAP_DATA[a / 30][b / 30] <= 0)
+			else if (MAP_DATA[a / 30][b / 30] == 0)
 			{
 				for (int i = 0; i < 10; i++)
 				{
@@ -445,7 +471,8 @@ void GameMain::Block_Collision(int a, int b, bool c)
 
 void GameMain::Player_Sousa()
 {
-	if (g_player_y >= 680)g_player_flg = DIE;
+
+	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
 		if (--g_chara_life > 0)
@@ -533,15 +560,15 @@ void  GameMain::Walk()
 			g_image_time = 0;
 		}
 	}
-	if ((Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) <= 0) &&
-		(Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) <= 0) || (g_player_y > 600))
+	if ((Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
+		(Get_MapData(Player_Hit_Under(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0) || (g_player_y > 600))
 	{
 		g_player_flg = FALL; //足元が空白なら状態をFALLにする
 	}
 	else if ((g_akey_flg) && !(g_old_akey_flg))
 	{
-		if ((Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) <= 0) &&
-			(Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) <= 0))
+		if ((Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Front(g_player_x, 0)) == 0) &&
+			(Get_MapData(Player_Hit_Up(g_player_y, 1), Player_Hit_Back(g_player_x, 0)) == 0))
 		{
 			g_move_speed_y = 50, g_player_flg = JUMP; //Bキーが押されたとき、足元が空白じゃなく、頭上が空白なら状態をJUMPにする
 		}
