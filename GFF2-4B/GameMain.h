@@ -49,10 +49,6 @@ private:
 	int g_chara_life;
 
 	int g_bom_count;
-	int g_walk_start_time;
-
-	int g_stage_item_quantity = 3; //表示するアイテムの個数
-
 
 	bool g_bkey_flg;
 	bool g_akey_flg;
@@ -113,6 +109,7 @@ private:
 		int x;
 		int y;
 		int time;
+		bool hit_flg;
 	};
 	struct BOM g_bom[10];
 

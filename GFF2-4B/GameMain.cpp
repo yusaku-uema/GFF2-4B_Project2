@@ -21,7 +21,6 @@ void GameMain::Update()
 	
 	Player_Sousa(); //自機の操作
 	Draw_Item();
-	Bom();
 	Draw();
 	Ui();
 	Time();
@@ -50,7 +49,6 @@ void GameMain::GameMain_Init()
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
 	g_player_image_type = 0;
-	g_walk_start_time = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
 	g_break_block_count = 0;
@@ -127,6 +125,7 @@ void GameMain::GameMain_Init()
 					g_bom[g_bom_counnt].x = j * 30;
 					g_bom[g_bom_counnt].y = i * 30;
 					g_bom[g_bom_counnt].flg = NOMAL;
+					g_bom[g_bom_counnt].hit_flg = TRUE;
 					g_bom_counnt++;
 				}
 			}
@@ -218,7 +217,17 @@ void GameMain::Draw()
 	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.8, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
-	Stage();
+	//Stage(); //ステージ描画
+	for (int i = 0; i < MAP_HIGHT; i++)
+	{
+		for (int j = 0; j < MAP_WIDTH; j++)
+		{
+			if (MAP_DATA[i][j] != 0)
+			{
+				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
+			}
+		}
+	}
 
 	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
 	
@@ -273,12 +282,12 @@ void GameMain::Ui()
 	SetFontSize(50);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
-	int a = (1280 - (110 * (g_stage_item_quantity - 1))) / 2;
+	
 	float size[3];
-	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	//g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
+	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
 	SetFontSize(30);
 	DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
@@ -292,27 +301,13 @@ void GameMain::Ui()
 	{
 		size[i] = 0.6;
 		if (g_item_selection == i)size[i] = 0.8;
-		DrawRotaGraph(a + (110 * i), 675, size[i], M_PI / 180 * 0, GetArrayImages(Item_cursor,i), TRUE, FALSE);
+		DrawRotaGraph(530 + (110 * i), 675, size[i], M_PI / 180 * 0, GetArrayImages(Item_cursor,i), TRUE, FALSE);
 		if ((g_item_selection == 1 && i == 1) || (g_item_selection == 2 && i == 2))
 		{
-			DrawCircle(a + (110 * i) + 37, 699, 15, 0x000000, TRUE);
-			DrawCircle(a + (110 * i) + 37, 699, 15, 0xFFFFFF, FALSE);
-			if (g_item_selection == 1 && i == 1)DrawFormatString(a + (110 * i) + 30, 685, 0xffffff, "%d", g_block_count);
-			else DrawFormatString(a + (110 * i) + 30, 685, 0xffffff, "%d", g_bom_count);
-		}
-	}
-}
-
-void  GameMain::Stage()
-{
-	for (int i = 0; i < MAP_HIGHT; i++)
-	{
-		for (int j = 0; j < MAP_WIDTH; j++)
-		{
-			if (MAP_DATA[i][j] != 0)
-			{
-				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
-			}
+			DrawCircle(530 + (110 * i) + 37, 699, 15, 0x000000, TRUE);
+			DrawCircle(530 + (110 * i) + 37, 699, 15, 0xFFFFFF, FALSE);
+			if (g_item_selection == 1 && i == 1)DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_block_count);
+			else DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_bom_count);
 		}
 	}
 }
@@ -338,32 +333,11 @@ void  GameMain::Draw_Item()
 			}
 			else g_item[i].y = (g_item[i].y / BLOCK_SIZE) * BLOCK_SIZE;
 		}
-	}
-}
 
-void  GameMain::Item()
-{
-	if (g_item_selection == 1)
-	{
-		if (g_block_count > 0)
-		{
-			if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0)
-			{
-				MAP_DATA[g_cursory / 30][g_cursorx / 30] = 4;
-				g_block_count--;
-			}
-		}
-	}
-}
+		bool g_bom_count_flg = FALSE;
+		if (g_bom_count > 0)g_bom_count_flg = TRUE;
+		if (g_bom[i].y > 700) g_bom[i].flg = NONE; //爆弾が画面外に落ちたらNONEにする
 
-void GameMain::Bom()
-{
-	bool g_bom_count_flg = FALSE;
-	if(g_bom_count > 0)g_bom_count_flg = TRUE;
-
-	for (int i = 0; i < 10; i++)
-	{
-		if (g_bom[i].flg > 700) g_bom[i].flg = NONE; //爆弾が画面外に落ちたらNONEにする
 		if (g_bom[i].flg == NOMAL)//NOMAL状態の時
 		{
 			if (HitBoxPlayer(g_player_x, g_player_y, g_bom[i].x, g_bom[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))//プレイヤーが取ると
@@ -383,13 +357,12 @@ void GameMain::Bom()
 					{
 						if ((a < MAP_HIGHT && a >= 0) && (j < MAP_WIDTH && j >= 0))
 						{
-							if(MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
+							if (MAP_DATA[a][j] != 6)MAP_DATA[a][j] = 0;//ブロックを消す
 						}
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
 						{
-							//爆発の範囲にプレイヤーがいたら
-							g_player_flg = DIE;
+							g_player_flg = DIE;//爆発の範囲にプレイヤーがいたら
 						}
 					}
 				}
@@ -421,9 +394,9 @@ void GameMain::Bom()
 				g_bom[i].y++; //爆弾が埋まってなくて、下にブロックがなかったら爆弾を落とす
 			}
 			else g_bom[i].y = (g_bom[i].y / BLOCK_SIZE) * BLOCK_SIZE; //爆弾が埋まっているか、下にブロックがあったら爆弾の縦軸を整える
-			ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
-			ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
-			ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
+			if((g_bom[i].y - 1) / 30 < MAP_HIGHT)ITEM_DATA[(g_bom[i].y - 1) / 30][g_bom[i].x / 30] = 0;
+			if (g_bom[i].y / 30 < MAP_HIGHT)ITEM_DATA[g_bom[i].y / 30][g_bom[i].x / 30] = 4;
+			if ((g_bom[i].y + 29) / 30 < MAP_HIGHT)ITEM_DATA[(g_bom[i].y + 29) / 30][g_bom[i].x / 30] = 4;
 		}
 	}
 }
@@ -460,7 +433,15 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] > 0 && MAP_DATA[a / 30][b / 30] < 5)//ブロックに当たった時
 			{
-				if (c == TRUE)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++ , PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
+				if (c == TRUE)
+				{
+					MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;
+					for (int i = 0; i < 10; i++)
+					{
+						if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].hit_flg = FALSE;
+					}
+					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
+				}
 				else
 				{
 					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;
@@ -472,9 +453,12 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			for (int i = 0; i < 10; i++)
+			else if (MAP_DATA[a / 30][b / 30] == 0)
 			{
-				if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].flg = ANGRY;
+				for (int i = 0; i < 10; i++)
+				{
+					if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL) && (g_bom[i].hit_flg == TRUE))g_bom[i].flg = ANGRY;
+				}
 			}
 		}
 	}
@@ -527,10 +511,28 @@ void GameMain::Player_Sousa()
 			g_hammer_flg = TRUE;
 			g_hammer_x = g_player_x, g_hammer_y = g_player_y;
 			g_hammer_orbit_x = -(BX / 20), g_hammer_orbit_y = -(BY / 18);
+			for (int i = 0; i < 10; i++)
+			{
+				g_bom[i].hit_flg = TRUE;
+			}
 		}	
 	}
 
-	if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))Item();
+	if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
+	{
+		if (g_item_selection == 1)
+		{
+			if (g_block_count > 0)
+			{
+				if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0)
+				{
+					MAP_DATA[g_cursory / 30][g_cursorx / 30] = 4;
+					g_block_count--;
+				}
+			}
+		}
+	}
+
 	if (((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE)) || (g_hammer_flg == TRUE))Hammer();
 
 	if (g_player_flg == WALK)Walk();
