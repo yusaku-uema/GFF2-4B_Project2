@@ -21,6 +21,8 @@ void GameMain::Update()
 	Ui();
 	Time();
 	Clear();
+
+
 }
 
 
@@ -273,7 +275,6 @@ void GameMain::Ui()
 		DrawGraph(1000, 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
 
-	SetFontSize(50);
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
 	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
 	
@@ -283,13 +284,13 @@ void GameMain::Ui()
 	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	SetFontSize(30);
 	DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
 	DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
 	DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
 	DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
-	SetFontSize(30);
+	DrawFormatString(100, 170, 0xffffff, "X%dY%d", g_player_x, g_player_x);
 
+	
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -460,6 +461,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 
 void GameMain::Player_Sousa()
 {
+
 	if (g_player_y >= 720)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
