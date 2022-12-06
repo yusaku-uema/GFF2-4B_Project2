@@ -130,6 +130,7 @@ void GameMain::GameMain_Init()
 			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;
 		}
 	}
+
 	SetGameState(2); //ƒQ[ƒ€ƒƒCƒ“ˆÚs
 }
 
