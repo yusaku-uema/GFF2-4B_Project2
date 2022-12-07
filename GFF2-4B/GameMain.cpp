@@ -135,16 +135,6 @@ void GameMain::GameMain_Init()
 		}
 	}
 
-	//// キーコンフィグ処理の初期化を行う
-	//keyconfig.Initialize();
-
-	//// キーコンフィグファイルを読み込む
-	//if (keyconfig.Load(KEYCONFIG_FILE_NAME) == FALSE)
-	//{
-	//	// コンフィグファイルが読み込めなかったらデフォルト設定にする
-	//	keyconfig.SetDefault();
-	//}
-
 	SetGameState(2); //ゲームメイン移行
 }
 
