@@ -11,14 +11,13 @@ private:
 	int BreakBGM;
 
 	int AX, AY; //キーの値
-	int BX, BY;
-	int g_old_BX_flg, g_old_BY_flg;
-	int g_old_AX_flg, g_old_AY_flg;
 
 	int g_player_x, g_player_y; //プレイヤーの座標
 
 	int g_hammer_x, g_hammer_y;
-	int g_hammer_orbit_x, g_hammer_orbit_y;
+	int g_hammer_x_2, g_hammer_y_2;
+	int g_hammer_speed_x, g_hammer_speed_y;
+	int g_hammer_speed_x_2, g_hammer_speed_y_2;
 
 	bool g_hammer_flg = FALSE;//ハンマーが使われているかどうか
 	bool g_item_flg = FALSE;
@@ -47,7 +46,7 @@ private:
 	int g_chara_life;
 
 	int g_bom_count;
-	int g_walk_start_time;
+
 
 	int g_stage_item_quantity = 3; //表示するアイテムの個数
 
@@ -62,8 +61,6 @@ private:
 	bool g_old_xkey_flg;
 	bool g_old_lkey_flg;
 	bool g_old_rkey_flg;
-	bool g_old_rightkey_flg;
-	bool g_old_leftkey_flg;
 	bool g_upkey_flg;
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
@@ -82,14 +79,6 @@ private:
 		DIE, //死亡
 	};
 
-	enum BOM_STATE
-	{
-		NONE = 0, //ない
-		NOMAL,    //普通状態
-		ANGRY, //怒り状態
-		FLY, //投げてる状態
-	};
-
 	enum PLAYER_DIRECTION
 	{
 		RIGHT = -1, //歩き状態
@@ -105,14 +94,6 @@ private:
 	};
 	struct ITEM g_item[10];
 
-	struct BOM {
-		int flg;
-		int x;
-		int y;
-		int time;
-	};
-	struct BOM g_bom[10];
-
 
 
 public:
@@ -126,11 +107,10 @@ public:
 	void Walk();
 	void Fall();
 	void Draw_Item();
-	void Bom();
-	int HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a);
+	int HitBoxPlayer(int px, int py, ITEM* i);
 	void Ui();
 	void Item();
-	void Block_Collision(int a, int b, bool c); //つるはしを投げた時の当たり判定
+	void Block_Collision(int a, int b); //つるはしを投げた時の当たり判定
 
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
