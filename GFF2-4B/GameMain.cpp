@@ -451,7 +451,11 @@ void GameMain::Player_Sousa()
 	{
 		if (--g_chara_life > 0)
 		{
-			g_player_x = 30, g_player_y = 550;
+			if (g_player_x >= 2490)
+			{
+				g_player_x = 2230, g_player_y = 587;
+			}
+			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
 		else SetScore(g_score4), SetGameState(4);
