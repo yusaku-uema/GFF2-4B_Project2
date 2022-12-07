@@ -215,7 +215,7 @@ void GameMain::Draw()
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
 				//
-				DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
+				//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
 		}
 	}
