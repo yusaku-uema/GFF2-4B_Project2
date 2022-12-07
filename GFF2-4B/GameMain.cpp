@@ -182,23 +182,23 @@ void GameMain::Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
+	if ((Input & 1 << 8))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
 	if (( Input & 1 << 9))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
+	if ((Input & 1 << 10))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 1)))g_leftkey_flg = TRUE;
+	if ((Input & 1 << 0))g_leftkey_flg = TRUE;
 	else g_leftkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 2)))g_rightkey_flg = TRUE;
+	if ((Input & 1 << 1))g_rightkey_flg = TRUE;
 	else g_rightkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 3)))g_upkey_flg = TRUE;
+	/*if ((Input & 1 << 2))g_upkey_flg = TRUE;
 	else g_upkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & (Input & 4)))g_downkey_flg = TRUE;
-	else g_downkey_flg = FALSE;
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)g_lkey_flg = TRUE;
+	if ((Input & 1 << 3))g_downkey_flg = TRUE;
+	else g_downkey_flg = FALSE;*/
+	if ((Input & 1 << 3))g_lkey_flg = TRUE;
 	else g_lkey_flg = FALSE;
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)g_rkey_flg = TRUE;
+	if ((Input & 1 << 2))g_rkey_flg = TRUE;
 	else g_rkey_flg = FALSE;
 
 }

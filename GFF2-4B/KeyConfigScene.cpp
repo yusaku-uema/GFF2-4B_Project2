@@ -14,17 +14,17 @@ int TargetIndex;
 // キーコンフィグ各項目の名前
 static const char* g_KeyConfigMenuTable[KEYCONFIG_INPUT_NUM] =
 {
-    "左",
-    "右",
-    "上",
-    "下",
-    "カメラ左旋回",
-    "カメラ右旋回",
-    "カメラ上旋回",
-    "カメラ下旋回",
-    "攻撃",
+    "アイテム選択(左)",
+    "アイテム選択(右)",
+    "固定",
+    "ツルハシ",
+    "左移動",
+    "右移動",
+    "上移動",
+    "下移動",
+    "決定",
     "ジャンプ",
-    "テスト",
+    "ブロック配置",
 };
 
 KeyConfigScene::KeyConfigScene() {
