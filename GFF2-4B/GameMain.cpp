@@ -51,7 +51,7 @@ void GameMain::GameMain_Init()
 	g_break_block_count = 0;
 	g_bom_count = 0;
 	g_chara_life = 3;
-	g_titen_flg = FALSE;
+
 
 	//ƒtƒ@ƒCƒ‹
 	FILE* fp = NULL;
@@ -453,9 +453,8 @@ void GameMain::Player_Sousa()
 		{
 			if (g_player_x >= 2490)
 			{
-				g_titen_flg = TRUE;
+				g_player_x = 2230, g_player_y = 587;
 			}
-			if (g_titen_flg = TRUE)g_player_x = 2230, g_player_y = 587;
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
