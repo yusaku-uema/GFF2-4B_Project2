@@ -1,10 +1,12 @@
 #pragma once
 #include"main.h"
+#include"KeyConfig.h"
 
 
 class GameMain
 {
 private:
+	KeyConfig keyconfig;
 
 	int TimeLimit;
 	int fps_cunt;

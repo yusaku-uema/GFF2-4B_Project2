@@ -17,6 +17,8 @@ RANKING::RANKING() {
     red = GetColor(255, 0, 0);
     white = GetColor(255, 255, 255);
     fontno = 0;
+    if (g_RankingInputImage = LoadGraph("images/InputRankigImage.png"));
+    if (g_DrawRankingImage = LoadGraph("images/rankingnyuuryoku.png"));
     ReadRanking();
 }
 
@@ -36,9 +38,9 @@ void RANKING::DrawRanking(void)
     DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
 
     //ランキング一覧を表示
-    SetFontSize(30);
+    SetFontSize(65);
     for (int i = 0; i < 5; i++) {
-        DrawFormatString(120, 170 + i * 25, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        DrawFormatString(120, 170 + i * 60, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
     }
     SetFontSize(30);
     DrawString(50, 450, "----Bボタン押してタイトルに戻る----", 0xffffff, 0);
@@ -145,18 +147,18 @@ void RANKING::InputRanking() {
 
 void RANKING::InputRankingDraw(){
     int color=white;
-    int g_fontX=100;
-    int  g_fontY=200;
+    int g_fontX=190;
+    int  g_fontY=140;
 
     //ランキング画像表示
-    /*DrawGraph(0, 0, g_RankingInputImage, FALSE);*/
+    DrawGraph(0, 0, g_RankingInputImage, FALSE);
 
     //フォントサイズの設定
     SetFontSize(20);
-    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, 0x000000, TRUE);
-    DrawBox(FONT_X - 10, FONT_Y - 5, FONT_X + 450, FONT_Y + 175, white, FALSE);
+   /* DrawBox(FONT_X - 150, FONT_Y - 145, FONT_X + 590, FONT_Y + 315, 0x000000, TRUE);*/
+    DrawBox(FONT_X + 25, FONT_Y - 70, FONT_X + 1050, FONT_Y + 380, white, FALSE);
 
-    SetFontSize(30);
+    SetFontSize(65);
     for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < 13; j++)
@@ -165,26 +167,26 @@ void RANKING::InputRankingDraw(){
             {
                color = red;
             }
-            DrawFormatString(FONT_X + 365, FONT_Y + 140, white, "%s", kettei);
-            DrawFormatString(FONT_X + 205, FONT_Y + 180, white, "%s", enter);
+            DrawFormatString(FONT_X + 820, FONT_Y + 215, white, "%s", kettei);
+            DrawFormatString(FONT_X + 495, FONT_Y + 290, white, "%s", enter);
 
             if (g_nowfontY == 4 && g_nowfontX >= 10 && g_nowfontX <= 12)
             {
-                DrawFormatString(FONT_X + 365, FONT_Y + 140, red, "%s", kettei);
+                DrawFormatString(FONT_X + 820, FONT_Y + 215, red, "%s", kettei);
             }
             if (g_nowfontY == 6 && g_nowfontX >= 6 && g_nowfontX <= 7) {
-                DrawFormatString(FONT_X + 205, FONT_Y + 180, red, "%s", enter);
+                DrawFormatString(FONT_X + 495, FONT_Y + 290, red, "%s", enter);
             }
              DrawFormatString(g_fontX, g_fontY, color, "%c", g_name[i][j]);
             color = white;
-            g_fontX += 35;
+            g_fontX += 70;
         }
-        g_fontX = FONT_X;
-        g_fontY += 35;
+        g_fontX = 190;
+        g_fontY += 70;
     }
-    g_fontY = FONT_Y; 
+    g_fontY = 155; 
 
-    DrawFormatString(210, 165, color, "%s", g_Ranking[4].name);
+    DrawFormatString(500, 50, color, "%s", g_Ranking[4].name);
 }
 
 void RANKING::SortRanking() {

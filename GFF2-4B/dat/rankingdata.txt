@@ -2,4 +2,4 @@
  1  NNNNNNNNN      50000
  3       BFHH       7100
  4       aaaA       6000
- 5         gg          0
+ 5   aaaaaaaa          0

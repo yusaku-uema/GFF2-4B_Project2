@@ -8,6 +8,8 @@
 #include"Credit.h"
 #include"GameReward.h"
 #include"Ranking.h"
+#include"KeyConfigScene.h"
+
 
 
 /***********************************************
@@ -55,6 +57,7 @@ GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
 RANKING ranking;
+KeyConfigScene keyconfigscene;
 
 
 /***********************************************
@@ -111,8 +114,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
+			//DrawRanking();
+		case 8:
 			// Pause();
 			break;
+		case 9:
+			keyconfigscene.Update();
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
