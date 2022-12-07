@@ -91,25 +91,10 @@ KeyConfig::KeyConfig() {
 // キーコンフィグの初期化を行う
 void KeyConfig::Initialize(void)
 {
-    int              i;
-    int              PadNum;
-
-    // パッドの数を取得する
-    PadNum = GetJoypadNum();
-
-    // パッドの数がプログラムが対応している数より多い場合は、対応している数に制限する
-    if (PadNum > MAX_GAMEPAD_NUM)
-    {
-        PadNum = MAX_GAMEPAD_NUM;
-    }
-
-    // パッドの初期状態を DirectInput から取得する
-    for (i = 0; i < PadNum; i++)
-    {
-        GetJoypadDirectInputState(g_PadIDTable[i], &g_KeyConfSys.NeutralDirectInputState[i]);
-    }
+    
 
     
+     GetJoypadDirectInputState(g_PadIDTable[0], &g_KeyConfSys.NeutralDirectInputState[0]);
 }
 
 // KeyConfig_InputProcess 用の軸入力タイプの処理を行う補助関数

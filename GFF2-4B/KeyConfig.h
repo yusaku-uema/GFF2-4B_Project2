@@ -47,3 +47,4 @@ public:
 };
 
 #endif
+extern KeyConfig keyconfig;
