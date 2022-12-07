@@ -2,6 +2,7 @@
 #include"main.h"
 #include"fps_fixed.h" //FPS管理
 #include"Title.h" //タイトル
+#include"Help.h"
 #include"GameMain.h" //
 #include"Gameover.h"
 #include"Gameclear.h"
@@ -34,6 +35,7 @@ int g_player_image[4]; //プレイヤー画像
 int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
 int g_life;
+int g_HelpImages; //コントローラー画像
 
 /***********************************************
 *  サウンド変数
@@ -52,6 +54,7 @@ Credit credit;//クレジット
 GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
+Help help;
 
 
 /***********************************************
@@ -105,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			//GameMain();
 			break;
 		case 6:
-			// InputRanking();
+			help.Draw();
 			break;
 		case 7:
 			// Pause();
@@ -147,6 +150,7 @@ int LoadImages()
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
+	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
 
 	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
@@ -227,6 +231,9 @@ int GetArrayImages(int type, int num)
 			return g_item_cursor_image[num];
 		}
 		else { return -1; }
+		break;
+	case Help_Images:
+		return g_HelpImages;
 		break;
 
 	default:

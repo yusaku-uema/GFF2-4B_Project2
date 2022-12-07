@@ -4,7 +4,7 @@
 class Help 
 {
 private:
-
+    int g_Titleimage;
 public:
     //コンストラクタ
     Help();
@@ -16,5 +16,6 @@ public:
     void Draw() ;
     //シーン切り替え
     void  ChangeScene();
+   /* int g_image;*/
 };
 

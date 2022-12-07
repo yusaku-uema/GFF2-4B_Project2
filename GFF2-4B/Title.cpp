@@ -1,6 +1,7 @@
 #include"DxLib.h"
 #include "Title.h"
 #include"Credit.h"
+#include"Help.h"
 
 Title::Title()
 {
@@ -60,7 +61,7 @@ void Title::Draw()
 void Title::ChangeScen()
 {
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0) SetGameState(1); //ゲームメイン移行
-	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)SetGameState(6); //ヘルプ画面に移行
 	///*if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)return  new Ranking();*/
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(5);
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)SetGameState(999); //強制終了

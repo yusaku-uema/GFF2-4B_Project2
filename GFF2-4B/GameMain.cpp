@@ -455,7 +455,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 					}
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
-					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);//”j‰ó‰¹SE
+				PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK);//”j‰ó‰¹SE
 			
 			}
 			for (int i = 0; i < 10; i++)
