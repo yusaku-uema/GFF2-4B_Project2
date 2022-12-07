@@ -456,7 +456,7 @@ void GameMain::Player_Sousa()
 			{
 				g_titen_flg = TRUE;
 			}
-			if(g_titen_flg = TRUE)g_player_x = 2230, g_player_y = 587;
+			if(g_titen_flg == TRUE)g_player_x = 2230, g_player_y = 587;
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
