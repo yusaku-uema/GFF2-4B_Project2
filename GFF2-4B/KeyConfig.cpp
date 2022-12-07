@@ -22,7 +22,7 @@
 
 
 // ゲームでの入力とキーやパッドなどの入力との対応情報
-struct KEYCONFIGINFO
+struct KeyConfig::KEYCONFIGINFO
 {
     int             PadNo;              // パッド番号
     int             DirectInputType;    // DirectInput の入力情報タイプ( DIRECTINPUT_TYPE_X など )
@@ -32,7 +32,7 @@ struct KEYCONFIGINFO
 // 入力処理用の情報
 struct KEYCONFIGSYSTEMDATA
 {
-    KEYCONFIGINFO   KeyConfigInfo[KEYCONFIG_INPUT_NUM];           // ゲーム中の入力とキーやパッドなどの入力との対応情報
+    KeyConfig::KEYCONFIGINFO   KeyConfigInfo[KEYCONFIG_INPUT_NUM];           // ゲーム中の入力とキーやパッドなどの入力との対応情報
     DINPUT_JOYSTATE NeutralDirectInputState[MAX_GAMEPAD_NUM];     // DirectInput のパッドの初期入力状態
     DINPUT_JOYSTATE DirectInputState[MAX_GAMEPAD_NUM];            // DirectInput のパッドの入力状態
     char            NeutralKeyInput[KEY_STATE_BUFFER_SIZE];       // キーの初期入力状態
@@ -46,7 +46,7 @@ struct KEYCONFIGSYSTEMDATA
 static KEYCONFIGSYSTEMDATA g_KeyConfSys;
 
 // ゲームでの各入力とキーやパッドなどの入力とのデフォルトの対応設定
-static KEYCONFIGINFO g_DefaultInputTypeInfo[KEYCONFIG_INPUT_NUM] =
+static  KeyConfig::KEYCONFIGINFO g_DefaultInputTypeInfo[KEYCONFIG_INPUT_NUM] =
 {
     0, DIRECTINPUT_TYPE_X,      -1, 0,      // KEYCONFIG_INPUT_LEFT
     0, DIRECTINPUT_TYPE_X,       1, 0,      // KEYCONFIG_INPUT_RIGHT
@@ -362,7 +362,7 @@ void  KeyConfig::SetDefault(void)
 
 // UpdateInputTypeInfo 用の軸入力タイプの処理を行う補助関数
 static void UpdateInputTypeInfo_Assist(
-    KEYCONFIGINFO* KCInfo,                  // キーやパッドなどの入力情報
+    KeyConfig::KEYCONFIGINFO* KCInfo,                  // キーやパッドなどの入力情報
     int* ValidMaxDInput,          // MaxInput に有効な値が入っているかどうかを保存している変数のアドレス
     int* MaxDInput,               // 有効な入力値の最大値を保存している変数のアドレス
     int            PadNo,                   // パッド番号

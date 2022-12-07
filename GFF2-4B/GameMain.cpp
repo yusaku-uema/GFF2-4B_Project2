@@ -5,6 +5,7 @@
 #include <math.h>
 #include"Player.h"
 
+
 #define KEYCONFIG_FILE_NAME     "dat/KeyConfig.txt"     // キーコンフィグデータのファイル名
 
 
@@ -134,6 +135,16 @@ void GameMain::GameMain_Init()
 		}
 	}
 
+	//// キーコンフィグ処理の初期化を行う
+	//keyconfig.Initialize();
+
+	//// キーコンフィグファイルを読み込む
+	//if (keyconfig.Load(KEYCONFIG_FILE_NAME) == FALSE)
+	//{
+	//	// コンフィグファイルが読み込めなかったらデフォルト設定にする
+	//	keyconfig.SetDefault();
+	//}
+
 	SetGameState(2); //ゲームメイン移行
 }
 
@@ -169,7 +180,11 @@ void GameMain::Clear()
 
 void GameMain:: Key()
 {
-	int Input;
+	// キーコンフィグの入力処理を行う
+	keyconfig.InputProcess();
+
+	DINPUT_JOYSTATE Key;
+	int Input = keyconfig.GetInput(); //入力状態を取得
 
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
@@ -185,12 +200,9 @@ void GameMain:: Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
-	// 入力状態を取得する
-	Input = keyconfig.GetInput();
-
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & Input & 9))g_akey_flg = TRUE;
+	if (( Input & 1 << 9))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;

@@ -21,8 +21,10 @@
 #define KEYCONFIG_INPUT_TEST            (10)         // testボタン
 #define KEYCONFIG_INPUT_NUM             (11)        // 入力タイプの数
 
+
 class KeyConfig {
 public:
+	struct KEYCONFIGINFO;
 	KeyConfig();
 	void   Initialize(void);             // キーコンフィグの初期化を行う
 	void   InputProcess(void);           // キーコンフィグの入力処理を行う( 毎フレーム実行する )
