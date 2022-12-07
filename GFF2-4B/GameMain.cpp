@@ -214,6 +214,8 @@ void GameMain::Draw()
 			if (MAP_DATA[i][j] > 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
+				//
+				DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
 		}
 	}
@@ -431,18 +433,19 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			else if(MAP_DATA[a / 30][b / 30] >= 5)
-			{
-				//if (g_hammer_y < 0)
-				//else g_hammer_y = 0, g_hammer_x = 0;
-				g_hammer_flg = FALSE;
-			}
-			else if (MAP_DATA[a / 30][b / 30] <= 0)
+			else if(MAP_DATA[a / 30][b / 30] <= 0 || MAP_DATA[a / 30][b / 30] == -1)
 			{
 				for (int i = 0; i < 10; i++)
 				{
 					if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL) && (g_bom[i].hit_flg == TRUE))g_bom[i].flg = ANGRY;
 				}
+			}
+			else
+			{
+				if (g_hammer_orbit_y > 0)g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
+				//else if(g_hammer_orbit_y < 10) g_hammer_flg = FALSE;
+				//else g_hammer_y = 0, g_hammer_x = 0;
+				//g_hammer_flg = FALSE;
 			}
 		}
 	}
