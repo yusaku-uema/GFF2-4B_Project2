@@ -69,7 +69,6 @@ private:
 	int g_move_speed_y;
 
 	int g_player_flg;
-	bool g_player_move_flg;
 
 
 	enum PLAYER_STATE
@@ -124,11 +123,9 @@ public:
 	void Jump();
 	void Walk();
 	void Fall();
-	void Draw_Item();
-	void Bom();
+	void Item();
 	int HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a);
 	void Ui();
-	void Item();
 	void Block_Collision(int a, int b, bool c); //‚Â‚é‚Í‚µ‚ð“Š‚°‚½Žž‚Ì“–‚½‚è”»’è
 	void Draw();
 

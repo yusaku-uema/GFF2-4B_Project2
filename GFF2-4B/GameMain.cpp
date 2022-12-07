@@ -16,13 +16,11 @@ void GameMain::Update()
 	Key();
 
 	Player_Sousa(); //自機の操作
-	Draw_Item();
+	Item();
 	Draw();
 	Ui();
 	Time();
 	Clear();
-
-
 }
 
 
@@ -31,7 +29,6 @@ void GameMain::Update()
 ************************************************/
 void GameMain::GameMain_Init()
 {
-	g_player_move_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
@@ -51,7 +48,7 @@ void GameMain::GameMain_Init()
 	g_break_block_count = 0;
 	g_bom_count = 0;
 	g_chara_life = 3;
-
+	g_hammer_flg = FALSE;
 
 	//ファイル
 	FILE* fp = NULL;
@@ -270,11 +267,11 @@ void GameMain::Ui()
 	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
-	DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
-	DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
-	DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
+	//DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
+	//DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
+	//DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
+	//DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
+	//DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 
 
 	for (int i = 0; i < 3; i++)
@@ -292,7 +289,7 @@ void GameMain::Ui()
 	}
 }
 
-void  GameMain::Draw_Item()
+void  GameMain::Item()
 {
 	if (g_player_x >= 600)g_scroll_x = g_player_x - 600;
 	else g_scroll_x = 0;
@@ -385,6 +382,7 @@ void GameMain::Hammer()
 {
 	if (g_hammer_flg == TRUE)
 	{
+		//つるはしの周りを壊す
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
 		Block_Collision(g_hammer_y, g_hammer_x + 7, TRUE);
@@ -394,7 +392,7 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
-		g_hammer_y -= (g_hammer_orbit_y / 3);
+		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
 		g_hammer_x -= (g_hammer_orbit_x / 3);
 		g_hammer_orbit_y -= 1;
 
@@ -432,6 +430,12 @@ void GameMain::Block_Collision(int a, int b, bool c)
 					}
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
+			}
+			else if(MAP_DATA[a / 30][b / 30] >= 5)
+			{
+				//if (g_hammer_y < 0)
+				//else g_hammer_y = 0, g_hammer_x = 0;
+				g_hammer_flg = FALSE;
 			}
 			else if (MAP_DATA[a / 30][b / 30] <= 0)
 			{
@@ -547,7 +551,6 @@ void  GameMain::Walk()
 			g_move_speed_y = 50, g_player_flg = JUMP; //Bキーが押されたとき、足元が空白じゃなく、頭上が空白なら状態をJUMPにする
 		}
 	}
-
 	//DrawFormatString(100, 100, 0xffffff, "walk");
 }
 
