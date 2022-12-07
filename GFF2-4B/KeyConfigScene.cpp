@@ -29,9 +29,6 @@ static const char* g_KeyConfigMenuTable[KEYCONFIG_INPUT_NUM] =
 
 KeyConfigScene::KeyConfigScene() {
 
-    // キーコンフィグ処理の初期化を行う
-   keyconfig.Initialize();
-
    // キーコンフィグファイルを読み込む
    if (keyconfig.Load(KEYCONFIG_FILE_NAME) == FALSE)
    {
@@ -60,15 +57,15 @@ void  KeyConfigScene::Update(){
         }
         else 
         {
-            //// キーやパッドの押下状態をチェックして、押下されていたらキーコンフィグ設定に反映させる
-            //if (keyconfig.UpdateInputTypeInfo(TargetIndex))
-            //{
-            //    // 何かボタンが押されたら次の項目に移動する
-            //    TargetIndex++;
+            // キーやパッドの押下状態をチェックして、押下されていたらキーコンフィグ設定に反映させる
+            if (keyconfig.UpdateInputTypeInfo(TargetIndex))
+            {
+                // 何かボタンが押されたら次の項目に移動する
+                TargetIndex++;
 
-            //    // 「何か入力があったら何もしない」フラグを立てる
-            //    InputWait = TRUE;
-            //}
+                // 「何か入力があったら何もしない」フラグを立てる
+                InputWait = TRUE;
+            }
         }
 
         // 項目の数だけ繰り返し
