@@ -32,6 +32,7 @@ void GameMain::Update()
 void GameMain::GameMain_Init()
 {
 	g_player_move_flg = FALSE;
+	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
 	g_scroll_x = 0;
@@ -453,8 +454,9 @@ void GameMain::Player_Sousa()
 		{
 			if (g_player_x >= 2490)
 			{
-				g_player_x = 2230, g_player_y = 587;
+				g_titen_flg = TRUE;
 			}
+			if(g_titen_flg = TRUE)g_player_x = 2230, g_player_y = 587;
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
