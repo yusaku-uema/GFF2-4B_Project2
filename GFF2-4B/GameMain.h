@@ -11,6 +11,7 @@ private:
 	int TimeLimit;
 	int fps_cunt;
 	int BreakBGM;
+	bool g_player_move_flg;
 
 	int AX, AY; //ƒL[‚Ì’l
 	int BX, BY;
