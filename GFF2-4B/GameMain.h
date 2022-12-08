@@ -8,6 +8,8 @@ class GameMain
 private:
 	KeyConfig keyconfig;
 
+
+	bool g_player_move_flg;
 	int TimeLimit;
 	int fps_cunt;
 	int BreakBGM;
