@@ -7,6 +7,7 @@
 
 
 
+
 /***********************************************
 *  ゲーム処理
 ************************************************/
@@ -14,6 +15,9 @@ void GameMain::Update()
 {
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
+
+
+
 
 	Player_Sousa(); //自機の操作
 	Item();
@@ -29,6 +33,8 @@ void GameMain::Update()
 ************************************************/
 void GameMain::GameMain_Init()
 {
+	g_hit_hammer_flg = FALSE;
+	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
@@ -203,7 +209,7 @@ void GameMain::Draw()
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
-	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.8, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.5, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
 	//Stage(); //ステージ描画
@@ -214,8 +220,7 @@ void GameMain::Draw()
 			if (MAP_DATA[i][j] > 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
-				//
-				DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
+				//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
 		}
 	}
@@ -394,12 +399,18 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
+		g_old_hammer_x = g_hammer_x;
+		g_old_hammer_y = g_hammer_y;
+
 		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
 		g_hammer_x -= (g_hammer_orbit_x / 3);
 		g_hammer_orbit_y -= 1;
 
-		g_hammer_angle += 10;
+		if (g_hit_hammer_flg == FALSE)g_hammer_angle -= (10 * g_hammer_angle_direction);
+		else g_hammer_angle += (5 * g_hammer_angle_direction);
 		if (g_hammer_angle > 360)g_hammer_angle = 0;
+		if (g_hammer_angle < 0)g_hammer_angle = 360;
+
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 	}
 	else Block_Collision(g_cursory, g_cursorx, FALSE);
@@ -433,7 +444,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			else if(MAP_DATA[a / 30][b / 30] <= 0 || MAP_DATA[a / 30][b / 30] == -1)
+			else if(MAP_DATA[a / 30][b / 30] == 0 || MAP_DATA[a / 30][b / 30] == -1)
 			{
 				for (int i = 0; i < 10; i++)
 				{
@@ -442,10 +453,14 @@ void GameMain::Block_Collision(int a, int b, bool c)
 			}
 			else
 			{
-				if (g_hammer_orbit_y > 0)g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
-				//else if(g_hammer_orbit_y < 10) g_hammer_flg = FALSE;
-				//else g_hammer_y = 0, g_hammer_x = 0;
-				//g_hammer_flg = FALSE;
+				if (g_hit_hammer_flg == FALSE)
+				{
+					g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
+					g_hammer_x = g_old_hammer_x;
+					g_hammer_y = g_old_hammer_y;
+					g_hit_hammer_flg = TRUE;
+				}
+				else g_hammer_flg = FALSE;	
 			}
 		}
 	}
@@ -458,7 +473,12 @@ void GameMain::Player_Sousa()
 	{
 		if (--g_chara_life > 0)
 		{
-			g_player_x = 30, g_player_y = 550;
+			if (g_player_x >= 2490)
+			{
+				g_titen_flg = TRUE;
+			}
+			if(g_titen_flg == TRUE)g_player_x = 2230, g_player_y = 587;
+			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
 		else SetScore(g_score4), SetGameState(4);
@@ -495,7 +515,10 @@ void GameMain::Player_Sousa()
 	{
 		if ((g_lkey_flg) && (g_hammer_flg == FALSE))
 		{
+			if (BX <= 0)g_hammer_angle_direction = LEFT;
+			else g_hammer_angle_direction = RIGHT;
 			g_hammer_flg = TRUE;
+			g_hit_hammer_flg = FALSE;
 			g_hammer_x = g_player_x, g_hammer_y = g_player_y;
 			g_hammer_orbit_x = -(BX / 20), g_hammer_orbit_y = -(BY / 18);
 			for (int i = 0; i < 10; i++)

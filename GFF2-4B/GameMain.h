@@ -1,10 +1,12 @@
 #pragma once
 #include"main.h"
+#include"KeyConfig.h"
 
 
 class GameMain
 {
 private:
+	KeyConfig keyconfig;
 
 	int TimeLimit;
 	int fps_cunt;
@@ -16,13 +18,13 @@ private:
 	int g_old_AX_flg, g_old_AY_flg;
 
 	int g_player_x, g_player_y; //プレイヤーの座標
-
+	int g_hammer_angle_direction;
 	int g_hammer_x, g_hammer_y;
+	int g_old_hammer_x, g_old_hammer_y;
 	int g_hammer_orbit_x, g_hammer_orbit_y;
-
-	bool g_hammer_flg = FALSE;//ハンマーが使われているかどうか
-	bool g_item_flg = FALSE;
-
+	bool g_hit_hammer_flg;
+	bool g_hammer_flg;//ハンマーが使われているかどうか
+	
 	int g_player_image_type;
 	int g_image_time;
 
@@ -65,7 +67,7 @@ private:
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
-
+	bool g_titen_flg;
 	int g_move_speed_y;
 
 	int g_player_flg;
