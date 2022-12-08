@@ -9,6 +9,7 @@
 #include"GameReward.h"
 #include"Ranking.h"
 #include"KeyConfigScene.h"
+#include"Help.h"
 
 
 
@@ -60,6 +61,8 @@ GameClear gameclear;
 RANKING ranking;
 KeyConfigScene keyconfigscene;
 KeyConfig keyconfig;
+Help help;
+
 
 /***********************************************
  * プログラムの開始
@@ -116,7 +119,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
-			//DrawRanking();
+			help.Draw();
 		case 8:
 			// Pause();
 			break;
