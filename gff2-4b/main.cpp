@@ -177,6 +177,7 @@ int LoadImages()
 	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
+	int a = 0;
 }
 
 /***********************************************
