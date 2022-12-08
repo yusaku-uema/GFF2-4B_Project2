@@ -7,7 +7,7 @@ class GameMain
 {
 private:
 	KeyConfig keyconfig;
-
+	
 	int TimeLimit;
 	int fps_cunt;
 	int BreakBGM;
@@ -73,6 +73,10 @@ private:
 	int g_player_flg;
 	bool g_player_move_flg;
 
+	int Timer;
+	int AnimKira[3];
+	int num;
+	bool Animflg;
 
 	enum PLAYER_STATE
 	{
@@ -143,6 +147,8 @@ public:
 	void Time(); //制限時間
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
+
+	void ItemAnim(); //アイテムのエフェクト処理
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];

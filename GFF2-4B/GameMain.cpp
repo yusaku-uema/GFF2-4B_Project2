@@ -23,7 +23,7 @@ void GameMain::Update()
 	Ui();
 	Time();
 	Clear();
-
+	ItemAnim();
 
 }
 
@@ -210,7 +210,10 @@ void GameMain::Draw()
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (g_item[i].flg == TRUE)DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
+		if (g_item[i].flg == TRUE) {
+			DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
+			DrawGraph(g_item[i].x - g_scroll_x + 4, g_item[i].y + 4, GetArrayImages(KiraKira_Images, num), TRUE);
+		}
 		if (g_bom[i].flg == NOMAL)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 3), TRUE);
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
@@ -616,6 +619,19 @@ void GameMain::Fall()
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	/*DrawFormatString(100, 100, 0xffffff, "fall");*/
+}
+
+void GameMain::ItemAnim() {
+	Timer++;
+	if (Timer > 0 && Timer < 20) {
+		num = 0;
+	}
+	if (Timer > 20 && Timer < 40) {
+		num = 1;
+	}
+	if (Timer == 40) {
+		Timer = 0;
+	}
 }
 
 int GameMain::Get_MapData(int y, int x)
