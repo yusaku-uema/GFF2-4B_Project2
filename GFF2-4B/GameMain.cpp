@@ -203,7 +203,7 @@ void GameMain::Draw()
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
-	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.8, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.6, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
 	//Stage(); //ステージ描画
@@ -214,8 +214,7 @@ void GameMain::Draw()
 			if (MAP_DATA[i][j] > 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
-				//
-				DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
+				//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
 		}
 	}
@@ -433,7 +432,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			else if(MAP_DATA[a / 30][b / 30] <= 0 || MAP_DATA[a / 30][b / 30] == -1)
+			else if(MAP_DATA[a / 30][b / 30] == 0 || MAP_DATA[a / 30][b / 30] == -1)
 			{
 				for (int i = 0; i < 10; i++)
 				{
