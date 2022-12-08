@@ -54,7 +54,6 @@ void Title::Draw()
 	DrawString(500, 460, "Credit@", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30); 
-	DrawString(100, 650, "ƒwƒ‹ƒv•\¦ˆ—‚È‚µ", GetColor(255, 0, 0));
 }
 
 
