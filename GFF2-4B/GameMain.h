@@ -8,6 +8,9 @@ class GameMain
 private:
 	KeyConfig keyconfig;
 
+	int g_NumberImage[10]; //”š‰æ‘œ
+	int TmpScore; //ƒXƒRƒA•ÛŒì
+
 	int TimeLimit;
 	int fps_cunt;
 	int BreakBGM;

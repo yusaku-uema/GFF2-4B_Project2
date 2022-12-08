@@ -35,6 +35,7 @@ void GameMain::GameMain_Init()
 	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//”j‰ó‰¹BGM
+	LoadDivGraph("images/koaqq.png", 10, 10, 1, 19, 30, g_NumberImage);
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -270,11 +271,13 @@ void GameMain::Ui()
 		DrawGraph(1000 + (60 * (i + 1)), 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
 
+	TmpScore = TimeLimit;
 	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
+	DrawGraph(200, 665, g_NumberImage[TmpScore % 10], FALSE);
+	DrawGraph(15, 665, g_NumberImage[TmpScore%10], FALSE);
 
 	float size[3];
-	//g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
 	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
