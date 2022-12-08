@@ -9,6 +9,7 @@
 #include"GameReward.h"
 #include"Ranking.h"
 #include"KeyConfigScene.h"
+#include"Help.h"
 
 
 
@@ -31,13 +32,14 @@ int g_GameClear_images; //ゲームクリア背景
 int g_white_image; //白い画像
 int g_Box_images;//宝箱画像
 int g_Box2_images;//宝箱画像
+int g_HelpImages; //ヘルプ画像
 
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
 int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
-int g_kirakira_image[3]; //アイテムを光らせる為の画像
+int g_KiraKira_image[2]; //アイテムを光らせる用
 int g_life;
 
 /***********************************************
@@ -60,6 +62,8 @@ GameClear gameclear;
 RANKING ranking;
 KeyConfigScene keyconfigscene;
 KeyConfig keyconfig;
+Help help;
+
 
 /***********************************************
  * プログラムの開始
@@ -116,7 +120,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
-			//DrawRanking();
+			help.Draw();
 		case 8:
 			// Pause();
 			break;
@@ -157,7 +161,7 @@ void SetScore(int a)
 ************************************************/
 int LoadImages()
 {
-	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
+	if ((g_hammer_image = LoadGraph("images/team/hammer1.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
 	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
@@ -167,12 +171,13 @@ int LoadImages()
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
+	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
 
-	if (LoadDivGraph("images/team/block.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
+	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
-	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_kirakira_image) == -1)return-1;
+	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_KiraKira_image) == -1) return -1;
 }
 
 /***********************************************
@@ -249,10 +254,13 @@ int GetArrayImages(int type, int num)
 		}
 		else { return -1; }
 		break;
+	case Help_Images:
+		return g_HelpImages;
+		break;
 
 	case KiraKira_Images:
-		if (0 <= num && num < 3) {
-			return g_kirakira_image[num];
+		if (0 <= num && num < 2) {
+			return g_KiraKira_image[num];
 		}
 		else { return -1; }
 		break;
