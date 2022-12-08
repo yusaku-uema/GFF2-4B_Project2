@@ -16,15 +16,14 @@ void GameMain::Update()
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 
-
-
-
 	Player_Sousa(); //自機の操作
 	Item();
 	Draw();
 	Ui();
 	Time();
 	Clear();
+	ItemAnim();
+
 }
 
 
@@ -37,6 +36,9 @@ void GameMain::GameMain_Init()
 	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
+	TimeLimitImages = LoadGraph("images/koaq.png");
+	ScoreImages = LoadGraph("images/koa.png");
+	LoadDivGraph("images/123.png", 10, 10, 1, 20, 30, g_NumberImage);
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -147,7 +149,7 @@ void GameMain::Time()
 	}
 	if (TimeLimit <= 0)
 	{
-		SetScore(g_score4);
+		SetScore(g_score + (TimeLimit * 100));
 		SetGameState(4);
 	}
 }
@@ -156,7 +158,7 @@ void GameMain::Clear()
 {
 	if (g_player_x >= 4477 && g_player_y >= 586)
 	{
-		SetScore(g_score4);
+		SetScore(g_score+(TimeLimit * 100));
 		SetGameState(3);
 	}
 }
@@ -204,8 +206,14 @@ void GameMain::Draw()
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (g_item[i].flg == TRUE)DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
-		if (g_bom[i].flg == NOMAL)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 3), TRUE);
+		if (g_item[i].flg == TRUE) {
+			DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
+			DrawGraph(g_item[i].x - g_scroll_x + 4, g_item[i].y + 4, GetArrayImages(KiraKira_Images, num), TRUE);
+		}
+		if (g_bom[i].flg == NOMAL) {
+			DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 3), TRUE);
+			DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(KiraKira_Images, num), TRUE);
+		}
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
@@ -256,30 +264,35 @@ void GameMain::Ui()
 	DrawBox(0, 630, 1280, 720, 0x000000, TRUE); //UIの枠
 	DrawBox(0, 630, 1280, 720, 0xFFFFFF, FALSE);//UIの枠
 	DrawBox(0, 0, 1280, 630, 0xFFFFFF, FALSE);//UIの枠
-
-
-	DrawFormatString(15, 634, 0xffffff, "Score");
-	DrawFormatString(200, 634, 0xffffff, "TimeLimit");
+	DrawGraph(5, 634, ScoreImages, FALSE);
+	DrawGraph(250, 634, TimeLimitImages, FALSE); //残り時間の文字描画
 
 	for (int i = 0; i < g_chara_life; i++)
 	{
 		DrawGraph(1000 + (60 * (i + 1)), 630, GetArrayImages(Life_Images, 0), TRUE);
 	}
 
-	DrawFormatString(200, 665, 0xffffff, "%d", TimeLimit);
-	DrawFormatString(15, 665, 0xffffff, "%06d", g_score);
+	
+
+	TmpTime = TimeLimit;
+	TmpScore = g_score;
+	int PosX = 390; //残り時間描画処理
+	int SoreX = 160; //スコア描画位置
+	do {
+		DrawGraph(PosX, 665, g_NumberImage[TmpTime % 10], TRUE);//時間表示
+		TmpTime /= 10;
+		PosX -= 30;
+	} while (TmpTime > 0);
+
+
+	do {
+		DrawGraph(SoreX, 665, g_NumberImage[TmpScore % 10], FALSE); //スコア表示
+		TmpScore /= 10;
+		SoreX -= 30;
+	} while (TmpScore > 0);
 
 	float size[3];
-	//g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
-	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	//DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	//DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
-	//DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
-	//DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
-	//DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
-
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000); //スコア計算
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -481,7 +494,7 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(g_score4), SetGameState(4);
+		else SetScore(g_score), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
 	if (AX < 0)g_direction = LEFT;
@@ -631,6 +644,19 @@ void GameMain::Fall()
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	/*DrawFormatString(100, 100, 0xffffff, "fall");*/
+}
+
+void GameMain::ItemAnim() {
+	Timer++;
+	if (Timer > 0 && Timer < 20) {
+		num = 0;
+	}
+	if (Timer > 20 && Timer < 40) {
+		num = 1;
+	}
+	if (Timer == 40) {
+		Timer = 0;
+	}
 }
 
 int GameMain::Get_MapData(int y, int x)

@@ -8,9 +8,12 @@ class GameMain
 private:
 	KeyConfig keyconfig;
 
-
-	bool g_player_move_flg;
-	int TimeLimit;
+	int g_NumberImage[10]; //数字画像
+	int TmpScore; //スコア保護
+	int TimeLimitImages; //文字
+	int ScoreImages; //スコア文字
+	int TimeLimit; //残り時間
+	int TmpTime; //残り時間保護
 	int fps_cunt;
 	int BreakBGM;
 
@@ -74,6 +77,10 @@ private:
 
 	int g_player_flg;
 
+	int Timer;
+	int AnimKira[3];
+	int num;
+	bool Animflg;
 
 	enum PLAYER_STATE
 	{
@@ -142,6 +149,8 @@ public:
 	void Time(); //制限時間
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
+
+	void ItemAnim(); //アイテムのエフェクト処理
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
