@@ -91,7 +91,8 @@ KeyConfig::KeyConfig() {
 // キーコンフィグの初期化を行う
 void KeyConfig::Initialize(void)
 {
-    // パッドの初期状態を DirectInput から取得する
+    
+
     
      GetJoypadDirectInputState(g_PadIDTable[0], &g_KeyConfSys.NeutralDirectInputState[0]);
 }
