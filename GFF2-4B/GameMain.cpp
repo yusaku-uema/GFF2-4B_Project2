@@ -15,13 +15,11 @@ void GameMain::Update()
 	Key();
 
 	Player_Sousa(); //自機の操作
-	Draw_Item();
+	Item();
 	Draw();
 	Ui();
 	Time();
 	Clear();
-
-
 }
 
 
@@ -51,7 +49,7 @@ void GameMain::GameMain_Init()
 	g_break_block_count = 0;
 	g_bom_count = 0;
 	g_chara_life = 3;
-
+	g_hammer_flg = FALSE;
 
 	//ファイル
 	FILE* fp = NULL;
@@ -164,12 +162,6 @@ void GameMain::Clear()
 
 void GameMain::Key()
 {
-	// キーコンフィグの入力処理を行う
-	keyconfig.InputProcess();
-
-	DINPUT_JOYSTATE Key;
-	int Input = keyconfig.GetInput(); //入力状態を取得
-
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
 	g_old_AX_flg = AX;
@@ -184,23 +176,23 @@ void GameMain::Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
-	if ((Input & 1 << 8))g_bkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
-	if ((Input & 1 << 9))g_akey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
-	if ((Input & 1 << 10))g_xkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
-	if ((Input & 1 << 0))g_leftkey_flg = TRUE;
-	else g_leftkey_flg = FALSE;
-	if ((Input & 1 << 1))g_rightkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT))g_rightkey_flg = TRUE;
 	else g_rightkey_flg = FALSE;
-	/*if ((Input & 1 << 2))g_upkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT))g_leftkey_flg = TRUE;
+	else g_leftkey_flg = FALSE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP))g_upkey_flg = TRUE;
 	else g_upkey_flg = FALSE;
-	if ((Input & 1 << 3))g_downkey_flg = TRUE;
-	else g_downkey_flg = FALSE;*/
-	if ((Input & 1 << 3))g_lkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN))g_downkey_flg = TRUE;
+	else g_downkey_flg = FALSE;
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)g_lkey_flg = TRUE;
 	else g_lkey_flg = FALSE;
-	if ((Input & 1 << 2))g_rkey_flg = TRUE;
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)g_rkey_flg = TRUE;
 	else g_rkey_flg = FALSE;
 
 }
@@ -216,7 +208,7 @@ void GameMain::Draw()
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
-	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.8, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.6, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
 	//Stage(); //ステージ描画
@@ -227,6 +219,7 @@ void GameMain::Draw()
 			if (MAP_DATA[i][j] > 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
+				//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
 		}
 	}
@@ -280,11 +273,11 @@ void GameMain::Ui()
 	//g_score2 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score3 = (g_hukuro_count * 300) + (g_kagi_count * 1000) + ((TimeLimit / 10) * 100);
 	//g_score4 = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000);
-	DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
-	DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
-	DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
-	DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
-	DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
+	//DrawFormatString(100, 0, 0xffffff, "%d = block_count, %d = break block", g_block_count, g_break_block_count);
+	//DrawFormatString(100, 60, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d        =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score);
+	//DrawFormatString(100, 90, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d+残り時間10秒100点 = %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score2);
+	//DrawFormatString(100, 120, 0xffffff, "袋300点×%d+鍵1000点×%d+残り時間10秒100点           =            %d", g_hukuro_count, g_kagi_count, g_score3);
+	//DrawFormatString(100, 150, 0xffffff, "壊したブロック5点×%d+袋300点×%d+鍵1000点×%d       =            %d", g_break_block_count, g_hukuro_count, g_kagi_count, g_score4);
 
 
 	for (int i = 0; i < 3; i++)
@@ -302,7 +295,7 @@ void GameMain::Ui()
 	}
 }
 
-void  GameMain::Draw_Item()
+void  GameMain::Item()
 {
 	if (g_player_x >= 600)g_scroll_x = g_player_x - 600;
 	else g_scroll_x = 0;
@@ -395,6 +388,7 @@ void GameMain::Hammer()
 {
 	if (g_hammer_flg == TRUE)
 	{
+		//つるはしの周りを壊す
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
 		Block_Collision(g_hammer_y, g_hammer_x + 7, TRUE);
@@ -404,7 +398,7 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
-		g_hammer_y -= (g_hammer_orbit_y / 3);
+		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
 		g_hammer_x -= (g_hammer_orbit_x / 3);
 		g_hammer_orbit_y -= 1;
 
@@ -443,12 +437,19 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;
 			}
-			else if (MAP_DATA[a / 30][b / 30] <= 0)
+			else if(MAP_DATA[a / 30][b / 30] == 0 || MAP_DATA[a / 30][b / 30] == -1)
 			{
 				for (int i = 0; i < 10; i++)
 				{
 					if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL) && (g_bom[i].hit_flg == TRUE))g_bom[i].flg = ANGRY;
 				}
+			}
+			else
+			{
+				if (g_hammer_orbit_y > 0)g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
+				//else if(g_hammer_orbit_y < 10) g_hammer_flg = FALSE;
+				//else g_hammer_y = 0, g_hammer_x = 0;
+				//g_hammer_flg = FALSE;
 			}
 		}
 	}
@@ -562,7 +563,6 @@ void  GameMain::Walk()
 			g_move_speed_y = 50, g_player_flg = JUMP; //Bキーが押されたとき、足元が空白じゃなく、頭上が空白なら状態をJUMPにする
 		}
 	}
-
 	//DrawFormatString(100, 100, 0xffffff, "walk");
 }
 
