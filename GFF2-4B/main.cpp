@@ -160,7 +160,7 @@ void SetScore(int a)
 ************************************************/
 int LoadImages()
 {
-	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
+	if ((g_hammer_image = LoadGraph("images/team/hammer1.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
 	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
@@ -172,10 +172,10 @@ int LoadImages()
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
 
-	if (LoadDivGraph("images/team/block.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
+	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 }
 
 /***********************************************
