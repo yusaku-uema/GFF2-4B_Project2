@@ -1,10 +1,12 @@
 #pragma once
 #include"main.h"
+#include"KeyConfig.h"
 
 
 class GameMain
 {
 private:
+	KeyConfig keyconfig;
 
 	int TimeLimit;
 	int fps_cunt;
@@ -65,7 +67,7 @@ private:
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
-
+	bool g_titen_flg;
 	int g_move_speed_y;
 
 	int g_player_flg;

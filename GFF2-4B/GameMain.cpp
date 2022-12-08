@@ -32,6 +32,7 @@ void GameMain::Update()
 void GameMain::GameMain_Init()
 {
 	g_player_move_flg = FALSE;
+	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	g_scroll_x = 0;
@@ -160,6 +161,12 @@ void GameMain::Clear()
 
 void GameMain::Key()
 {
+	// キーコンフィグの入力処理を行う
+	keyconfig.InputProcess();
+
+	DINPUT_JOYSTATE Key;
+	int Input = keyconfig.GetInput(); //入力状態を取得
+
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
 	g_old_AX_flg = AX;
@@ -174,23 +181,23 @@ void GameMain::Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
+	if ((Input & 1 << 8))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
+	if ((Input & 1 << 9))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
+	if ((Input & 1 << 10))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT))g_rightkey_flg = TRUE;
-	else g_rightkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT))g_leftkey_flg = TRUE;
+	if ((Input & 1 << 0))g_leftkey_flg = TRUE;
 	else g_leftkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP))g_upkey_flg = TRUE;
+	if ((Input & 1 << 1))g_rightkey_flg = TRUE;
+	else g_rightkey_flg = FALSE;
+	/*if ((Input & 1 << 2))g_upkey_flg = TRUE;
 	else g_upkey_flg = FALSE;
-	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN))g_downkey_flg = TRUE;
-	else g_downkey_flg = FALSE;
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)g_lkey_flg = TRUE;
+	if ((Input & 1 << 3))g_downkey_flg = TRUE;
+	else g_downkey_flg = FALSE;*/
+	if ((Input & 1 << 3))g_lkey_flg = TRUE;
 	else g_lkey_flg = FALSE;
-	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)g_rkey_flg = TRUE;
+	if ((Input & 1 << 2))g_rkey_flg = TRUE;
 	else g_rkey_flg = FALSE;
 
 }
@@ -451,7 +458,12 @@ void GameMain::Player_Sousa()
 	{
 		if (--g_chara_life > 0)
 		{
-			g_player_x = 30, g_player_y = 550;
+			if (g_player_x >= 2490)
+			{
+				g_titen_flg = TRUE;
+			}
+			if(g_titen_flg == TRUE)g_player_x = 2230, g_player_y = 587;
+			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
 		else SetScore(g_score4), SetGameState(4);
