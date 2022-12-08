@@ -21,13 +21,13 @@ private:
 	int g_old_AX_flg, g_old_AY_flg;
 
 	int g_player_x, g_player_y; //プレイヤーの座標
-
+	int g_hammer_angle_direction;
 	int g_hammer_x, g_hammer_y;
+	int g_old_hammer_x, g_old_hammer_y;
 	int g_hammer_orbit_x, g_hammer_orbit_y;
-
-	bool g_hammer_flg = FALSE;//ハンマーが使われているかどうか
-	bool g_item_flg = FALSE;
-
+	bool g_hit_hammer_flg;
+	bool g_hammer_flg;//ハンマーが使われているかどうか
+	
 	int g_player_image_type;
 	int g_image_time;
 
@@ -74,7 +74,6 @@ private:
 	int g_move_speed_y;
 
 	int g_player_flg;
-	bool g_player_move_flg;
 
 
 	enum PLAYER_STATE
@@ -129,11 +128,9 @@ public:
 	void Jump();
 	void Walk();
 	void Fall();
-	void Draw_Item();
-	void Bom();
+	void Item();
 	int HitBoxPlayer(int px, int py, int ex, int ey, int psize,int esize, bool a);
 	void Ui();
-	void Item();
 	void Block_Collision(int a, int b, bool c); //つるはしを投げた時の当たり判定
 	void Draw();
 

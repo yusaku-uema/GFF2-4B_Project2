@@ -6,7 +6,6 @@
 #include"Player.h"
 
 
-#define KEYCONFIG_FILE_NAME     "dat/KeyConfig.txt"     // キーコンフィグデータのファイル名
 
 
 /***********************************************
@@ -16,6 +15,9 @@ void GameMain::Update()
 {
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
+
+
+
 
 	Player_Sousa(); //自機の操作
 	Item();
@@ -31,7 +33,7 @@ void GameMain::Update()
 ************************************************/
 void GameMain::GameMain_Init()
 {
-	g_player_move_flg = FALSE;
+	g_hit_hammer_flg = FALSE;
 	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
@@ -162,12 +164,6 @@ void GameMain::Clear()
 
 void GameMain::Key()
 {
-	// キーコンフィグの入力処理を行う
-	keyconfig.InputProcess();
-
-	DINPUT_JOYSTATE Key;
-	int Input = keyconfig.GetInput(); //入力状態を取得
-
 	g_old_BX_flg = BX;
 	g_old_BY_flg = BY;
 	g_old_AX_flg = AX;
@@ -182,23 +178,23 @@ void GameMain::Key()
 	g_old_rightkey_flg = g_rightkey_flg;
 	g_old_leftkey_flg = g_leftkey_flg;
 
-	if ((Input & 1 << 8))g_bkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B))g_bkey_flg = TRUE;
 	else g_bkey_flg = FALSE;
-	if (( Input & 1 << 9))g_akey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A))g_akey_flg = TRUE;
 	else g_akey_flg = FALSE;
-	if ((Input & 1 << 10))g_xkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_C))g_xkey_flg = TRUE;
 	else g_xkey_flg = FALSE;
-	if ((Input & 1 << 0))g_leftkey_flg = TRUE;
-	else g_leftkey_flg = FALSE;
-	if ((Input & 1 << 1))g_rightkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT))g_rightkey_flg = TRUE;
 	else g_rightkey_flg = FALSE;
-	/*if ((Input & 1 << 2))g_upkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT))g_leftkey_flg = TRUE;
+	else g_leftkey_flg = FALSE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP))g_upkey_flg = TRUE;
 	else g_upkey_flg = FALSE;
-	if ((Input & 1 << 3))g_downkey_flg = TRUE;
-	else g_downkey_flg = FALSE;*/
-	if ((Input & 1 << 3))g_lkey_flg = TRUE;
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN))g_downkey_flg = TRUE;
+	else g_downkey_flg = FALSE;
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_5)g_lkey_flg = TRUE;
 	else g_lkey_flg = FALSE;
-	if ((Input & 1 << 2))g_rkey_flg = TRUE;
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_6)g_rkey_flg = TRUE;
 	else g_rkey_flg = FALSE;
 
 }
@@ -214,7 +210,7 @@ void GameMain::Draw()
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
-	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.6, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.5, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
 	//Stage(); //ステージ描画
@@ -406,12 +402,18 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
+		g_old_hammer_x = g_hammer_x;
+		g_old_hammer_y = g_hammer_y;
+
 		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
 		g_hammer_x -= (g_hammer_orbit_x / 3);
 		g_hammer_orbit_y -= 1;
 
-		g_hammer_angle += 10;
+		if (g_hit_hammer_flg == FALSE)g_hammer_angle -= (10 * g_hammer_angle_direction);
+		else g_hammer_angle += (5 * g_hammer_angle_direction);
 		if (g_hammer_angle > 360)g_hammer_angle = 0;
+		if (g_hammer_angle < 0)g_hammer_angle = 360;
+
 		if (g_hammer_y > 800)g_hammer_flg = FALSE;
 	}
 	else Block_Collision(g_cursory, g_cursorx, FALSE);
@@ -454,10 +456,14 @@ void GameMain::Block_Collision(int a, int b, bool c)
 			}
 			else
 			{
-				if (g_hammer_orbit_y > 0)g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
-				//else if(g_hammer_orbit_y < 10) g_hammer_flg = FALSE;
-				//else g_hammer_y = 0, g_hammer_x = 0;
-				//g_hammer_flg = FALSE;
+				if (g_hit_hammer_flg == FALSE)
+				{
+					g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;
+					g_hammer_x = g_old_hammer_x;
+					g_hammer_y = g_old_hammer_y;
+					g_hit_hammer_flg = TRUE;
+				}
+				else g_hammer_flg = FALSE;	
 			}
 		}
 	}
@@ -512,7 +518,10 @@ void GameMain::Player_Sousa()
 	{
 		if ((g_lkey_flg) && (g_hammer_flg == FALSE))
 		{
+			if (BX <= 0)g_hammer_angle_direction = LEFT;
+			else g_hammer_angle_direction = RIGHT;
 			g_hammer_flg = TRUE;
+			g_hit_hammer_flg = FALSE;
 			g_hammer_x = g_player_x, g_hammer_y = g_player_y;
 			g_hammer_orbit_x = -(BX / 20), g_hammer_orbit_y = -(BY / 18);
 			for (int i = 0; i < 10; i++)
