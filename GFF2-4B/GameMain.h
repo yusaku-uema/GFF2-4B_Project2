@@ -10,10 +10,16 @@ private:
 
 	int g_NumberImage[10]; //数字画像
 	int TmpScore; //スコア保護
-
-	int TimeLimit;
+	int TimeLimitImages; //文字
+	int ScoreImages; //スコア文字
+	int TimeLimit; //残り時間
+	int TmpTime; //残り時間保護
 	int fps_cunt;
 	int BreakBGM;
+	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
+	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
+	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
+	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 
 	int AX, AY; //キーの値
 	int BX, BY;
@@ -144,9 +150,6 @@ public:
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
 
-	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
-	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
-	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
-	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
+	
 
 };
