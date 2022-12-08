@@ -16,10 +16,6 @@ private:
 	int TmpTime; //残り時間保護
 	int fps_cunt;
 	int BreakBGM;
-	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
-	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
-	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
-	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 
 	int AX, AY; //キーの値
 	int BX, BY;
@@ -81,6 +77,10 @@ private:
 
 	int g_player_flg;
 
+	int Timer;
+	int AnimKira[3];
+	int num;
+	bool Animflg;
 
 	enum PLAYER_STATE
 	{
@@ -150,6 +150,11 @@ public:
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
 
-	
+	void ItemAnim(); //アイテムのエフェクト処理
+
+	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
+	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
+	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
+	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 
 };
