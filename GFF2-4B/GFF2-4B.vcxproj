@@ -159,6 +159,8 @@
     <ClCompile Include="GameReward.cpp" />
     <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="Help.cpp" />
+    <ClCompile Include="KeyConfig.cpp" />
+    <ClCompile Include="KeyConfigScene.cpp" />
     <ClCompile Include="kamizato.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -176,6 +178,8 @@
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="GameReward.h" />
     <ClInclude Include="Help.h" />
+    <ClInclude Include="KeyConfig.h" />
+    <ClInclude Include="KeyConfigScene.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />

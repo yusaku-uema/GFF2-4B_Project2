@@ -8,6 +8,8 @@
 #include"Credit.h"
 #include"GameReward.h"
 #include"Ranking.h"
+#include"KeyConfigScene.h"
+
 
 
 /***********************************************
@@ -55,7 +57,8 @@ GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
 RANKING ranking;
-
+KeyConfigScene keyconfigscene;
+KeyConfig keyconfig;
 
 /***********************************************
  * プログラムの開始
@@ -71,7 +74,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 	if (LoadImages() == -1) return -1; //画像読込み
 	if (LoadSounds() == -1) return -1; //サウンド読込み
-
+	 // キーコンフィグ処理の初期化を行う
+	keyconfig.Initialize();
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
 		/*最初からクラス化、シーンマネージャーで書きましょう*/
@@ -111,8 +115,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
+			//DrawRanking();
+		case 8:
 			// Pause();
 			break;
+		case 9:
+			keyconfigscene.Update();
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
