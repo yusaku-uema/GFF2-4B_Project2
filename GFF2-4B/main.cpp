@@ -1,6 +1,6 @@
 #include"DxLib.h"
 #include"main.h"
-#include"fps_fixed.h" //FPS管理
+#include"TimeBaseLoopExecuter.h"//FPS管理
 #include"Title.h" //タイトル
 #include"Help.h"
 #include"GameMain.h" //
@@ -8,20 +8,16 @@
 #include"Gameclear.h"
 #include"Credit.h"
 #include"GameReward.h"
+#include"Ranking.h"
+#include"KeyConfigScene.h"
 
 
-#define MAP_HIGHT 20
-#define MAP_WIDTH 103
-
-#define DRAW_MAP_HIGHT 20
-#define DRAW_MAP_WIDTH 35
-
-#define BLOCK_WIDTH 30
 
 /***********************************************
 *  変数
 ************************************************/
 int g_GameState; //ゲームシーン管理
+int g_Score = 0; //スコア
 bool g_forcedtermination; //強制終了
 
 /***********************************************
@@ -40,7 +36,7 @@ int g_Box2_images;//宝箱画像
 
 int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
-int g_item_image[4]; //アイテム画像
+int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
 int g_life;
 int g_HelpImages; //コントローラー画像
@@ -55,15 +51,17 @@ int g_Title_SE; //タイトルSE
 *  クラス？？
 ************************************************/
 
-Fps fps; //FPS管理
+TimeBaseLoopExecuter timebaseloopexecuter; //fps
 Title title; //タイトル
 GameMain gamemain;
 Credit credit;//クレジット
 GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
+RANKING ranking;
+KeyConfigScene keyconfigscene;
+KeyConfig keyconfig;
 Help help;
-
 
 /***********************************************
  * プログラムの開始
@@ -80,11 +78,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 	if (LoadImages() == -1) return -1; //画像読込み
 	if (LoadSounds() == -1) return -1; //サウンド読込み
-
+	 // キーコンフィグ処理の初期化を行う
+	keyconfig.Initialize();
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
 		/*最初からクラス化、シーンマネージャーで書きましょう*/
 		/*誰が見ても分かるように変数にコメント付けましょう*/
+
 
 	// ゲームループ
 	while (ProcessMessage() == 0 && g_forcedtermination != true && g_GameState != 999) {
@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			g_forcedtermination = true;//強制終了
 		}
 
-		fps.Avg(); //FPS
+		timebaseloopexecuter.TimeAdjustment();// fps管理
 
 		ClearDrawScreen();		// 画面の初期化
 		switch (g_GameState) {
@@ -113,21 +113,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			gameover.Draw(); //ゲームオーバー
 			break;
 		case 5:
-			credit.Draw();
-			//GameMain();
+			credit.Draw(); //クレジット
 			break;
 		case 6:
-			help.Draw();
+			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
+			//DrawRanking();
+		case 8:
 			// Pause();
 			break;
+		case 9:
+			keyconfigscene.Update();
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
 
-
-		fps.Wait(); //FPSに合わせて待機
 	}
 
 	DxLib_End();	// DXライブラリ使用の終了処理
@@ -143,6 +144,16 @@ void  SetGameState(int a)
 	g_GameState = a; //引数で指定した値をg_GameStateに代入
 }
 
+//スコアを読むコム
+int GetScore()
+{
+	return g_Score;
+}
+
+void SetScore(int a)
+{
+	g_Score = a;
+}
 
 /***********************************************
 *  画像読込み
@@ -151,19 +162,18 @@ int LoadImages()
 {
 	if ((g_hammer_image = LoadGraph("images/team/hammer.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
-	if ((g_haikei_image = LoadGraph("images/abc.png")) == -1)return -1;
+	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
 	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
-	if ((g_Title_images = LoadGraph("images/taitle2.png")) == -1)return -1;
-	if ((g_GameOver_images = LoadGraph("images/GameOver7.png")) == -1)return -1;
-	if ((g_GameClear_images = LoadGraph("images/GameClear4.png")) == -1)return -1;
+	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
+	if ((g_GameOver_images = LoadGraph("images/GameOver3.png")) == -1)return -1;
+	if ((g_GameClear_images = LoadGraph("images/GameClear2.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
 
-	if (LoadDivGraph("images/team/BlockII.png", 6, 6, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/Player/human.png", 4, 4, 1, 30, 30, g_player_image) == -1) return -1;
-	if (LoadDivGraph("images/team/item.png", 4, 4, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/block.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
+	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 }
 
@@ -172,7 +182,7 @@ int LoadImages()
 ************************************************/
 int LoadSounds(void)
 {
-	if ((g_Title_SE = LoadSoundMem("BGM/decision.mp3")) == -1)return -1;
+	if ((g_Title_SE = LoadSoundMem("BGM/Title.mp3")) == -1)return -1; //	タイトルSE
 }
 
 
@@ -218,7 +228,7 @@ int GetArrayImages(int type, int num)
 		break;
 
 	case Item_Images: //アイテム画像
-		if (0 <= num && num < 4) {
+		if (0 <= num && num < 5) {
 			return g_item_image[num];
 		}
 		else { return -1; }
@@ -258,4 +268,5 @@ int GetSounds(int type) {
 
 	if (Title_SE == type)return g_Title_SE;
 	return 0;
+
 }

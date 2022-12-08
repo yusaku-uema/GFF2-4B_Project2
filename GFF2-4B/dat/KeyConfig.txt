@@ -1,0 +1,11 @@
+PadNo = 0  DirectInputType = 6  SubInfo0 = 0  SubInfo1 = 27000 
+PadNo = 0  DirectInputType = 6  SubInfo0 = 0  SubInfo1 = 9000 
+PadNo = 0  DirectInputType = 7  SubInfo0 = 5  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 7  SubInfo0 = 4  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 0  SubInfo0 = -1  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 0  SubInfo0 = 1  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 1  SubInfo0 = -1  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 1  SubInfo0 = 1  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 7  SubInfo0 = 1  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 7  SubInfo0 = 0  SubInfo1 = 0 
+PadNo = 0  DirectInputType = 7  SubInfo0 = 2  SubInfo1 = 0 
