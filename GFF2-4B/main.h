@@ -7,7 +7,7 @@
 #define PLAY_SIZE  25
 
 enum ArrayImages { Title_Images, Player_Images, GameMain_Images, Block_Images, Player_CursorImages, Item_Images,Pickaxe_Images,Item_cursor, Box_images, Box2_images,
-    GameOver_Images, GameClear_Images, Life_Images,KiraKira_Images}; //‰æ‘œŒÄ‚Ño‚µ–¼
+    GameOver_Images, GameClear_Images, Life_Images,KiraKira_Images, Help_Images}; //‰æ‘œŒÄ‚Ño‚µ–¼
 
 enum Sounds { Title_SE}; //BGM‚È‚çA›Z_BGM, SE‚È‚ç
 
