@@ -37,6 +37,7 @@ int g_block_image[20]; //ブロック画像
 int g_player_image[4]; //プレイヤー画像
 int g_item_image[5]; //アイテム画像
 int g_item_cursor_image[3]; //アイテムカーソル画像
+int g_kirakira_image[3]; //アイテムを光らせる為の画像
 int g_life;
 
 /***********************************************
@@ -171,6 +172,7 @@ int LoadImages()
 	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item1.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
+	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_kirakira_image) == -1)return-1;
 }
 
 /***********************************************
@@ -244,6 +246,13 @@ int GetArrayImages(int type, int num)
 	case Item_cursor: //アイテムカーソル
 		if (0 <= num && num < 3) {
 			return g_item_cursor_image[num];
+		}
+		else { return -1; }
+		break;
+
+	case KiraKira_Images:
+		if (0 <= num && num < 3) {
+			return g_kirakira_image[num];
 		}
 		else { return -1; }
 		break;
