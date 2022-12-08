@@ -385,7 +385,7 @@ void GameMain::Hammer()
 	if (g_hammer_flg == TRUE)
 	{
 		//‚Â‚é‚Í‚µ‚ÌŽü‚è‚ð‰ó‚·
-		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
+		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE); 
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
 		Block_Collision(g_hammer_y, g_hammer_x + 7, TRUE);
 		Block_Collision(g_hammer_y + 7, g_hammer_x + 7, TRUE);
