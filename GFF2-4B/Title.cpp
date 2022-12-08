@@ -54,14 +54,13 @@ void Title::Draw()
 	DrawString(500, 460, "Credit　", GetColor(255, 0, 0));
 	DrawString(500, 520, "End", GetColor(255, 0, 0));
 	SetFontSize(30); 
-	DrawString(100, 650, "ヘルプ表示処理なし", GetColor(255, 0, 0));
 }
 
 
 void Title::ChangeScen()
 {
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0) SetGameState(1); //ゲームメイン移行
-	//if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)return new Help; //ヘルプ画面に移行
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)SetGameState(7); //ヘルプ画面に移行
 
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(5);
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)SetGameState(6); //ランキング入力
