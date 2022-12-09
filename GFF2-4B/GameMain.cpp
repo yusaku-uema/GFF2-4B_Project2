@@ -425,7 +425,14 @@ void GameMain::Hammer()
 		if (g_hammer_angle > 360)g_hammer_angle = 0;
 		if (g_hammer_angle < 0)g_hammer_angle = 360;
 
-		if (g_hammer_y > 800)g_hammer_flg = FALSE;
+		if (g_hammer_y > 800)
+		{
+			g_hammer_flg = FALSE;
+			for (int i = 0; i < 10; i++)
+			{
+				g_bom[i].hit_flg = TRUE;
+			}
+		}
 	}
 	else Block_Collision(g_cursory, g_cursorx, FALSE);
 }
