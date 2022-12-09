@@ -209,11 +209,11 @@ void GameMain::Draw()
 	{
 		if (g_item[i].flg == TRUE) {
 			DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
-			DrawGraph(g_item[i].x - g_scroll_x + 4, g_item[i].y + 4, GetArrayImages(KiraKira_Images, num), TRUE);
+			DrawGraph(g_item[i].x - g_scroll_x + 4, g_item[i].y + 4, GetArrayImages(KiraKira_Images, Timer / 20), TRUE);
 		}
 		if (g_bom[i].flg == NOMAL) {
 			DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 3), TRUE);
-			DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(KiraKira_Images, num), TRUE);
+			DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(KiraKira_Images, Timer / 20), TRUE);
 		}
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
@@ -228,8 +228,9 @@ void GameMain::Draw()
 			if (MAP_DATA[i][j] > 0)
 			{
 				DrawGraph((30 * j) - g_scroll_x, 30 * i, GetArrayImages(Block_Images, MAP_DATA[i][j]), TRUE);
-				//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", MAP_DATA[i][j]);
 			}
+			//DrawFormatString((30 * j) - g_scroll_x, 30 * i, 0xffffff, "%d", ITEM_DATA[i][j]);
+
 		}
 	}
 
@@ -256,7 +257,7 @@ void GameMain::Draw()
 			DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
-	DrawFormatString(0, 0, 0xFFFFFF, "%d", g_rkey_flg);
+	DrawFormatString(0, 0, 0xFFFFFF, "%d", g_scroll_x);
 }
 
 void GameMain::Ui()
@@ -277,6 +278,7 @@ void GameMain::Ui()
 	TmpTime = TimeLimit; //制限時間保護
 	TmpScore = g_score; //スコア保護
 	int SoreX = 160; //スコア描画位置
+	
 	if (TmpTime > 0)
 	{
 		DrawGraph(330, 665, g_NumberImage[TmpTime / 100], TRUE);//時間表示
@@ -312,7 +314,11 @@ void GameMain::Ui()
 
 void  GameMain::Item()
 {
-	if (g_player_x >= 600)g_scroll_x = g_player_x - 600;
+	if (g_player_x >= 600)
+	{
+		if(g_player_x >= 3820)g_scroll_x = 3220;
+		else g_scroll_x = g_player_x - 600;
+	}
 	else g_scroll_x = 0;
 
 	for (int i = 0; i < 10; i++)
@@ -330,6 +336,9 @@ void  GameMain::Item()
 				if (MAP_DATA[g_item[i].y / 30][g_item[i].x / 30] <= 0) g_item[i].y++;
 			}
 			else g_item[i].y = (g_item[i].y / BLOCK_SIZE) * BLOCK_SIZE;
+			if ((g_item[i].y - 1) / 30 < MAP_HIGHT)ITEM_DATA[(g_item[i].y - 1) / 30][g_item[i].x / 30] = 0;
+			if (g_item[i].y / 30 < MAP_HIGHT)ITEM_DATA[g_item[i].y / 30][g_item[i].x / 30] = g_item[i].type;
+			if ((g_item[i].y + 29) / 30 < MAP_HIGHT)ITEM_DATA[(g_item[i].y + 29) / 30][g_item[i].x / 30] = g_item[i].type;
 		}
 
 		bool g_bom_count_flg = FALSE;
@@ -657,16 +666,7 @@ void GameMain::Fall()
 }
 
 void GameMain::ItemAnim() {
-	Timer++;
-	if (Timer > 0 && Timer < 20) {
-		num = 0;
-	}
-	if (Timer > 20 && Timer < 40) {
-		num = 1;
-	}
-	if (Timer == 40) {
-		Timer = 0;
-	}
+	if (++Timer == 40)Timer = 0; 
 }
 
 int GameMain::Get_MapData(int y, int x)
