@@ -273,9 +273,8 @@ void GameMain::Ui()
 
 	
 
-	TmpTime = TimeLimit;
-	TmpScore = g_score;
-	//int PosX = 390; //残り時間描画処理
+	TmpTime = TimeLimit; //制限時間保護
+	TmpScore = g_score; //スコア保護
 	int SoreX = 160; //スコア描画位置
 	//do {
 	//	DrawGraph(PosX, 665, g_NumberImage[TmpTime % 10], TRUE);//時間表示
@@ -283,7 +282,7 @@ void GameMain::Ui()
 	//	PosX -= 30;
 	//} while (TmpTime > 0);
 
-	DrawFormatString(0, 0, 0xffffff, "%d", TimeLimit);
+	/*DrawFormatString(0, 0, 0xffffff, "%d", TimeLimit);*/
 
 	if (TmpTime > 0)
 	{
@@ -293,7 +292,6 @@ void GameMain::Ui()
 		TmpTime -= (TmpTime / 10) * 10;
 		DrawGraph(390, 665, g_NumberImage[TmpTime / 1], TRUE);//時間表示
 	}
-
 
 	do {
 		DrawGraph(SoreX, 665, g_NumberImage[TmpScore % 10], FALSE); //スコア表示
