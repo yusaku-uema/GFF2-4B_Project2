@@ -220,7 +220,6 @@ void GameMain::Draw()
 	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.5, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
-	//Stage(); //ステージ描画
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
@@ -402,6 +401,13 @@ void GameMain::Hammer()
 {
 	if (g_hammer_flg == TRUE)
 	{
+		g_old_hammer_x = g_hammer_x;
+		g_old_hammer_y = g_hammer_y;
+
+		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
+		g_hammer_x -= (g_hammer_orbit_x / 3);
+		g_hammer_orbit_y -= 1;
+
 		//つるはしの周りを壊す
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
@@ -412,12 +418,7 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
-		g_old_hammer_x = g_hammer_x;
-		g_old_hammer_y = g_hammer_y;
-
-		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
-		g_hammer_x -= (g_hammer_orbit_x / 3);
-		g_hammer_orbit_y -= 1;
+		
 
 		if (g_hit_hammer_flg == FALSE)g_hammer_angle -= (10 * g_hammer_angle_direction);
 		else g_hammer_angle += (5 * g_hammer_angle_direction);
@@ -494,7 +495,7 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(g_score), SetGameState(4); //ゲームオーバーは、時間を加算しない
+		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
 	if (AX < 0)g_direction = LEFT;
