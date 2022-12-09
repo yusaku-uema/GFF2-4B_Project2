@@ -494,7 +494,7 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(g_score), SetGameState(4); //ゲームオーバーは、時間を加算しない
+		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
 	if (AX < 0)g_direction = LEFT;
