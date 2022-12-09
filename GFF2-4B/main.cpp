@@ -28,7 +28,6 @@ int g_haikei_image; //‚PƒXƒe[ƒW‚Ì”wŒi
 int g_Title_images; //ƒ^ƒCƒgƒ‹‰æ‘œ
 int g_GameOver_images; //ƒQ[ƒ€ƒI[ƒo[”wŒi
 int g_GameClear_images; //ƒQ[ƒ€ƒNƒŠƒA”wŒi
-int g_white_image; //”’‚¢‰æ‘œ
 int g_Box_images;//•ó” ‰æ‘œ
 int g_Box2_images;//•ó” ‰æ‘œ
 int g_HelpImages; //ƒwƒ‹ƒv‰æ‘œ
@@ -158,7 +157,6 @@ int LoadImages()
 	if ((g_hammer_image = LoadGraph("images/team/hammer1.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
 	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
-	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver3.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear2.png")) == -1)return -1;
@@ -166,9 +164,8 @@ int LoadImages()
 	if ((g_Box_images = LoadGraph("images/•ó” ‚P_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/•ó” ‚Q_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/ƒRƒ“ƒgƒ[ƒ‰[V‰æ‘œ.png")) == -1)return -1;
-
 	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/Player/Player1.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/Player1.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_KiraKira_image) == -1) return -1;
