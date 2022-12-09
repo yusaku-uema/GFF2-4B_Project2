@@ -51,4 +51,5 @@ public:
     int  SaveRanking(void);		//ランキングデータの保存
     int  ReadRanking(void);		//ランキングデータ読み込み
     void InputRankingInit(void);
+    int GetRankingScore(int n);
 };

@@ -1,8 +1,14 @@
 #pragma once
 #include"main.h"
+#include"Ranking.h"
+#include"GameMain.h"
 
 class GameClear
 {
+private:
+    RANKING ranking;
+
+    int g_score;
 public:
     void Draw();
 };

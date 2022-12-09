@@ -1,4 +1,5 @@
 #include"Ranking.h"
+#include"main.h"
 
 char g_name[6][13] = {
     {'a','b','c','d','e','f','g','h','i','j','k','l','m'},
@@ -57,6 +58,8 @@ void RANKING::InputRanking() {
     g_OldKey = g_NowKey;
     g_NowKey = GetJoypadAnalogInput(&AX, &AY, DX_INPUT_PAD1);
     g_KeyFlg = g_NowKey & ~g_OldKey;
+
+    g_Score = GetScore();
 
     if (fonttime >= 7)
     {
@@ -261,4 +264,8 @@ int RANKING::ReadRanking() {
     fclose(fp);
 
     return 0;
+}
+
+int RANKING::GetRankingScore(int n) {
+    return g_Ranking[n].score;
 }

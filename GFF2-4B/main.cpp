@@ -121,11 +121,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			break;
 		case 7:
 			help.Draw();
+			break;
 		case 8:
 			// Pause();
 			break;
 		case 9:
 			keyconfigscene.Update();
+			break;
+		case 10:
+			ranking.InputRanking();
+			break;
 		}
 
 		ScreenFlip();  // — ‰æ–Ê‚Ì“à—e‚ð•\‰æ–Ê‚É”½‰f
