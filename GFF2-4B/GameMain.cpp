@@ -275,13 +275,24 @@ void GameMain::Ui()
 
 	TmpTime = TimeLimit;
 	TmpScore = g_score;
-	int PosX = 390; //残り時間描画処理
+	//int PosX = 390; //残り時間描画処理
 	int SoreX = 160; //スコア描画位置
-	do {
-		DrawGraph(PosX, 665, g_NumberImage[TmpTime % 10], TRUE);//時間表示
-		TmpTime /= 10;
-		PosX -= 30;
-	} while (TmpTime > 0);
+	//do {
+	//	DrawGraph(PosX, 665, g_NumberImage[TmpTime % 10], TRUE);//時間表示
+	//	TmpTime /= 10;
+	//	PosX -= 30;
+	//} while (TmpTime > 0);
+
+	DrawFormatString(0, 0, 0xffffff, "%d", TimeLimit);
+
+	if (TmpTime > 0)
+	{
+		DrawGraph(330, 665, g_NumberImage[TmpTime / 100], TRUE);//時間表示
+		TmpTime -= (TmpTime / 100) * 100;
+		DrawGraph(360, 665, g_NumberImage[TmpTime / 10], TRUE);//時間表示
+		TmpTime -= (TmpTime / 10) * 10;
+		DrawGraph(390, 665, g_NumberImage[TmpTime / 1], TRUE);//時間表示
+	}
 
 
 	do {
