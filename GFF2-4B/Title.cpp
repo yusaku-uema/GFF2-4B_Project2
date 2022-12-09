@@ -1,7 +1,6 @@
 #include"DxLib.h"
 #include "Title.h"
 #include"Credit.h"
-#include"KeyConfigScene.h"
 
 Title::Title()
 {
@@ -64,7 +63,6 @@ void Title::ChangeScen()
 
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(5);
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)SetGameState(6); //ランキング入力
-	if (g_KeyFlg &  PAD_INPUT_B && g_MenuNumber == 3)SetGameState(9); //キーコンフィグ
 	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)SetGameState(999); //強制終了
 
 }
