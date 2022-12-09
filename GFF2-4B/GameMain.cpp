@@ -37,6 +37,7 @@ void GameMain::GameMain_Init()
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	TimeLimitImages = LoadGraph("images/koaq.png");
+	g_blowing_images = LoadGraph("images/fuki.png");
 	ScoreImages = LoadGraph("images/koa.png");
 	LoadDivGraph("images/123.png", 10, 10, 1, 20, 30, g_NumberImage);
 	g_scroll_x = 0;
@@ -276,14 +277,6 @@ void GameMain::Ui()
 	TmpTime = TimeLimit; //制限時間保護
 	TmpScore = g_score; //スコア保護
 	int SoreX = 160; //スコア描画位置
-	//do {
-	//	DrawGraph(PosX, 665, g_NumberImage[TmpTime % 10], TRUE);//時間表示
-	//	TmpTime /= 10;
-	//	PosX -= 30;
-	//} while (TmpTime > 0);
-
-	/*DrawFormatString(0, 0, 0xffffff, "%d", TimeLimit);*/
-
 	if (TmpTime > 0)
 	{
 		DrawGraph(330, 665, g_NumberImage[TmpTime / 100], TRUE);//時間表示
