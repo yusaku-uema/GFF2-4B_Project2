@@ -35,7 +35,7 @@ void GameMain::GameMain_Init()
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //ŠÔ§ŒÀ•¶š
 	g_blowing_images = LoadGraph("images/fuki.png"); //”š”­‚µ‚½‚Ì‰æ‘œ
 	ScoreImages = LoadGraph("images/Score.png"); //ƒXƒRƒA•¶š‰æ‘œ
-	LoadDivGraph("images/123.png", 10, 10, 1, 20, 30, g_NumberImage);
+	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;

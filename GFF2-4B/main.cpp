@@ -163,7 +163,7 @@ int LoadImages()
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
-	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
+	if ((g_HelpImages = LoadGraph("images/HeipImage.png")) == -1)return -1;
 	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
 	if (LoadDivGraph("images/Player1.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
