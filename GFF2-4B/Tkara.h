@@ -1,5 +1,5 @@
 #pragma once
-#include"InputData.h"
+//#include"InputData.h"
 class Takara
 {
 private:
