@@ -449,14 +449,28 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] >= 1 && MAP_DATA[a / 30][b / 30] <= 4)//ブロックに当たった時
 			{
+					
+				float ki;
+				ki = 0.002;
+
 				if (c == TRUE)//つるはしが投げられているとき
 				{
+					if (ki == 0) {
+						StopSoundMem(BreakBGM);
+						ki = 0,002;
+					}
+
+					if (ki==0.001||ki==0,002){
+						PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE); //SE再生
+						ki -0.001;
+					}
+
+
 					MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;//ブロックを一撃で壊し、ブロックのカウントをプラスする
 					for (int i = 0; i < 10; i++)
 					{ //↓ブロックに埋もれている爆弾に当たったら起動しないようにg_bom[i].hit_flgをFALSEにする（FALSEにすると攻撃しても爆弾が起動しない）
 						if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].hit_flg = FALSE;
 					}
-					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 				}
 				else//つるはしが投げられていない（カーソル内のブロックに攻撃してる）とき
 				{
