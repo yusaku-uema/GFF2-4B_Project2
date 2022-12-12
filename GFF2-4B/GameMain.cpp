@@ -152,7 +152,7 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 4477 && g_player_y >= 586)
+	if (g_player_x >= 4477) //ƒNƒŠƒAğŒ
 	{
 		SetScore(g_score+(TimeLimit * 100));
 		SetGameState(3);
