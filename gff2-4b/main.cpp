@@ -8,7 +8,6 @@
 #include"Credit.h"
 #include"GameReward.h"
 #include"Ranking.h"
-#include"KeyConfigScene.h"
 #include"Help.h"
 #include"InputRankingScene.h"
 
@@ -30,7 +29,6 @@ int g_haikei_image; //１ステージの背景
 int g_Title_images; //タイトル画像
 int g_GameOver_images; //ゲームオーバー背景
 int g_GameClear_images; //ゲームクリア背景
-int g_white_image; //白い画像
 int g_Box_images;//宝箱画像
 int g_Box2_images;//宝箱画像
 int g_HelpImages; //ヘルプ画像
@@ -61,8 +59,6 @@ GameReward gamereward;//ご褒美画面
 Gameover gameover;
 GameClear gameclear;
 RANKING ranking;
-KeyConfigScene keyconfigscene;
-KeyConfig keyconfig;
 Help help;
 InputRanking inputranking;
 
@@ -81,8 +77,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 	if (LoadImages() == -1) return -1; //画像読込み
 	if (LoadSounds() == -1) return -1; //サウンド読込み
-	 // キーコンフィグ処理の初期化を行う
-	keyconfig.Initialize();
+
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
 		/*最初からクラス化、シーンマネージャーで書きましょう*/
@@ -169,17 +164,15 @@ int LoadImages()
 	if ((g_hammer_image = LoadGraph("images/team/hammer1.png")) == -1)return -1;
 	if ((g_cursor_image = LoadGraph("images/team/kasoru.png")) == -1)return -1;
 	if ((g_haikei_image = LoadGraph("images/abcde.png")) == -1)return -1;
-	if ((g_white_image = LoadGraph("images/team/white.png")) == -1)return -1;
 	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver3.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear2.png")) == -1)return -1;
 	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
-	if ((g_HelpImages = LoadGraph("images/コントローラー新画像.png")) == -1)return -1;
-
+	if ((g_HelpImages = LoadGraph("images/HeipImage.png")) == -1)return -1;
 	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/Player/player.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/Player1.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_KiraKira_image) == -1) return -1;
