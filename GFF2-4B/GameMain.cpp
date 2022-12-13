@@ -602,10 +602,10 @@ void GameMain::Player_Sousa()
 		if (g_old_cursor_BX < 0)g_cursorx = g_player_x - (PLAY_SIZE / 2) + 1 - BLOCK_SIZE;
 	}
 
-	if ((g_cursory / 30 < MAP_HIGHT) && (g_cursory / 30 >= 0) && (g_cursorx / 30 < MAP_WIDTH) && (g_cursorx / 30 >= 0)) 
+	g_cursor_flg = TRUE;
+	if ((g_cursory / 30 >= MAP_HIGHT) || (g_cursory < 0) || (g_cursorx / 30 >= MAP_WIDTH) || (g_cursorx < 0)) 
 	{
-		g_cursor_flg = TRUE;
-		if (g_cursorx < 0) g_cursor_flg = FALSE;
+		g_cursor_flg = FALSE;
 	}
 
 	if (AX == 0 && AY == 0)//アイテム選択
