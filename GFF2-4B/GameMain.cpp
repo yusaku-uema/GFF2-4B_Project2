@@ -36,6 +36,8 @@ void GameMain::GameMain_Init()
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
+	LoadDivGraph("images/Timemo1.png", 10, 10, 1, 40, 60, g_NumberImage1);
+	LimitImages = LoadGraph("images/Limet.png");
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -46,7 +48,7 @@ void GameMain::GameMain_Init()
 	g_score3 = 0;
 	g_score4 = 0;
 	fps_cunt = 0;
-	TimeLimit = 200;//制限時間
+	TimeLimit = 110;//制限時間
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
@@ -149,6 +151,26 @@ void GameMain::Time()
 		SetScore(g_score + (TimeLimit * 100));
 		SetGameState(4);
 	}
+
+	if (TimeLimit <= 100 && TimeLimit >= 95)
+	{
+		DrawGraph(250, 200, LimitImages, TRUE); //残り時間の文字描画
+
+		TmpTime = TimeLimit; //制限時間保護
+		int TimeX = 550;//時間の描画位置
+		int Calc = 10000;//表示桁数
+
+		while (Calc > 0)
+		{
+			if (Calc <= 100)DrawGraph(TimeX, 200, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
+			TmpTime -= (TmpTime / Calc) * Calc;
+			Calc /= 10;
+			TimeX += 50;
+		}
+
+
+
+	}
 }
 
 void GameMain::Clear()
@@ -244,6 +266,8 @@ void GameMain::Draw()
 			DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
 		}
 	}
+
+	
 
 	for (int i = 0; i < 10; i++)
 	{

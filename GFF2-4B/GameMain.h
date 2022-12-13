@@ -7,8 +7,10 @@ private:
 
 	int g_blowing_images; //吹き出し画像
 	int g_NumberImage[10]; //数字画像
+	int g_NumberImage1[10]; //
 	int TmpScore; //スコア保護
 	int TimeLimitImages; //文字
+	int LimitImages; //制限時間
 	int ScoreImages; //スコア文字
 	int TimeLimit; //残り時間
 	int TmpTime; //残り時間保護

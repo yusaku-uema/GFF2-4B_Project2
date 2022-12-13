@@ -46,7 +46,7 @@ void Title::Draw()
 	DrawGraph(0, 0, GetArrayImages(Title_Images,0), TRUE);
 	DrawTriangle(470, 295 + g_MenuY, 490, 310 + g_MenuY, 470, 325 + g_MenuY, GetColor(255, 0, 0), TRUE); //カーソル
 	SetFontSize(60); //文字のサイズ
-	DrawString(350, 200,"掘れ掘れダンジョン君",GetColor(255,255,0));
+	DrawString(350, 200,"ゲームタイトル募集中",GetColor(255,255,0));
 	DrawString(500, 280, "GameStart", GetColor(255, 0, 0));
 	DrawString(500, 340, "Help", GetColor(255, 0, 0));
 	DrawString(500, 400, "Ranking", GetColor(255, 0, 0));
