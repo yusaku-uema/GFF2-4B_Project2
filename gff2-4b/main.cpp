@@ -160,7 +160,7 @@ int LoadImages()
 	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver3.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear2.png")) == -1)return -1;
-	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
+	if ((g_life = LoadGraph("images/PlayerLife.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/•ó” ‚P_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/•ó” ‚Q_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/HeipImage.png")) == -1)return -1;
