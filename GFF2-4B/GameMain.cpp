@@ -39,12 +39,12 @@ void GameMain::Stage_Select_Init()
 	g_player_x = 260, g_player_y = 550;
 	g_stage = 0;
 	g_game_state = 0;
-	g_stage_select_image = LoadGraph("images/tizu.png"); //ŠÔ§ŒÀ•¶š
+	g_stage_select_image = LoadGraph("images/kusa.png"); 
 	SetGameState(2); //ƒQ[ƒ€ƒƒCƒ“ˆÚs
 }
 void GameMain::Draw_Stage_Select()
 {
-	DrawGraph(140, 25, g_stage_select_image,TRUE);
+	DrawGraph(0, 0, g_stage_select_image, TRUE);
 	DrawCircle(260, 550, 10, 0xff0000, TRUE);
 	DrawCircle(520, 455, 10, 0xff0000, TRUE);
 	DrawCircle(855, 250, 10, 0xff0000, TRUE);
