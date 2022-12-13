@@ -35,6 +35,7 @@ void GameMain::GameMain_Init()
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //時間制限文字
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
+	FieldBGM = LoadSoundMem("BGM/iwashiro_tricolour[1].mp3");//フィールドBGM
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
 	g_scroll_x = 0;
 	g_block_count = 0;
@@ -54,6 +55,7 @@ void GameMain::GameMain_Init()
 	g_bom_count = 30;
 	g_chara_life = 3;
 	g_hammer_flg = FALSE;
+	PlaySoundMem(FieldBGM, DX_PLAYTYPE_LOOP);
 
 	//ファイル
 	FILE* fp = NULL;
@@ -148,6 +150,7 @@ void GameMain::Time()
 	{
 		SetScore(g_score + (TimeLimit * 100));
 		SetGameState(4);
+		StopSoundMem(FieldBGM);
 	}
 }
 
@@ -157,6 +160,7 @@ void GameMain::Clear()
 	{
 		SetScore(g_score+(TimeLimit * 100));
 		SetGameState(3);
+		StopSoundMem(FieldBGM);
 	}
 }
 
@@ -199,6 +203,7 @@ void GameMain::Key()
 
 void GameMain::Draw()
 {
+	
 	if (++Timer == 40)Timer = 0;
 	DrawGraph(-(g_scroll_x / 5), 0, GetArrayImages(GameMain_Images, 0), TRUE);
 
@@ -520,7 +525,11 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
+		else
+		{
+			SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
+			StopSoundMem(FieldBGM);
+		}
 	}
 
 	if (AX < 0)g_direction = LEFT;

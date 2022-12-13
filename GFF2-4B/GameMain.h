@@ -27,7 +27,7 @@ private:
 	int g_hammer_orbit_x, g_hammer_orbit_y;
 	bool g_hit_hammer_flg;
 	bool g_hammer_flg;//ハンマーが使われているかどうか
-	
+	int FieldBGM;//ステージBGM
 	int g_player_image_type;
 	int g_image_time;
 
