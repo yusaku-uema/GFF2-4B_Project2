@@ -12,14 +12,51 @@
 void GameMain::Update()
 {
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
-	Key();
 
-	Player_Sousa(); //自機の操作
-	Item();
-	Draw();
-	Ui();
-	Time();
-	Clear();
+	Key();
+	switch (g_game_state)
+	{
+	case 0://ステージ選択画面
+		Draw_Stage_Select();
+		Update_Stage_Select();
+		break;
+	case 1:
+		Player_Sousa(); //自機の操作
+		Item();
+		Draw();
+		Ui();
+		Time();
+		Clear();
+		break;
+	}
+}
+
+/***********************************************
+*  初期化処理
+************************************************/
+void GameMain::Stage_Select_Init()
+{
+	g_player_x = 200, g_player_y = 300;
+	g_stage = 0;
+	g_game_state = 0;
+	SetGameState(2); //ゲームメイン移行
+}
+void GameMain::Draw_Stage_Select()
+{
+	DrawBox(100, 100, 1180, 620, 0xffffff, TRUE);
+	DrawCircle(200, 300, 10, 0xff0000, TRUE);
+	DrawCircle(350, 300, 10, 0xff0000, TRUE);
+	DrawCircle(500, 300, 10, 0xff0000, TRUE);
+	DrawCircle(650, 300, 10, 0xff0000, TRUE);
+	DrawCircle(800, 300, 10, 0xff0000, TRUE);
+	DrawCircle(950, 300, 10, 0xff0000, TRUE);
+	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
+}
+void GameMain::Update_Stage_Select()
+{
+	if((g_rightkey_flg) && (!g_old_rightkey_flg)&& (g_stage < 5))g_stage++,g_player_x += 150;
+	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--, g_player_x -= 150;
+	if (g_bkey_flg)g_game_state = 1, g_stage = 1,GameMain_Init();
 }
 
 
@@ -28,9 +65,72 @@ void GameMain::Update()
 ************************************************/
 void GameMain::GameMain_Init()
 {
+	
+	switch (g_stage)
+	{
+	case 0://ステージ選択画面
+		
+		break;
+
+	case 1://ステージ1初期化
+		g_player_x = 30;
+		g_player_y = 550;
+
+		
+		FILE* fp = NULL;//ステージ１ファイル読み込み
+
+		if (fopen_s(&fp, "data/item2.txt", "r") != 0)//アイテムデータ
+		{
+			throw "Data/item1.txt";
+		}		
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < MAP_WIDTH; j++)
+			{
+				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		if (fopen_s(&fp, "data/map2.txt", "r") != 0)//マップデータ
+		{
+			throw "Data/map1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < MAP_WIDTH; j++)
+			{
+				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		break;
+	}
+
+	g_scroll_x = 0;
+	g_block_count = 0;
+	g_break_block_count = 0;
+	g_score = 0;
+	g_bag_count = 0;
+	g_key_count = 0;
+	g_item_selection = 0;
+	fps_cunt = 0;
+	TimeLimit = 200;//制限時間
+	g_player_image_type = 0;
+	g_direction = RIGHT;
+	g_player_flg = WALK;
+	g_bom_count = 0;
+	g_chara_life = 3;
+	g_checkpoint_flg = FALSE;
+	g_hammer_flg = FALSE;
 	g_hit_hammer_flg = FALSE;
-	g_titen_flg = FALSE;
-	g_player_x = 30, g_player_y = 550;
+	g_cursor_key_time = 0;
+	g_old_cursor_BX = 1;
+	g_cursor_flg = TRUE;
+
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //時間制限文字
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
@@ -38,58 +138,8 @@ void GameMain::GameMain_Init()
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
 	LoadDivGraph("images/Timemo1.png", 10, 10, 1, 40, 60, g_NumberImage1);
 	LimitImages = LoadGraph("images/Limet.png");
-	g_scroll_x = 0;
-	g_block_count = 0;
-	g_hukuro_count = 0;
-	g_kagi_count = 0;
-	g_item_selection = 0;
-	g_score = 0;
-	g_score2 = 0;
-	g_score3 = 0;
-	g_score4 = 0;
-	fps_cunt = 0;
-	TimeLimit = 110;//制限時間
-	g_player_image_type = 0;
-	g_direction = RIGHT;
-	g_player_flg = WALK;
-	g_break_block_count = 0;
-	g_bom_count = 30;
-	g_chara_life = 3;
-	g_hammer_flg = FALSE;
 
-	//ファイル
-	FILE* fp = NULL;
-	if (fopen_s(&fp, "data/item2.txt", "r") != 0)
-	{
-		throw "Data/item1.txt";
-	}
-	//アイテムデータ
-	for (int i = 0; i < MAP_HIGHT; i++)
-	{
-		for (int j = 0; j < MAP_WIDTH; j++)
-		{
-			fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
-		}
-	}
-	fclose(fp);
-	fp = NULL;
-
-	if (fopen_s(&fp, "data/map2.txt", "r") != 0)
-	{
-		throw "Data/map1.txt";
-	}
-	//アイテムデータ
-	for (int i = 0; i < MAP_HIGHT; i++)
-	{
-		for (int j = 0; j < MAP_WIDTH; j++)
-		{
-			fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
-		}
-	}
-	fclose(fp);
-	fp = NULL;
-
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)//アイテムの初期化
 	{
 		g_item[i].x = 0;
 		g_item[i].y = 0;
@@ -97,14 +147,14 @@ void GameMain::GameMain_Init()
 		g_item[i].flg = FALSE;
 		g_item[i].type = 0;
 
-		g_bom[i].flg = NONE;
+		g_bom[i].flg = NONE;//爆弾の初期化
 		g_bom[i].x = 0;
 		g_bom[i].y = 0;
 		g_bom[i].time = 300;
 	}
 
-	int g_bom_counnt = 0;
-	int g_item_count = 0;
+	int g_init_bom_count = 0;
+	int g_init_item_count = 0;
 
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
@@ -114,28 +164,26 @@ void GameMain::GameMain_Init()
 			{
 				if (ITEM_DATA[i][j] == 1 || ITEM_DATA[i][j] == 2)
 				{
-					g_item[g_item_count].x = j * 30;
-					g_item[g_item_count].y = i * 30;
-					g_item[g_item_count].point = 100;
-					g_item[g_item_count].type = ITEM_DATA[i][j];
-					g_item[g_item_count].flg = TRUE;
-					g_item_count++;
+					g_item[g_init_item_count].x = j * 30;
+					g_item[g_init_item_count].y = i * 30;
+					g_item[g_init_item_count].point = 100;
+					g_item[g_init_item_count].type = ITEM_DATA[i][j];
+					g_item[g_init_item_count].flg = TRUE;
+					g_init_item_count++;
 				}
 				else
 				{
-					g_bom[g_bom_counnt].x = j * 30;
-					g_bom[g_bom_counnt].y = i * 30;
-					g_bom[g_bom_counnt].flg = NOMAL;
-					g_bom[g_bom_counnt].hit_flg = TRUE;
-					g_bom_counnt++;
+					g_bom[g_init_bom_count].x = j * 30;
+					g_bom[g_init_bom_count].y = i * 30;
+					g_bom[g_init_bom_count].flg = NOMAL;
+					g_bom[g_init_bom_count].hit_flg = TRUE;
+					g_init_bom_count++;
 				}
 			}
 			MAP_DATA[i][j] = MAP_DATA_INIT[i][j];
-			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;
+			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;//ブロックをランダムに
 		}
 	}
-
-	SetGameState(2); //ゲームメイン移行
 }
 
 /***********************************************
@@ -167,8 +215,6 @@ void GameMain::Time()
 			Calc /= 10;
 			TimeX += 50;
 		}
-
-
 
 	}
 }
@@ -226,7 +272,7 @@ void GameMain::Draw()
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (g_item[i].flg == TRUE) {
+		if (g_item[i].flg) {
 			DrawGraph(g_item[i].x - g_scroll_x, g_item[i].y, GetArrayImages(Item_Images, g_item[i].type), TRUE);
 			DrawGraph(g_item[i].x - g_scroll_x + 4, g_item[i].y + 4, GetArrayImages(KiraKira_Images, Timer / 20), TRUE);
 		}
@@ -237,7 +283,7 @@ void GameMain::Draw()
 		if (g_bom[i].flg == ANGRY)DrawGraph(g_bom[i].x - g_scroll_x, g_bom[i].y, GetArrayImages(Item_Images, 4), TRUE);
 	}
 
-	if (g_hammer_flg == TRUE)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.5, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
+	if (g_hammer_flg)DrawRotaGraph(g_hammer_x - g_scroll_x, g_hammer_y, 0.5, M_PI / 180 * g_hammer_angle, GetArrayImages(Pickaxe_Images, 0), TRUE, FALSE);
 	DrawRotaGraph(g_player_x - g_scroll_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, g_direction);
 
 	for (int i = 0; i < MAP_HIGHT; i++)
@@ -252,8 +298,6 @@ void GameMain::Draw()
 		}
 	}
 
-	DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
-
 	if (BX != 0 || BY != 0)
 	{
 		int x = g_player_x, y = g_player_y;
@@ -266,9 +310,9 @@ void GameMain::Draw()
 			DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
 		}
 	}
-
+	else if(g_cursor_flg)DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
+	DrawFormatString(0, 0, 0xffffff, "%d", g_cursor_flg);
 	
-
 	for (int i = 0; i < 10; i++)
 	{
 		if (g_bom[i].flg == ANGRY)
@@ -277,6 +321,8 @@ void GameMain::Draw()
 			DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
+
+	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);
 }
 
 void GameMain::Ui()
@@ -308,7 +354,7 @@ void GameMain::Ui()
 		TimeX += 30;
 		ScoreX += 30;
 	}
-	g_score = (g_break_block_count * 5) + (g_hukuro_count * 1000) + (g_kagi_count * 5000); //スコア計算
+	g_score = (g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000); //スコア計算
 
 	float size[3];
 
@@ -341,13 +387,13 @@ void  GameMain::Item()
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (g_item[i].flg == TRUE)//アイテムがステージ上にあるなら
+		if (g_item[i].flg)//アイテムがステージ上にあるなら
 		{
 			if (HitBoxPlayer(g_player_x, g_player_y, g_item[i].x, g_item[i].y, BLOCK_SIZE, BLOCK_SIZE, TRUE))//アイテムがプレイヤーに当たったなら
 			{
 				g_item[i].flg = FALSE;//アイテムをステージ上から消す
-				if (g_item[i].type == 1)g_kagi_count++;//アイテムタイプが１なら鍵のカウントを増やす
-				if (g_item[i].type == 2)g_hukuro_count++;//アイテムタイプが２なら袋のカウントを増やす
+				if (g_item[i].type == 1)g_key_count++;//アイテムタイプが１なら鍵のカウントを増やす
+				if (g_item[i].type == 2)g_bag_count++;//アイテムタイプが２なら袋のカウントを増やす
 			}
 			if (MAP_DATA[(g_item[i].y + BLOCK_SIZE) / 30][g_item[i].x / 30] <= 0)//アイテムの真下にブロックがなければ
 			{
@@ -396,11 +442,11 @@ void  GameMain::Item()
 		}
 		if (g_bom[i].flg == NONE)//爆弾の状態がNONEの時
 		{
-			if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE) && (g_item_selection == 2))//Xキーが押され、爆弾を選択してたら
+			if ((g_xkey_flg) && (!g_old_xkey_flg) && (g_item_selection == 2))//Xキーが押され、爆弾を選択してたら
 			{
-				if (g_bom_count_flg == TRUE)//手持ちの爆弾があったら
+				if (g_bom_count_flg)//手持ちの爆弾があったら
 				{
-					if (Get_MapData(g_cursory,g_cursorx) == 0 && ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0)//ブロックもアイテムもなければ
+					if ((Get_MapData(g_cursory,g_cursorx) == 0) && (g_cursor_flg) && (ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0))//ブロックもアイテムもなければ
 					{
 						g_bom[i].x = (g_cursorx / 30) * 30; //爆弾を配置
 						g_bom[i].y = (g_cursory / 30) * 30;
@@ -428,7 +474,7 @@ void  GameMain::Item()
 
 void GameMain::Hammer()
 {
-	if (g_hammer_flg == TRUE)//つるはしが投げられている時
+	if (g_hammer_flg)//つるはしが投げられている時
 	{
 		g_old_hammer_x = g_hammer_x;//直前のつるはしのx座標を入れる
 		g_old_hammer_y = g_hammer_y;//直前のつるはしのy座標を入れる
@@ -447,7 +493,7 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
 
-		if (g_hit_hammer_flg == FALSE)g_hammer_angle -= (10 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たっていないならつるはしを投げた方向に回転させる
+		if (!g_hit_hammer_flg)g_hammer_angle -= (10 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たっていないならつるはしを投げた方向に回転させる
 		else g_hammer_angle += (5 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たった時つるはしを投げた方向と逆方向に回転する
 
 		if (g_hammer_angle >= 360)g_hammer_angle = 0; //つるはしが一回転したら角度を0にする
@@ -462,7 +508,7 @@ void GameMain::Hammer()
 			}
 		}
 	}
-	else Block_Collision(g_cursory, g_cursorx, FALSE);//カーソルのブロックを攻撃する
+	else if(g_cursor_flg)Block_Collision(g_cursory, g_cursorx, FALSE);//カーソルのブロックを攻撃する
 }
 
 void GameMain::Block_Collision(int a, int b, bool c)
@@ -473,7 +519,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 		{
 			if (MAP_DATA[a / 30][b / 30] >= 1 && MAP_DATA[a / 30][b / 30] <= 4)//ブロックに当たった時
 			{
-				if (c == TRUE)//つるはしが投げられているとき
+				if (c)//つるはしが投げられているとき
 				{
 					MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;//ブロックを一撃で壊し、ブロックのカウントをプラスする
 					for (int i = 0; i < 10; i++)
@@ -484,11 +530,11 @@ void GameMain::Block_Collision(int a, int b, bool c)
 				}
 				else//つるはしが投げられていない（カーソル内のブロックに攻撃してる）とき
 				{
-					if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 4)MAP_DATA[g_cursory / 30][g_cursorx / 30] = 0, g_break_block_count++;//地面ブロックなら一撃で壊し、ブロックのカウントをプラスする
+					if (MAP_DATA[a / 30][b / 30] == 4)MAP_DATA[a / 30][b / 30] = 0, g_break_block_count++;//地面ブロックなら一撃で壊し、ブロックのカウントをプラスする
 					else //地面ブロック以外なら
 					{
-						MAP_DATA[g_cursory / 30][g_cursorx / 30]--;//一ずつダメージを与える
-						if (MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0)g_break_block_count++;//ブロックが壊れたならブロックのカウントを増やす
+						MAP_DATA[a / 30][b / 30]--;//一ずつダメージを与える
+						if (MAP_DATA[a / 30][b / 30] == 0)g_break_block_count++;//ブロックが壊れたならブロックのカウントを増やす
 					}
 				}
 				if ((g_break_block_count % 50) == 0) g_block_count++;//壊したブロック÷50の余りが0ならプレイヤーが使えるブロックの数が増える
@@ -502,7 +548,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 			}
 			else//壊せないブロックに当たった時
 			{
-				if (g_hit_hammer_flg == FALSE)//壊せないブロックに当たったのが初めてなら
+				if (!g_hit_hammer_flg)//壊せないブロックに当たったのが初めてなら
 				{
 					g_hammer_orbit_y = 0, g_hammer_orbit_x = 0;//xの移動量もyの移動量も0にする
 					g_hammer_x = g_old_hammer_x;//ｘをひとつ前の座標に戻す
@@ -522,47 +568,63 @@ void GameMain::Player_Sousa()
 	{
 		if (--g_chara_life > 0)
 		{
-			if (g_player_x >= 2490)
-			{
-				g_titen_flg = TRUE;
-			}
-			if(g_titen_flg == TRUE)g_player_x = 2230, g_player_y = 587;
+			if (g_player_x >= 2490)g_checkpoint_flg = TRUE;
+			if(g_checkpoint_flg)g_player_x = 2230, g_player_y = 587;
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
 		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
+	
 	if (AX < 0)g_direction = LEFT;
 	else if (AX > 0)g_direction = RIGHT;
-	g_cursory = g_player_y;
-	g_cursorx = Player_Hit_Front(g_player_x, 0) - (BLOCK_SIZE * g_direction);
-	if (AX == 0 && AY == 0)
+
+	if (BY != 0 || BX != 0)
 	{
-		if ((g_leftkey_flg == TRUE) && (g_old_leftkey_flg == FALSE))
+		g_old_cursor_BX = BX;
+		g_old_cursor_BY = BY;
+	}
+	
+	if (g_old_cursor_BY != 0)
+	{
+		if (g_old_cursor_BY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - BLOCK_SIZE;//上なら
+		else g_cursory = Player_Hit_Under(g_player_y, 0) + BLOCK_SIZE;//下なら
+
+		if (g_old_cursor_BX < 0)g_cursorx = g_player_x - BLOCK_SIZE;//左なら
+		else if (g_old_cursor_BX > 0)g_cursorx = g_player_x + BLOCK_SIZE;//右なら
+		else g_cursorx = g_player_x;//どこも向いてなかったら
+	}
+	else
+	{
+		g_cursory = g_player_y;
+		if (g_old_cursor_BX > 0)g_cursorx = g_player_x + (PLAY_SIZE / 2) + BLOCK_SIZE;
+		if (g_old_cursor_BX < 0)g_cursorx = g_player_x - (PLAY_SIZE / 2) + 1 - BLOCK_SIZE;
+	}
+
+	if ((g_cursory / 30 < MAP_HIGHT) && (g_cursory / 30 >= 0) && (g_cursorx / 30 < MAP_WIDTH) && (g_cursorx / 30 >= 0)) 
+	{
+		g_cursor_flg = TRUE;
+		if (g_cursorx < 0) g_cursor_flg = FALSE;
+	}
+
+	if (AX == 0 && AY == 0)//アイテム選択
+	{
+		if ((g_leftkey_flg) && (!g_old_leftkey_flg))
 		{
 			if (g_item_selection == 0)g_item_selection = 2;
 			else g_item_selection--;
 		}
-		else if ((g_rightkey_flg == TRUE) && (g_old_rightkey_flg == FALSE))
+		else if ((g_rightkey_flg) && (!g_old_rightkey_flg))
 		{
 			if (g_item_selection == 2)g_item_selection = 0;
 			else g_item_selection++;
 		}
 	}
-	else if (AY != 0)
-	{
-		if (AY < 0)g_cursory = Player_Hit_Up(g_player_y, 0) - BLOCK_SIZE;
-		else g_cursory = Player_Hit_Under(g_player_y, 0) + BLOCK_SIZE;
-
-		if (AX < 0)g_cursorx = g_player_x - BLOCK_SIZE;
-		else if (AX > 0)g_cursorx = g_player_x + BLOCK_SIZE;
-		else g_cursorx = g_player_x;
-	}
-
+	
 	if (BX != 0 || BY != 0)
 	{
-		if ((g_lkey_flg) && (g_hammer_flg == FALSE))
+		if ((g_lkey_flg) && (!g_hammer_flg))
 		{
 			if (BX <= 0)g_hammer_angle_direction = LEFT;
 			else g_hammer_angle_direction = RIGHT;
@@ -577,13 +639,13 @@ void GameMain::Player_Sousa()
 		}
 	}
 
-	if ((g_xkey_flg == TRUE) && (g_old_xkey_flg == FALSE))
+	if ((g_xkey_flg) && (!g_old_xkey_flg))
 	{
 		if (g_item_selection == 1)
 		{
-			if (g_block_count > 0)
+			if ((g_block_count > 0) && (g_cursor_flg))
 			{
-				if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0)
+				if ((MAP_DATA[g_cursory / 30][g_cursorx / 30] == 0) && (ITEM_DATA[g_cursory / 30][g_cursorx / 30] == 0))
 				{
 					MAP_DATA[g_cursory / 30][g_cursorx / 30] = 4;
 					g_block_count--;
@@ -592,7 +654,7 @@ void GameMain::Player_Sousa()
 		}
 	}
 
-	if (((g_lkey_flg == TRUE) && (g_old_lkey_flg == FALSE)) || (g_hammer_flg == TRUE))Hammer();
+	if (((g_lkey_flg) && (!g_old_lkey_flg)) || (g_hammer_flg))Hammer();
 
 	if (g_player_flg == WALK)Walk();
 	else if (g_player_flg == JUMP)Jump();
@@ -601,11 +663,11 @@ void GameMain::Player_Sousa()
 
 void  GameMain::Walk()
 {
-	if ((AX != 0) && (g_rkey_flg == FALSE))
+	if ((AX != 0) && (!g_rkey_flg))
 	{
 		if (g_direction == RIGHT)g_player_x += 2;
 		else g_player_x -= 2;
-		if (Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		if ((Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0) || Player_Hit_Front(g_player_x, 0) < 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 		if (++g_image_time >= 7)
 		{
 			g_player_image_type++;
@@ -631,7 +693,7 @@ void  GameMain::Walk()
 
 void GameMain::Jump()
 {
-	if (g_akey_flg == FALSE && g_move_speed_y > 10)g_move_speed_y = 10;
+	if (!g_akey_flg && g_move_speed_y > 10)g_move_speed_y = 10;
 
 	g_player_y -= (g_move_speed_y / 6); //プレイヤーのY軸を引く
 	g_move_speed_y -= 2;
@@ -649,7 +711,8 @@ void GameMain::Jump()
 	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
-		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
+		(Player_Hit_Front(g_player_x, 0) < 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -677,7 +740,8 @@ void GameMain::Fall()
 	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
-		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
+		Player_Hit_Front(g_player_x, 0) < 0) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
 
 	/*DrawFormatString(100, 100, 0xffffff, "fall");*/
 }
@@ -694,7 +758,7 @@ int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize, int esize,
 	int sy1 = py - ((psize / 2) - 10);
 	int sy2 = py + ((psize / 2) - 10);
 
-	if (a == FALSE)
+	if (!a)
 	{
 		int sx1 = ex + 10;
 		int sx2 = ex + (psize - 10);
@@ -734,4 +798,3 @@ int GameMain::Player_Hit_Up(int a, int b)
 {
 	return (a - (PLAY_SIZE / 2) - b);
 }
-
