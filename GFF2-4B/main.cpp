@@ -10,6 +10,7 @@
 #include"Ranking.h"
 #include"KeyConfigScene.h"
 #include"Help.h"
+#include"InputRankingScene.h"
 
 
 
@@ -63,6 +64,7 @@ RANKING ranking;
 KeyConfigScene keyconfigscene;
 KeyConfig keyconfig;
 Help help;
+InputRanking inputranking;
 
 
 /***********************************************
@@ -121,15 +123,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			break;
 		case 7:
 			help.Draw();
-			break;
 		case 8:
 			// Pause();
 			break;
 		case 9:
 			keyconfigscene.Update();
-			break;
 		case 10:
-			ranking.InputRanking();
+			inputranking.Update();
 			break;
 		}
 

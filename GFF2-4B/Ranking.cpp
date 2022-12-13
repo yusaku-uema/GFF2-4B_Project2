@@ -35,6 +35,8 @@ void RANKING::InputRankingInit(void)
 
 void RANKING::DrawRanking(void)
 {
+    WaitTimer(300);
+
     //ƒ‰ƒ“ƒLƒ“ƒO‰æ‘œ•\Ž¦
     DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
 

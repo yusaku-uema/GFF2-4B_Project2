@@ -58,6 +58,8 @@ void GameMain::GameMain_Init()
 	g_chara_life = 3;
 	g_hammer_flg = FALSE;
 
+	ranking.InputRankingInit();
+
 	//ƒtƒ@ƒCƒ‹
 	FILE* fp = NULL;
 	if (fopen_s(&fp, "data/item2.txt", "r") != 0)
