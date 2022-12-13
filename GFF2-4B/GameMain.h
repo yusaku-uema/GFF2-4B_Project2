@@ -5,6 +5,9 @@ class GameMain
 {
 private:
 
+	int g_game_state;
+	int g_stage;
+
 	int g_blowing_images; //吹き出し画像
 	int g_NumberImage[10]; //数字画像
 	int TmpScore; //スコア保護
@@ -40,15 +43,15 @@ private:
 	int g_scroll_x;
 
 	int g_cursorx, g_cursory;
+	int g_old_cursor_BX, g_old_cursor_BY;
+	bool g_cursor_flg;
+	int g_cursor_key_time;
 
 	int g_item_selection;
 
-	int g_hukuro_count;
-	int g_kagi_count;
+	int g_bag_count;
+	int g_key_count;
 	int g_score;
-	int g_score2;
-	int g_score3;
-	int g_score4;
 
 	int g_chara_life;
 
@@ -70,7 +73,7 @@ private:
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
-	bool g_titen_flg;
+	bool g_checkpoint_flg;
 	int g_move_speed_y;
 
 	int g_player_flg;
@@ -148,11 +151,12 @@ public:
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
 
-	void ItemAnim(); //アイテムのエフェクト処理
+	void Draw_Stage_Select();
+	void Update_Stage_Select();
+	void Stage_Select_Init();
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
-
 };

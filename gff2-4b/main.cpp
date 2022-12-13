@@ -97,7 +97,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			title.Update(); //ゲームタイトル描画処理
 			break;
 		case 1:
-			gamemain.GameMain_Init(); //初期化して case2に自動移行
+			gamemain.Stage_Select_Init(); //初期化して case2に自動移行
 			break;
 		case 2:
 			gamemain.Update(); //ゲーム処理
