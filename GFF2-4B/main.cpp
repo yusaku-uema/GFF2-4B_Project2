@@ -122,7 +122,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			// Pause();
 			break;
 		case 9:
-			keyconfigscene.Update();
+			/*keyconfigscene.Update();*/
 		case 10:
 			inputranking.Update();
 			break;
