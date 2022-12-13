@@ -32,9 +32,10 @@ void GameMain::GameMain_Init()
 	g_titen_flg = FALSE;
 	g_player_x = 30, g_player_y = 550;
 	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
-	TimeLimitImages = LoadGraph("images/koaq.png");
-	ScoreImages = LoadGraph("images/koa.png");
-	LoadDivGraph("images/123.png", 10, 10, 1, 20, 30, g_NumberImage);
+	TimeLimitImages = LoadGraph("images/Timeer.png"); //時間制限文字
+	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
+	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
+	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_hukuro_count = 0;
@@ -283,7 +284,7 @@ void GameMain::Ui()
 		TimeX += 30;
 		ScoreX += 30;
 	}
-	g_score = (g_break_block_count * 5) + (g_hukuro_count * 300) + (g_kagi_count * 1000); //スコア計算
+	g_score = (g_break_block_count * 5) + (g_hukuro_count * 1000) + (g_kagi_count * 5000); //スコア計算
 
 	float size[3];
 
