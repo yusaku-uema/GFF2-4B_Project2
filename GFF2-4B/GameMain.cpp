@@ -36,26 +36,38 @@ void GameMain::Update()
 ************************************************/
 void GameMain::Stage_Select_Init()
 {
-	g_player_x = 200, g_player_y = 300;
+	g_player_x = 260, g_player_y = 550;
 	g_stage = 0;
 	g_game_state = 0;
+	g_stage_select_image = LoadGraph("images/tizu.png"); //éûä‘êßå¿ï∂éö
 	SetGameState(2); //ÉQÅ[ÉÄÉÅÉCÉìà⁄çs
 }
 void GameMain::Draw_Stage_Select()
 {
-	DrawBox(100, 100, 1180, 620, 0xffffff, TRUE);
-	DrawCircle(200, 300, 10, 0xff0000, TRUE);
-	DrawCircle(350, 300, 10, 0xff0000, TRUE);
-	DrawCircle(500, 300, 10, 0xff0000, TRUE);
-	DrawCircle(650, 300, 10, 0xff0000, TRUE);
-	DrawCircle(800, 300, 10, 0xff0000, TRUE);
-	DrawCircle(950, 300, 10, 0xff0000, TRUE);
+	DrawGraph(140, 25, g_stage_select_image,TRUE);
+	DrawCircle(260, 550, 10, 0xff0000, TRUE);
+	DrawCircle(520, 455, 10, 0xff0000, TRUE);
+	DrawCircle(855, 250, 10, 0xff0000, TRUE);
+	
+	//DrawCircle(650, 300, 10, 0xff0000, TRUE);
+	//DrawCircle(800, 300, 10, 0xff0000, TRUE);
+	//DrawCircle(950, 300, 10, 0xff0000, TRUE);
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
 }
 void GameMain::Update_Stage_Select()
 {
-	if((g_rightkey_flg) && (!g_old_rightkey_flg)&& (g_stage < 5))g_stage++,g_player_x += 150;
-	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--, g_player_x -= 150;
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))
+	{
+		if (g_stage == 0)g_player_x = 520, g_player_y = 455;
+		else if(g_stage == 1)g_player_x = 855, g_player_y = 250;
+		g_stage++;
+	}
+	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))
+	{
+		if (g_stage == 2)g_player_x = 520, g_player_y = 455;
+		else if (g_stage == 1)g_player_x = 260, g_player_y = 550;
+		g_stage--;
+	}
 	if (g_bkey_flg)g_game_state = 1, g_stage = 1,GameMain_Init();
 }
 
