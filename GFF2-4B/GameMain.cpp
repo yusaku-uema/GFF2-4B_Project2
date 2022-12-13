@@ -454,7 +454,7 @@ void  GameMain::Item()
 		}
 		if (g_bom[i].flg == NONE)//爆弾の状態がNONEの時
 		{
-			if ((g_xkey_flg) && (!g_old_xkey_flg) && (g_item_selection == 2))//Xキーが押され、爆弾を選択してたら
+			if ((g_rkey_flg) && (!g_old_rkey_flg) && (g_item_selection == 2))//Xキーが押され、爆弾を選択してたら
 			{
 				if (g_bom_count_flg)//手持ちの爆弾があったら
 				{
@@ -651,7 +651,7 @@ void GameMain::Player_Sousa()
 		}
 	}
 
-	if ((g_xkey_flg) && (!g_old_xkey_flg))
+	if ((g_rkey_flg) && (!g_old_rkey_flg))
 	{
 		if (g_item_selection == 1)
 		{
@@ -675,7 +675,7 @@ void GameMain::Player_Sousa()
 
 void  GameMain::Walk()
 {
-	if ((AX != 0) && (!g_rkey_flg))
+	if (AX != 0)
 	{
 		if (g_direction == RIGHT)g_player_x += 2;
 		else g_player_x -= 2;
