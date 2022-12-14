@@ -33,7 +33,7 @@ private:
 	int g_old_hammer_x, g_old_hammer_y;
 	int g_hammer_orbit_x, g_hammer_orbit_y;
 	bool g_hit_hammer_flg;
-	bool g_hammer_flg;//ハンマーが使われているかどうか
+	int g_hammer_flg;//ハンマーが使われているかどうか
 	
 	int g_player_image_type;
 	int g_image_time;
@@ -73,11 +73,16 @@ private:
 	bool g_old_rkey_flg;
 	bool g_old_rightkey_flg;
 	bool g_old_leftkey_flg;
+	bool g_old_startkey_flg;
 	bool g_upkey_flg;
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
+	bool g_startkey_flg;
+
 	bool g_checkpoint_flg;
+	bool g_game_stop;
+
 	int g_move_speed_y;
 
 	int g_player_flg;
@@ -109,6 +114,13 @@ private:
 		LEFT = 1,
 	};
 
+	enum HAMMER_STATE
+	{
+		HAMMER_NONE = 0, //使ってない
+		HAMMER_CURSOR,    //カーソルのブロックを掘る
+		HAMMER_FLY, //投げてる
+	};
+
 	struct ITEM {
 		bool flg;
 		int x;
@@ -124,6 +136,10 @@ private:
 		int y;
 		int time;
 		bool hit_flg;
+		int orbit_x;
+		int orbit_y;
+		int angle_direction;
+		int angle;
 	};
 	struct BOM g_bom[10];
 
@@ -144,6 +160,7 @@ public:
 	void Ui();
 	void Block_Collision(int a, int b, bool c); //つるはしを投げた時の当たり判定
 	void Draw();
+	void Bom();
 
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
