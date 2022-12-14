@@ -40,7 +40,7 @@ void GameMain::Update()
 ************************************************/
 void GameMain::Stage_Select_Init()
 {
-	g_player_x = 260, g_player_y = 550;
+	g_player_x = 200, g_player_y = 565;
 	g_stage = 0;
 	g_game_state = 0;
 	g_stage_select_image = LoadGraph("images/kusa.png"); 
@@ -49,9 +49,9 @@ void GameMain::Stage_Select_Init()
 void GameMain::Draw_Stage_Select()
 {
 	DrawGraph(0, 0, g_stage_select_image, TRUE);
-	DrawCircle(260, 550, 10, 0xff0000, TRUE);
-	DrawCircle(520, 455, 10, 0xff0000, TRUE);
-	DrawCircle(855, 250, 10, 0xff0000, TRUE);
+	DrawCircle(200, 565, 10, 0xff0000, TRUE);
+	DrawCircle(500, 475, 10, 0xff0000, TRUE);
+	DrawCircle(895, 235, 10, 0xff0000, TRUE);
 	
 	//DrawCircle(650, 300, 10, 0xff0000, TRUE);
 	//DrawCircle(800, 300, 10, 0xff0000, TRUE);
@@ -62,14 +62,14 @@ void GameMain::Update_Stage_Select()
 {
 	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))
 	{
-		if (g_stage == 0)g_player_x = 520, g_player_y = 455;
-		else if(g_stage == 1)g_player_x = 855, g_player_y = 250;
+		if (g_stage == 0)g_player_x = 500, g_player_y = 475;
+		else if(g_stage == 1)g_player_x = 895, g_player_y = 235;
 		g_stage++;
 	}
 	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))
 	{
-		if (g_stage == 2)g_player_x = 520, g_player_y = 455;
-		else if (g_stage == 1)g_player_x = 260, g_player_y = 550;
+		if (g_stage == 2)g_player_x = 500, g_player_y = 475;
+		else if (g_stage == 1)g_player_x = 200, g_player_y = 560;
 		g_stage--;
 	}
 	if (g_bkey_flg)g_game_state = 1, g_stage = 1,GameMain_Init();
