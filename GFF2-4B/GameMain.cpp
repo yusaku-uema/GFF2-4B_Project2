@@ -218,29 +218,12 @@ void GameMain::Time()
 		SetScore(g_score + (TimeLimit * 100));
 		SetGameState(4);
 	}
-
-	if (TimeLimit <= 100 && TimeLimit >= 95)
-	{
-		DrawGraph(250, 200, LimitImages, TRUE); //残り時間の文字描画
-
-		TmpTime = TimeLimit; //制限時間保護
-		int TimeX = 550;//時間の描画位置
-		int Calc = 10000;//表示桁数
-
-		while (Calc > 0)
-		{
-			if (Calc <= 100)DrawGraph(TimeX, 200, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
-			TmpTime -= (TmpTime / Calc) * Calc;
-			Calc /= 10;
-			TimeX += 50;
-		}
-
-	}
 }
 
 void GameMain::Clear()
 {
 	if (g_player_x >= 4477) //クリア条件
+
 	{
 		SetScore(g_score+(TimeLimit * 100));
 		SetGameState(3);
@@ -355,6 +338,25 @@ void GameMain::Draw()
 		}
 	}
 	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);
+
+	if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
+	{
+		DrawGraph(250, 50, LimitImages, TRUE); //残り時間の文字描画
+
+		TmpTime = TimeLimit; //制限時間保護
+		int TimeX = 550;//時間の描画位置
+		int Calc = 10000;//表示桁数
+
+		while (Calc > 0)
+		{
+			if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
+			TmpTime -= (TmpTime / Calc) * Calc;
+			Calc /= 10;
+			TimeX += 50;
+		}
+
+	}
+
 }
 
 void GameMain::Ui()
