@@ -115,7 +115,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
-			help.Draw();
+			help.Draw(); //ヘルプ
+			break;
 		case 8:
 			// Pause();
 			break;
