@@ -338,12 +338,12 @@ void GameMain::Draw()
 			while (y < 720)
 			{
 				y -= (g_orbit_y / 3);
-				x -= (g_orbit_x / 3);
+				x -= (g_orbit_x / 4);
 				g_orbit_y -= 1;
 				DrawCircle(x - g_scroll_x, y, 3, 0xffffff, false);
 			}
 		}
-		else if (g_cursor_flg)DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
+		DrawGraph(((g_cursorx / 30) * 30) - g_scroll_x, (g_cursory / 30) * 30, GetArrayImages(Player_CursorImages, 0), TRUE);
 	}
 
 	for (int i = 0; i < 10; i++)
@@ -354,7 +354,7 @@ void GameMain::Draw()
 			if(g_bom[i].flg == ANGRY)DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
-	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);
+	DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
 }
 
 void GameMain::Ui()
@@ -428,7 +428,7 @@ void GameMain::Bom()
 			else
 			{
 				g_bom[i].y -= (g_bom[i].orbit_y / 3);//y座標の変更
-				g_bom[i].x -= (g_bom[i].orbit_x / 3);//x座標の変更
+				g_bom[i].x -= (g_bom[i].orbit_x / 4);//x座標の変更
 				g_bom[i].orbit_y -= 1;//ｙ座標の変更量を減らす
 				g_bom[i].angle -= (10 * g_bom[i].angle_direction);
 				if (g_bom[i].angle >= 360)g_bom[i].angle = 0; //爆弾が一回転したら角度を0にする
@@ -512,7 +512,7 @@ void GameMain::Hammer()
 		g_old_hammer_y = g_hammer_y;//直前のつるはしのy座標を入れる
 
 		g_hammer_y -= (g_hammer_orbit_y / 3);//y座標の変更
-		g_hammer_x -= (g_hammer_orbit_x / 3);//x座標の変更
+		g_hammer_x -= (g_hammer_orbit_x / 4);//x座標の変更
 		g_hammer_orbit_y -= 1;//ｙ座標の変更量を減らす
 
 		//つるはしの周りを壊す
@@ -612,7 +612,6 @@ void GameMain::Player_Sousa()
 		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
-	
 	if (AX < 0)g_direction = LEFT;
 	else if (AX > 0)g_direction = RIGHT;
 
@@ -634,8 +633,8 @@ void GameMain::Player_Sousa()
 	else
 	{
 		g_cursory = g_player_y;
-		if (g_old_cursor_BX > 0)g_cursorx = g_player_x + (PLAY_SIZE / 2) + BLOCK_SIZE;
-		if (g_old_cursor_BX < 0)g_cursorx = g_player_x - (PLAY_SIZE / 2) + 1 - BLOCK_SIZE;
+		if (g_old_cursor_BX > 0)g_cursorx = g_player_x + (PLAY_WIDTH_SIZE / 2) + BLOCK_SIZE;
+		if (g_old_cursor_BX < 0)g_cursorx = g_player_x - (PLAY_WIDTH_SIZE / 2) - BLOCK_SIZE;
 	}
 
 	g_cursor_flg = TRUE;
@@ -660,7 +659,7 @@ void GameMain::Player_Sousa()
 	
 	if (BX != 0 || BY != 0)
 	{
-		if ((g_lkey_flg) && (g_hammer_flg == HAMMER_NONE))
+		if ((g_lkey_flg) && (!g_old_lkey_flg) && (g_hammer_flg == HAMMER_NONE))
 		{
 			if (BX <= 0)g_hammer_angle_direction = LEFT;
 			else g_hammer_angle_direction = RIGHT;
@@ -724,7 +723,6 @@ void GameMain::Player_Sousa()
 			}
 		}
 	}
-
 	if (g_hammer_flg  != HAMMER_NONE)Hammer();
 
 	if (g_player_flg == WALK)Walk();
@@ -738,7 +736,7 @@ void  GameMain::Walk()
 	{
 		if (g_direction == RIGHT)g_player_x += 2;
 		else g_player_x -= 2;
-		if ((Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0) || Player_Hit_Front(g_player_x, 0) < 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		if ((Get_MapData(g_player_y, Player_Hit_Front(g_player_x, 0)) > 0) || Player_Hit_Front(g_player_x, 0) < 0)g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (4 * g_direction));
 		if (++g_image_time >= 7)
 		{
 			g_player_image_type++;
@@ -776,14 +774,17 @@ void GameMain::Jump()
 		g_move_speed_y = -5;
 	}
 
-	if (AX > 0)g_player_x += 1;
-	else if (AX < 0)g_player_x -= 1;
+	if (AX != 0)
+	{
+		if (g_direction == RIGHT)g_player_x += 1;
+		else g_player_x -= 1;
+	}
 
 	if ((Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
-		(Player_Hit_Front(g_player_x, 0) < 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		(Player_Hit_Front(g_player_x, 0) < 0)) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (4 * g_direction));
 
 	if (g_move_speed_y < 0) g_player_flg = FALL;
 
@@ -812,7 +813,7 @@ void GameMain::Fall()
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Front(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Up(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
 		(Get_MapData(Player_Hit_Under(g_player_y, 0), Player_Hit_Back(g_player_x, 0)) > 0) ||
-		Player_Hit_Front(g_player_x, 0) < 0) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (2 * g_direction));
+		Player_Hit_Front(g_player_x, 0) < 0) g_player_x = ((g_player_x / BLOCK_SIZE) * BLOCK_SIZE) + (15 - (4 * g_direction));
 
 	/*DrawFormatString(100, 100, 0xffffff, "fall");*/
 }
@@ -850,22 +851,22 @@ int GameMain::HitBoxPlayer(int px, int py, int ex, int ey, int psize, int esize,
 
 int GameMain::Player_Hit_Front(int a, int b)
 {
-	if (g_direction == RIGHT) return (a + (PLAY_SIZE / 2) + b);
-	else return (a - ((PLAY_SIZE / 2) + 1) - b);
+	if (g_direction == RIGHT) return (a + ((PLAY_WIDTH_SIZE / 2)) + b);
+	else return (a - ((PLAY_WIDTH_SIZE / 2) + 1) - b);
 }
 
 int GameMain::Player_Hit_Back(int a, int b)
 {
-	if (g_direction == RIGHT) return (a - ((PLAY_SIZE / 2) + 1) - b);
-	else return (a + (PLAY_SIZE / 2) + b);
+	if (g_direction == RIGHT) return (a - ((PLAY_WIDTH_SIZE / 2) + 1) - b);
+	else return (a + ((PLAY_WIDTH_SIZE / 2)) + b);
 }
 
 int GameMain::Player_Hit_Under(int a, int b)
 {
-	return (a + (PLAY_SIZE / 2) + b);
+	return (a + (PLAY_HIGHT_SIZE / 2) + b);
 }
 
 int GameMain::Player_Hit_Up(int a, int b)
 {
-	return (a - (PLAY_SIZE / 2) - b);
+	return (a - (PLAY_HIGHT_SIZE / 2) - b);
 }

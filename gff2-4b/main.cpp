@@ -165,7 +165,7 @@ int LoadImages()
 	if ((g_Box2_images = LoadGraph("images/•ó” ‚Q_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/HeipImage.png")) == -1)return -1;
 	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/Player (1)_transparent.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/player3.png", 4, 4, 1, 20, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_KiraKira_image) == -1) return -1;
