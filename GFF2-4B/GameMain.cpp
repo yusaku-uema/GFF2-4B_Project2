@@ -188,7 +188,7 @@ void GameMain::GameMain_Init()
 	g_cursor_flg = TRUE;
 	g_game_stop = FALSE;
 
-	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
+	BreakBGM = LoadSoundMem("BGM/breakblock.mp3");//破壊音BGM
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //時間制限文字
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
@@ -563,6 +563,7 @@ void GameMain::Hammer()
 		g_hammer_x -= (g_hammer_orbit_x / 4);//x座標の変更
 		g_hammer_orbit_y -= 1;//ｙ座標の変更量を減らす
 
+		int g_old_break_block_count = g_break_block_count;
 		//つるはしの周りを壊す
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
@@ -572,6 +573,8 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y + 7, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
+
+		if(g_old_break_block_count != g_break_block_count)PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 
 		if (!g_hit_hammer_flg)g_hammer_angle -= (10 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たっていないならつるはしを投げた方向に回転させる
 		else g_hammer_angle += (5 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たった時つるはしを投げた方向と逆方向に回転する
@@ -610,7 +613,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 					{ //↓ブロックに埋もれている爆弾に当たったら起動しないようにg_bom[i].hit_flgをFALSEにする（FALSEにすると攻撃しても爆弾が起動しない）
 						if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].hit_flg = FALSE;
 					}
-					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
+					
 				}
 				else if(g_cursor_flg)//つるはしが投げられていない（カーソル内のブロックに攻撃してる）とき
 				{
