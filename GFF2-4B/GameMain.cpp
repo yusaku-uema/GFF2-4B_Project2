@@ -60,19 +60,14 @@ void GameMain::Draw_Stage_Select()
 }
 void GameMain::Update_Stage_Select()
 {
-	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))
-	{
-		if (g_stage == 0)g_player_x = 500, g_player_y = 475;
-		else if(g_stage == 1)g_player_x = 895, g_player_y = 235;
-		g_stage++;
-	}
-	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))
-	{
-		if (g_stage == 2)g_player_x = 500, g_player_y = 475;
-		else if (g_stage == 1)g_player_x = 200, g_player_y = 560;
-		g_stage--;
-	}
-	if (g_bkey_flg)
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
+	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
+	
+	if (g_stage == 0)g_player_x = 200, g_player_y = 560;
+	else if (g_stage == 1)g_player_x = 500, g_player_y = 475;
+	else if (g_stage == 2)g_player_x = 895, g_player_y = 235;
+
+	if (g_bkey_flg && !g_old_bkey_flg)
 	{
 		if (g_stage >= 2)g_stage = 1;
 		g_game_state = 1, GameMain_Init();
@@ -188,7 +183,7 @@ void GameMain::GameMain_Init()
 	g_cursor_flg = TRUE;
 	g_game_stop = FALSE;
 
-	BreakBGM = LoadSoundMem("BGM/breakblock.mp3");//”j‰ó‰¹BGM
+	BreakBGM = LoadSoundMem("BGM/breakblock1.mp3");//”j‰ó‰¹BGM
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //ŠÔ§ŒÀ•¶š
 	g_blowing_images = LoadGraph("images/fuki.png"); //”š”­‚µ‚½‚Ì‰æ‘œ
 	ScoreImages = LoadGraph("images/Score.png"); //ƒXƒRƒA•¶š‰æ‘œ
@@ -265,6 +260,7 @@ void GameMain::Clear()
 
 	{
 		SetScore(g_score+(TimeLimit * 100));
+		g_game_state = 0;
 		SetGameState(3);
 	}
 }
