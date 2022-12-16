@@ -42,7 +42,7 @@ void GameMain::Stage_Select_Init()
 {
 	FILE* fp = NULL;//ステージ１ファイル読み込み
 
-	if (fopen_s(&fp, "data/hiscore.txt", "r") != 0)//アイテムデータ
+	if (fopen_s(&fp, "data/hiscore.txt", "r") != 0)//ステージごとのハイスコアのデータ
 	{
 		throw "Data/item1.txt";
 	}
@@ -53,30 +53,44 @@ void GameMain::Stage_Select_Init()
 	fclose(fp);
 	fp = NULL;
 
-	g_player_x = 200, g_player_y = 565;
+	//g_player_x = 200, g_player_y = 565;
 	g_stage = 0;
 	g_game_state = 0;
-	g_stage_select_image = LoadGraph("images/kusa.png"); 
+	g_stage_select_image = LoadGraph("images/map.png");
+	LoadDivGraph("images/number.png", 10, 10, 1, 45, 110, g_stage_select_number_image);
 	SetGameState(2); //ゲームメイン移行
 }
 void GameMain::Draw_Stage_Select()
 {
-	DrawGraph(0, 0, g_stage_select_image, TRUE);
-	DrawCircle(200, 565, 10, 0xff0000, TRUE);
-	DrawCircle(500, 475, 10, 0xff0000, TRUE);
-	DrawCircle(895, 235, 10, 0xff0000, TRUE);
+	DrawGraph(140, 10, g_stage_select_image, TRUE);
+	DrawCircle(460, 465, 10, 0xff0000, TRUE);
+	DrawCircle(675, 395, 10, 0xff0000, TRUE);
+	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
 	DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);
+
+	int hi_score = g_hi_score[g_stage]; //スコア保護
+	int hiscore_x = 300;//時間の描画位置
+	int Calc = 10000;//表示桁数
+
+	while (Calc > 0)
+	{
+		DrawGraph(hiscore_x, 150, g_stage_select_number_image[hi_score / Calc],TRUE);//すコア表示
+		hi_score -= (hi_score / Calc) * Calc;
+		Calc /= 10;
+		hiscore_x += 45;
+	}
+	DrawGraph(870,487, g_stage_select_number_image[g_stage + 1], TRUE);//すコア表示
 }
 void GameMain::Update_Stage_Select()
 {
 	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
 	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
 	
-	if (g_stage == 0)g_player_x = 200, g_player_y = 560;
-	else if (g_stage == 1)g_player_x = 500, g_player_y = 475;
-	else if (g_stage == 2)g_player_x = 895, g_player_y = 235;
+	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
+	else if (g_stage == 1)g_player_x = 675, g_player_y = 395;
+	else if (g_stage == 2)g_player_x = 900, g_player_y = 265;
 
 	if (g_bkey_flg && !g_old_bkey_flg)
 	{
@@ -271,7 +285,16 @@ void GameMain::Clear()
 
 	{
 		SetScore(g_score+(TimeLimit * 100));
-		g_game_state = 0;
+		if (GetScore() > g_hi_score[g_stage])
+		{
+			FILE* fp;
+            #pragma warning(disable:4996)
+
+			g_hi_score[g_stage] = GetScore();
+			if ((fp = fopen("data/hiscore.txt", "w")) == NULL)printf("Ranking Data Error\n");
+			for (int i = 0; i < 3; i++)fprintf(fp, "%d ", g_hi_score[i]);
+			fclose(fp);
+		}
 		SetGameState(3);
 	}
 }
