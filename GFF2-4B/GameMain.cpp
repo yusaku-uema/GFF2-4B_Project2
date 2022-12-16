@@ -40,6 +40,19 @@ void GameMain::Update()
 ************************************************/
 void GameMain::Stage_Select_Init()
 {
+	FILE* fp = NULL;//ステージ１ファイル読み込み
+
+	if (fopen_s(&fp, "data/hiscore.txt", "r") != 0)//アイテムデータ
+	{
+		throw "Data/item1.txt";
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		fscanf_s(fp, "%d", &g_hi_score[i]);
+	}
+	fclose(fp);
+	fp = NULL;
+
 	g_player_x = 200, g_player_y = 565;
 	g_stage = 0;
 	g_game_state = 0;
@@ -53,10 +66,8 @@ void GameMain::Draw_Stage_Select()
 	DrawCircle(500, 475, 10, 0xff0000, TRUE);
 	DrawCircle(895, 235, 10, 0xff0000, TRUE);
 	
-	//DrawCircle(650, 300, 10, 0xff0000, TRUE);
-	//DrawCircle(800, 300, 10, 0xff0000, TRUE);
-	//DrawCircle(950, 300, 10, 0xff0000, TRUE);
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
+	DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);
 }
 void GameMain::Update_Stage_Select()
 {

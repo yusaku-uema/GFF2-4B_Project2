@@ -6,6 +6,8 @@ class GameMain
 {
 private:
 
+	int g_hi_score[3];
+
 	int g_game_state;
 	int g_stage;
 	int g_stage_width;
