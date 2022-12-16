@@ -72,7 +72,11 @@ void GameMain::Update_Stage_Select()
 		else if (g_stage == 1)g_player_x = 200, g_player_y = 560;
 		g_stage--;
 	}
-	if (g_bkey_flg)g_game_state = 1, g_stage = 1,GameMain_Init();
+	if (g_bkey_flg)
+	{
+		if (g_stage >= 2)g_stage = 1;
+		g_game_state = 1, GameMain_Init();
+	}
 }
 
 
@@ -81,19 +85,54 @@ void GameMain::Update_Stage_Select()
 ************************************************/
 void GameMain::GameMain_Init()
 {
-	
+	FILE* fp = NULL;//ステージ１ファイル読み込み
+
 	switch (g_stage)
 	{
 	case 0://ステージ選択画面
-		
+		g_player_x = 30;
+		g_player_y = 550;
+		g_stage_width = 75;
+		g_stage_scroll_x = 970;
+		g_clear_x = 2230;
+
+		if (fopen_s(&fp, "data/item1.txt", "r") != 0)//アイテムデータ
+		{
+			throw "Data/item1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		if (fopen_s(&fp, "data/map1.txt", "r") != 0)//マップデータ
+		{
+			throw "Data/map1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
 		break;
 
 	case 1://ステージ1初期化
 		g_player_x = 30;
 		g_player_y = 550;
-
+		g_stage_width = 150;
+		g_stage_scroll_x = 3220;
+		g_clear_x = 4477;
 		
-		FILE* fp = NULL;//ステージ１ファイル読み込み
+		//FILE* fp = NULL;//ステージ１ファイル読み込み
 
 		if (fopen_s(&fp, "data/item2.txt", "r") != 0)//アイテムデータ
 		{
@@ -101,7 +140,7 @@ void GameMain::GameMain_Init()
 		}		
 		for (int i = 0; i < MAP_HIGHT; i++)
 		{
-			for (int j = 0; j < MAP_WIDTH; j++)
+			for (int j = 0; j < g_stage_width; j++)
 			{
 				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
 			}
@@ -115,7 +154,7 @@ void GameMain::GameMain_Init()
 		}
 		for (int i = 0; i < MAP_HIGHT; i++)
 		{
-			for (int j = 0; j < MAP_WIDTH; j++)
+			for (int j = 0; j < g_stage_width; j++)
 			{
 				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
 			}
@@ -177,7 +216,7 @@ void GameMain::GameMain_Init()
 
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
-		for (int j = 0; j < MAP_WIDTH; j++)
+		for (int j = 0; j < g_stage_width; j++)
 		{
 			if (ITEM_DATA[i][j] > 0)
 			{
@@ -222,7 +261,7 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 4477) //クリア条件
+	if (g_player_x >= g_clear_x) //クリア条件
 
 	{
 		SetScore(g_score+(TimeLimit * 100));
@@ -302,7 +341,7 @@ void GameMain::Draw()
 
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
-		for (int j = 0; j < MAP_WIDTH; j++)
+		for (int j = 0; j < g_stage_width; j++)
 		{
 			if (MAP_DATA[i][j] > 0)
 			{
@@ -445,9 +484,14 @@ void GameMain::Bom()
 				{
 					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)//横7マスの
 					{
-						if ((a < MAP_HIGHT && a >= 0) && (j < MAP_WIDTH && j >= 0))//マップ内の
+						if ((a < MAP_HIGHT && a >= 0) && (j < g_stage_width && j >= 0))//マップ内の
 						{
-							if (MAP_DATA[a][j] != 6 && MAP_DATA[a][j] > 0)MAP_DATA[a][j] = 0;//６番以外のブロックを消す
+							if (MAP_DATA[a][j] != 6 && MAP_DATA[a][j] > 0)
+							{
+								MAP_DATA[a][j] = 0;//６番以外のブロックを消す
+								g_break_block_count++;
+								if ((g_break_block_count % 50) == 0) g_block_count++;
+							}
 						}
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
@@ -479,7 +523,7 @@ void  GameMain::Item()
 {
 	if (g_player_x >= 600)//プレイヤーのx座標が600以上なら
 	{
-		if(g_player_x >= 3820)g_scroll_x = 3220;//プレイヤーのx座標が3820以上なら画面スクロールのx座標を3220に固定する（ステージ端に来たため）
+		if(g_player_x >= g_stage_scroll_x + 600)g_scroll_x = g_stage_scroll_x;//プレイヤーのx座標が3820以上なら画面スクロールのx座標を3220に固定する（ステージ端に来たため）
 		else g_scroll_x = g_player_x - 600;//プレイヤーのx座標が3820未満なら画面をスクロールさせる
 	}
 	else g_scroll_x = 0;//プレイヤーのx座標が600未満なら画面スクロールしない
@@ -555,7 +599,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 {
 	if ((a / 30) < MAP_HIGHT && (a / 30) >= 0) //マップの範囲内の
 	{
-		if ((b / 30) < MAP_WIDTH && (b / 30) >= 0)//マップの範囲内の
+		if ((b / 30) < g_stage_width && (b / 30) >= 0)//マップの範囲内の
 		{
 			if (MAP_DATA[a / 30][b / 30] >= 1 && MAP_DATA[a / 30][b / 30] <= 4)//ブロックに当たった時
 			{
@@ -642,7 +686,7 @@ void GameMain::Player_Sousa()
 	}
 
 	g_cursor_flg = TRUE;
-	if ((g_cursory / 30 >= MAP_HIGHT) || (g_cursory < 0) || (g_cursorx / 30 >= MAP_WIDTH) || (g_cursorx < 0)) 
+	if ((g_cursory / 30 >= MAP_HIGHT) || (g_cursory < 0) || (g_cursorx / 30 >= g_stage_width) || (g_cursorx < 0))
 	{
 		g_cursor_flg = FALSE;
 	}

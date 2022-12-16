@@ -8,6 +8,9 @@ private:
 
 	int g_game_state;
 	int g_stage;
+	int g_stage_width;
+	int g_stage_scroll_x;
+	int g_clear_x;
 
 	int g_stage_select_image;
 	int g_blowing_images; //‚«o‚µ‰æ‘œ
