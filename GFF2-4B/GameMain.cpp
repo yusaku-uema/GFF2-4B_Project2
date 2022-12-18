@@ -40,39 +40,63 @@ void GameMain::Update()
 ************************************************/
 void GameMain::Stage_Select_Init()
 {
-	g_player_x = 200, g_player_y = 565;
+	FILE* fp = NULL;//ステージ１ファイル読み込み
+
+	if (fopen_s(&fp, "data/hiscore.txt", "r") != 0)//ステージごとのハイスコアのデータ
+	{
+		throw "Data/item1.txt";
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		fscanf_s(fp, "%d", &g_hi_score[i]);
+	}
+	fclose(fp);
+	fp = NULL;
+
+	//g_player_x = 200, g_player_y = 565;
 	g_stage = 0;
 	g_game_state = 0;
-	g_stage_select_image = LoadGraph("images/kusa.png"); 
+	g_stage_select_image = LoadGraph("images/map.png");
+	LoadDivGraph("images/number.png", 10, 10, 1, 45, 110, g_stage_select_number_image);
 	SetGameState(2); //ゲームメイン移行
 }
 void GameMain::Draw_Stage_Select()
 {
-	DrawGraph(0, 0, g_stage_select_image, TRUE);
-	DrawCircle(200, 565, 10, 0xff0000, TRUE);
-	DrawCircle(500, 475, 10, 0xff0000, TRUE);
-	DrawCircle(895, 235, 10, 0xff0000, TRUE);
+	DrawGraph(140, 10, g_stage_select_image, TRUE);
+	DrawCircle(460, 465, 10, 0xff0000, TRUE);
+	DrawCircle(675, 395, 10, 0xff0000, TRUE);
+	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
-	//DrawCircle(650, 300, 10, 0xff0000, TRUE);
-	//DrawCircle(800, 300, 10, 0xff0000, TRUE);
-	//DrawCircle(950, 300, 10, 0xff0000, TRUE);
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
+	DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);
+
+	int hi_score = g_hi_score[g_stage]; //スコア保護
+	int hiscore_x = 300;//時間の描画位置
+	int Calc = 10000;//表示桁数
+
+	while (Calc > 0)
+	{
+		DrawGraph(hiscore_x, 150, g_stage_select_number_image[hi_score / Calc],TRUE);//すコア表示
+		hi_score -= (hi_score / Calc) * Calc;
+		Calc /= 10;
+		hiscore_x += 45;
+	}
+	DrawGraph(870,487, g_stage_select_number_image[g_stage + 1], TRUE);//すコア表示
 }
 void GameMain::Update_Stage_Select()
 {
-	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
+	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
+	
+	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
+	else if (g_stage == 1)g_player_x = 675, g_player_y = 395;
+	else if (g_stage == 2)g_player_x = 900, g_player_y = 265;
+
+	if (g_bkey_flg && !g_old_bkey_flg)
 	{
-		if (g_stage == 0)g_player_x = 500, g_player_y = 475;
-		else if(g_stage == 1)g_player_x = 895, g_player_y = 235;
-		g_stage++;
+		if (g_stage >= 2)g_stage = 1;
+		g_game_state = 1, GameMain_Init();
 	}
-	if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))
-	{
-		if (g_stage == 2)g_player_x = 500, g_player_y = 475;
-		else if (g_stage == 1)g_player_x = 200, g_player_y = 560;
-		g_stage--;
-	}
-	if (g_bkey_flg)g_game_state = 1, g_stage = 1,GameMain_Init();
 }
 
 
@@ -81,19 +105,54 @@ void GameMain::Update_Stage_Select()
 ************************************************/
 void GameMain::GameMain_Init()
 {
-	
+	FILE* fp = NULL;//ステージ１ファイル読み込み
+
 	switch (g_stage)
 	{
 	case 0://ステージ選択画面
-		
+		g_player_x = 30;
+		g_player_y = 550;
+		g_stage_width = 75;
+		g_stage_scroll_x = 970;
+		g_clear_x = 2230;
+
+		if (fopen_s(&fp, "data/item1.txt", "r") != 0)//アイテムデータ
+		{
+			throw "Data/item1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		if (fopen_s(&fp, "data/map1.txt", "r") != 0)//マップデータ
+		{
+			throw "Data/map1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
 		break;
 
 	case 1://ステージ1初期化
 		g_player_x = 30;
 		g_player_y = 550;
-
+		g_stage_width = 150;
+		g_stage_scroll_x = 3220;
+		g_clear_x = 4477;
 		
-		FILE* fp = NULL;//ステージ１ファイル読み込み
+		//FILE* fp = NULL;//ステージ１ファイル読み込み
 
 		if (fopen_s(&fp, "data/item2.txt", "r") != 0)//アイテムデータ
 		{
@@ -101,7 +160,7 @@ void GameMain::GameMain_Init()
 		}		
 		for (int i = 0; i < MAP_HIGHT; i++)
 		{
-			for (int j = 0; j < MAP_WIDTH; j++)
+			for (int j = 0; j < g_stage_width; j++)
 			{
 				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
 			}
@@ -115,7 +174,7 @@ void GameMain::GameMain_Init()
 		}
 		for (int i = 0; i < MAP_HIGHT; i++)
 		{
-			for (int j = 0; j < MAP_WIDTH; j++)
+			for (int j = 0; j < g_stage_width; j++)
 			{
 				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
 			}
@@ -149,7 +208,7 @@ void GameMain::GameMain_Init()
 	g_cursor_flg = TRUE;
 	g_game_stop = FALSE;
 
-	BreakBGM = LoadSoundMem("BGM/Onoma-Pop01-3(Dry).mp3");//破壊音BGM
+	BreakBGM = LoadSoundMem("BGM/breakblock1.mp3");//破壊音BGM
 	TimeLimitImages = LoadGraph("images/Timeer.png"); //時間制限文字
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
@@ -177,7 +236,7 @@ void GameMain::GameMain_Init()
 
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
-		for (int j = 0; j < MAP_WIDTH; j++)
+		for (int j = 0; j < g_stage_width; j++)
 		{
 			if (ITEM_DATA[i][j] > 0)
 			{
@@ -222,10 +281,20 @@ void GameMain::Time()
 
 void GameMain::Clear()
 {
-	if (g_player_x >= 4477) //クリア条件
+	if (g_player_x >= g_clear_x) //クリア条件
 
 	{
 		SetScore(g_score+(TimeLimit * 100));
+		if (GetScore() > g_hi_score[g_stage])
+		{
+			FILE* fp;
+            #pragma warning(disable:4996)
+
+			g_hi_score[g_stage] = GetScore();
+			if ((fp = fopen("data/hiscore.txt", "w")) == NULL)printf("Ranking Data Error\n");
+			for (int i = 0; i < 3; i++)fprintf(fp, "%d ", g_hi_score[i]);
+			fclose(fp);
+		}
 		SetGameState(3);
 	}
 }
@@ -302,7 +371,7 @@ void GameMain::Draw()
 
 	for (int i = 0; i < MAP_HIGHT; i++)
 	{
-		for (int j = 0; j < MAP_WIDTH; j++)
+		for (int j = 0; j < g_stage_width; j++)
 		{
 			if (MAP_DATA[i][j] > 0)
 			{
@@ -445,9 +514,14 @@ void GameMain::Bom()
 				{
 					for (int j = (g_bom[i].x - 90) / 30; j < (g_bom[i].x + 120) / 30; j++)//横7マスの
 					{
-						if ((a < MAP_HIGHT && a >= 0) && (j < MAP_WIDTH && j >= 0))//マップ内の
+						if ((a < MAP_HIGHT && a >= 0) && (j < g_stage_width && j >= 0))//マップ内の
 						{
-							if (MAP_DATA[a][j] != 6 && MAP_DATA[a][j] > 0)MAP_DATA[a][j] = 0;//６番以外のブロックを消す
+							if (MAP_DATA[a][j] != 6 && MAP_DATA[a][j] > 0)
+							{
+								MAP_DATA[a][j] = 0;//６番以外のブロックを消す
+								g_break_block_count++;
+								if ((g_break_block_count % 50) == 0) g_block_count++;
+							}
 						}
 						if (((Player_Hit_Back(g_player_x, -5) / 30 == j) || (Player_Hit_Front(g_player_x, -5) / 30 == j)) &&
 							((Player_Hit_Under(g_player_y, -5) / 30 == a) || (Player_Hit_Up(g_player_y, -5) / 30 == a)))
@@ -479,7 +553,7 @@ void  GameMain::Item()
 {
 	if (g_player_x >= 600)//プレイヤーのx座標が600以上なら
 	{
-		if(g_player_x >= 3820)g_scroll_x = 3220;//プレイヤーのx座標が3820以上なら画面スクロールのx座標を3220に固定する（ステージ端に来たため）
+		if(g_player_x >= g_stage_scroll_x + 600)g_scroll_x = g_stage_scroll_x;//プレイヤーのx座標が3820以上なら画面スクロールのx座標を3220に固定する（ステージ端に来たため）
 		else g_scroll_x = g_player_x - 600;//プレイヤーのx座標が3820未満なら画面をスクロールさせる
 	}
 	else g_scroll_x = 0;//プレイヤーのx座標が600未満なら画面スクロールしない
@@ -519,6 +593,7 @@ void GameMain::Hammer()
 		g_hammer_x -= (g_hammer_orbit_x / 4);//x座標の変更
 		g_hammer_orbit_y -= 1;//ｙ座標の変更量を減らす
 
+		int g_old_break_block_count = g_break_block_count;
 		//つるはしの周りを壊す
 		Block_Collision(g_hammer_y - 7, g_hammer_x, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x + 7, TRUE);
@@ -528,6 +603,8 @@ void GameMain::Hammer()
 		Block_Collision(g_hammer_y + 7, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y, g_hammer_x - 7, TRUE);
 		Block_Collision(g_hammer_y - 7, g_hammer_x - 7, TRUE);
+
+		if(g_old_break_block_count != g_break_block_count)PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
 
 		if (!g_hit_hammer_flg)g_hammer_angle -= (10 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たっていないならつるはしを投げた方向に回転させる
 		else g_hammer_angle += (5 * g_hammer_angle_direction);//つるはしが壊れないブロックに当たった時つるはしを投げた方向と逆方向に回転する
@@ -555,7 +632,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 {
 	if ((a / 30) < MAP_HIGHT && (a / 30) >= 0) //マップの範囲内の
 	{
-		if ((b / 30) < MAP_WIDTH && (b / 30) >= 0)//マップの範囲内の
+		if ((b / 30) < g_stage_width && (b / 30) >= 0)//マップの範囲内の
 		{
 			if (MAP_DATA[a / 30][b / 30] >= 1 && MAP_DATA[a / 30][b / 30] <= 4)//ブロックに当たった時
 			{
@@ -566,7 +643,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 					{ //↓ブロックに埋もれている爆弾に当たったら起動しないようにg_bom[i].hit_flgをFALSEにする（FALSEにすると攻撃しても爆弾が起動しない）
 						if ((g_bom[i].y / 30 == a / 30) && (g_bom[i].x / 30 == b / 30) && (g_bom[i].flg == NOMAL))g_bom[i].hit_flg = FALSE;
 					}
-					PlaySoundMem(BreakBGM, DX_PLAYTYPE_BACK, TRUE);
+					
 				}
 				else if(g_cursor_flg)//つるはしが投げられていない（カーソル内のブロックに攻撃してる）とき
 				{
@@ -642,7 +719,7 @@ void GameMain::Player_Sousa()
 	}
 
 	g_cursor_flg = TRUE;
-	if ((g_cursory / 30 >= MAP_HIGHT) || (g_cursory < 0) || (g_cursorx / 30 >= MAP_WIDTH) || (g_cursorx < 0)) 
+	if ((g_cursory / 30 >= MAP_HIGHT) || (g_cursory < 0) || (g_cursorx / 30 >= g_stage_width) || (g_cursorx < 0))
 	{
 		g_cursor_flg = FALSE;
 	}
