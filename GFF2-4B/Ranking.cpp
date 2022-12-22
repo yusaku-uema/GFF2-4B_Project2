@@ -224,7 +224,7 @@ int RANKING::SaveRanking() {
 #pragma warning(disable:4996)
 
 
-    if ((fp = fopen("dat/rankingdata.txt", "w")) == NULL) {
+    if ((fp = fopen("data/rankingdata.txt", "w")) == NULL) {
         /* エラー処理 */
         printf("Ranking Data Error\n");
         return -1;
@@ -246,7 +246,7 @@ int RANKING::ReadRanking() {
 #pragma warning(disable:4996)
 
     //ファイルオープン
-    if ((fp = fopen("dat/rankingdata.txt", "r")) == NULL) {
+    if ((fp = fopen("data/rankingdata.txt", "r")) == NULL) {
         //エラー処理
         printf("Ranking Data Error\n");
         return -1;
