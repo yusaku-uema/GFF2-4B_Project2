@@ -85,7 +85,7 @@ void GameMain::Draw_Stage_Select()
 }
 void GameMain::Update_Stage_Select()
 {
-	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 3))g_stage++;
 	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
 	
 	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
@@ -94,7 +94,7 @@ void GameMain::Update_Stage_Select()
 
 	if (g_bkey_flg && !g_old_bkey_flg)
 	{
-		if (g_stage >= 2)g_stage = 1;
+		/*if (g_stage >= 2)g_stage = 1;*/
 		g_game_state = 1, GameMain_Init();
 	}
 }
@@ -109,12 +109,14 @@ void GameMain::GameMain_Init()
 
 	switch (g_stage)
 	{
-	case 0://ステージ選択画面
+	case 0://ステージ1初期化
 		g_player_x = 30;
 		g_player_y = 550;
-		g_stage_width = 75;
-		g_stage_scroll_x = 970;
-		g_clear_x = 2230;
+		g_stage_width = 150;
+		g_stage_scroll_x = 3220;
+		g_clear_x = 4477;
+
+		//FILE* fp = NULL;//ステージ１ファイル読み込み
 
 		if (fopen_s(&fp, "data/item1.txt", "r") != 0)//アイテムデータ
 		{
@@ -143,7 +145,9 @@ void GameMain::GameMain_Init()
 		}
 		fclose(fp);
 		fp = NULL;
+
 		break;
+
 
 	case 1://ステージ1初期化
 		g_player_x = 30;
@@ -183,6 +187,46 @@ void GameMain::GameMain_Init()
 		fp = NULL;
 
 		break;
+
+	case 2://ステージ2初期化
+		g_player_x = 30;
+		g_player_y = 550;
+		g_stage_width = 150;
+		g_stage_scroll_x = 3220;
+		g_clear_x = 4477;
+
+		//FILE* fp = NULL;//ステージ１ファイル読み込み
+
+		if (fopen_s(&fp, "data/item3.txt", "r") != 0)//アイテムデータ
+		{
+			throw "Data/item1.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &ITEM_DATA[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		if (fopen_s(&fp, "data/map3.txt", "r") != 0)//マップデータ
+		{
+			throw "Data/map3.txt";
+		}
+		for (int i = 0; i < MAP_HIGHT; i++)
+		{
+			for (int j = 0; j < g_stage_width; j++)
+			{
+				fscanf_s(fp, "%2d", &MAP_DATA_INIT[i][j]);
+			}
+		}
+		fclose(fp);
+		fp = NULL;
+
+		break;
+
 	}
 
 	g_scroll_x = 0;
