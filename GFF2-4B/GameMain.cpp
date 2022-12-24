@@ -71,7 +71,7 @@ void GameMain::Draw_Stage_Select()
 	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
-	DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);
+	//DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);//いる？？？
 
 	int hi_score = g_hi_score[g_stage]; //スコア保護
 	int hiscore_x = 300;//時間の描画位置
@@ -455,9 +455,7 @@ void GameMain::Draw()
 			if(g_bom[i].flg == ANGRY)DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
-	//怪しい
-	DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
-	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);
+	
 
 	if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
 	{
