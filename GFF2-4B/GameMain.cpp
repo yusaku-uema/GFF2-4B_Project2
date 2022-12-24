@@ -27,11 +27,14 @@ void GameMain::Update()
 			Item();
 			Bom();
 			Time();
-			Clear();
+			
 		}
 		Draw();
 		Ui();
 		break;
+
+	case 2:
+		Clear();
 	}
 }
 
@@ -68,7 +71,7 @@ void GameMain::Draw_Stage_Select()
 	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
-	DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);
+	//DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);//いる？？？
 
 	int hi_score = g_hi_score[g_stage]; //スコア保護
 	int hiscore_x = 300;//時間の描画位置
@@ -326,7 +329,6 @@ void GameMain::Time()
 void GameMain::Clear()
 {
 	if (g_player_x >= g_clear_x) //クリア条件
-
 	{
 		SetScore(g_score+(TimeLimit * 100));
 		if (GetScore() > g_hi_score[g_stage])
@@ -336,7 +338,10 @@ void GameMain::Clear()
 
 			g_hi_score[g_stage] = GetScore();
 			if ((fp = fopen("data/hiscore.txt", "w")) == NULL)printf("Ranking Data Error\n");
-			for (int i = 0; i < 3; i++)fprintf(fp, "%d ", g_hi_score[i]);
+			for (int i = 0; i < 3; i++)
+			{
+				fprintf(fp, "%d ", g_hi_score[i]);
+			}
 			fclose(fp);
 		}
 		SetGameState(3);
@@ -450,9 +455,7 @@ void GameMain::Draw()
 			if(g_bom[i].flg == ANGRY)DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
-	//怪しい
-	DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
-	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);
+	
 
 	if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
 	{
@@ -516,7 +519,13 @@ void GameMain::Ui()
 		{
 			DrawCircle(530 + (110 * i) + 37, 699, 15, 0x000000, TRUE);
 			DrawCircle(530 + (110 * i) + 37, 699, 15, 0xFFFFFF, FALSE);
-			if (g_item_selection == 1 && i == 1)DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_block_count);
+			if (g_item_selection == 1 && i == 1)
+			{
+				DrawFormatString(670, 685, 0xffffff, "%d", g_block_count);
+				DrawFormatString(624, 642, 0xffffff, "%02d", g_break_block_count % 50);
+				DrawString(624, 680, "50", 0xffffff);
+				DrawBox(610, 675, 670, 678, 0xffffff, TRUE);
+			}
 			else DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_bom_count);
 		}
 	}
@@ -724,6 +733,7 @@ void GameMain::Block_Collision(int a, int b, bool c)
 
 void GameMain::Player_Sousa()
 {
+	if (g_player_x >= g_clear_x) g_game_state = 2;
 	if (g_player_y >= 680)g_player_flg = DIE;
 	if (g_player_flg == DIE)
 	{
