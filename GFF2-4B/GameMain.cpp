@@ -87,7 +87,7 @@ void GameMain::Draw_Stage_Select()
 }
 void GameMain::Update_Stage_Select()
 {
-	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 3))g_stage++;
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
 	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
 	
 	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
