@@ -58,7 +58,7 @@ void GameMain::Stage_Select_Init()
 
 	g_stage = 0;
 	g_game_state = 0;
-	g_stage_select_image = LoadGraph("images/map.png");
+	g_stage_select_image = LoadGraph("images/map1.png");
 	LoadDivGraph("images/number.png", 10, 10, 1, 45, 110, g_stage_select_number_image);
 	SetGameState(2); //ƒQ[ƒ€ƒƒCƒ“ˆÚs
 }
