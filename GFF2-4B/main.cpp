@@ -18,7 +18,7 @@
 *  変数
 ************************************************/
 int g_GameState; //ゲームシーン管理
-int g_Score = 0; //スコア
+int Score1 = 0; //スコア
 bool g_forcedtermination; //強制終了
 
 /***********************************************
@@ -157,12 +157,18 @@ void  SetGameState(int a)
 //スコアを読むコム
 int GetScore()
 {
-	return g_Score;
+	return Score1;
 }
 
-void SetScore(int a)
+void SetScore(float a,bool b)
 {
-	g_Score = a;
+	if (b == FALSE) {
+		Score1 = a;
+	}
+	else
+	{
+		Score1 = Score1 + a;
+	}
 }
 
 /***********************************************

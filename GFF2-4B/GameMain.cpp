@@ -11,8 +11,9 @@
 ************************************************/
 void GameMain::Update()
 {
-	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 
+
+	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 	switch (g_game_state)
 	{
@@ -34,6 +35,8 @@ void GameMain::Update()
 
 	case 2:
 		Clear();
+		Draw();
+		Ui();
 		break;
 	}
 }
@@ -110,6 +113,8 @@ void GameMain::GameMain_Init()
 {
 	FILE* fp_m = NULL;//ステージ１ファイル読み込み
 	FILE* fp_i = NULL;
+	ClearTime = FALSE;
+	ClearStop = FALSE;
 
 	switch (g_stage)
 	{
@@ -184,7 +189,7 @@ void GameMain::GameMain_Init()
 	}
 	fclose(fp_i);
 	fp_i = NULL;
-
+	ClearScore = 0;
 	g_scroll_x = 0;
 	g_block_count = 0;
 	g_break_block_count = 0;
@@ -194,6 +199,7 @@ void GameMain::GameMain_Init()
 	g_item_selection = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
+	ClearStopTime = 3;
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
@@ -247,22 +253,12 @@ void GameMain::GameMain_Init()
 				g_item[g_init_item_count].flg = TRUE;
 				g_init_item_count++;
 			}
-			/*else if (ITEM_DATA[i][j] == 3)
-			{
-				g_bom[g_init_bom_count].x = j * 30;
-				g_bom[g_init_bom_count].y = i * 30;
-				g_bom[g_init_bom_count].flg = NOMAL;
-				g_bom[g_init_bom_count].hit_flg = TRUE;
-				g_init_bom_count++;
-			}*/
-
+			
 			MAP_DATA[i][j] = MAP_DATA_INIT[i][j];
 			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;//ブロックをランダムに
 		}
 	}
 
-	//g_bom[1].flg = NONE;
-	
 }
 
 /***********************************************
@@ -270,13 +266,26 @@ void GameMain::GameMain_Init()
 ************************************************/
 void GameMain::Time()
 {
-	if (++fps_cunt % 60 == 0) {
-		--TimeLimit;
+	if (g_game_state == 1) {
+		if (++fps_cunt % 60 == 0) {
+			--TimeLimit;
+		}
+		if (TimeLimit <= 0)
+		{
+			SetScore(0, FALSE);
+			SetGameState(4);
+		}
 	}
-	if (TimeLimit <= 0)
+
+	if (g_game_state == 2)
 	{
-		SetScore(g_score + (TimeLimit * 100));
-		SetGameState(4);
+		if (++fps_cunt % 60 == 0) {
+			--ClearStopTime;
+		}
+		if (ClearStopTime <= 0)
+		{
+			SetGameState(3);
+		}
 	}
 }
 
@@ -284,7 +293,7 @@ void GameMain::Clear()
 {
 	if (g_player_x >= g_clear_x) //クリア条件
 	{
-		SetScore(g_score+(TimeLimit * 100));
+		//SetScore(g_score+(TimeLimit * 100));
 		if (GetScore() > g_hi_score[g_stage])
 		{
 			FILE* fp;
@@ -298,7 +307,7 @@ void GameMain::Clear()
 			}
 			fclose(fp);
 		}
-		SetGameState(3);
+	
 	}
 }
 
@@ -451,23 +460,42 @@ void GameMain::Ui()
 	}
 
 	TmpTime = TimeLimit; //制限時間保護
-	TmpScore = g_score; //スコア保護
+	TmpScore = GetScore(); //スコア保護
 	int TimeX = 250;//時間の描画位置
 	int ScoreX = 35;//スコアの描画位置
 	int Calc = 10000;//表示桁数
+	
+		while (Calc > 0)
+		{
+			if (Calc <= 100)DrawGraph(TimeX, 675, g_NumberImage[TmpTime / Calc], TRUE);//時間表示
+			DrawGraph(ScoreX, 675, g_NumberImage[TmpScore / Calc], FALSE);//すコア表示
+			TmpTime -= (TmpTime / Calc) * Calc;
+			TmpScore -= (TmpScore / Calc) * Calc;
+			Calc /= 10;
+			TimeX += 30;
+			ScoreX += 30;
+		}
+	
+		if (ClearTime == FALSE && g_game_state == 2)
+		{
+			ClearScore = ((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000)) + (TimeLimit * 10);
+			ClearTime = TRUE;
+		}
 
-	while (Calc > 0)
-	{
-		if(Calc <= 100)DrawGraph(TimeX, 675, g_NumberImage[TmpTime / Calc], TRUE);//時間表示
-		DrawGraph(ScoreX, 675, g_NumberImage[TmpScore / Calc], FALSE);//すコア表示
-		TmpTime -= (TmpTime / Calc) * Calc;
-		TmpScore -= (TmpScore / Calc) * Calc;
-		Calc /= 10;
-		TimeX += 30;
-		ScoreX += 30;
+		if (ClearTime == TRUE && GetScore() < ClearScore)SetScore(11, TRUE);
+			
+		if (GetScore() >= ClearScore && g_game_state == 2)
+		{
+			SetScore(ClearScore, FALSE);
+			ClearStop = TRUE;
+			Time();
+		}
+		if (TimeLimit != 0 && g_game_state == 2)--TimeLimit;
+		//SetScore(20,FALSE);
+	DrawFormatString(640, 350, GetColor(255, 0, 0), "%d", ClearScore);
+	if (g_game_state == 1) {
+		SetScore((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000), FALSE);
 	}
-	g_score = (g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000); //スコア計算
-
 	float size[3];
 
 	for (int i = 0; i < 3; i++)
@@ -704,7 +732,7 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(0), SetGameState(4); //ゲームオーバーは、時間を加算しない
+		else SetScore(0,FALSE), SetGameState(4); //ゲームオーバーは、時間を加算しない
 	}
 
 	if (AX < 0)g_direction = LEFT;

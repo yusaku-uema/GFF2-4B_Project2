@@ -21,6 +21,7 @@ private:
 	int g_NumberImage[10]; //数字画像
 	int g_NumberImage1[10]; //
 	int TmpScore; //スコア保護
+	int TmpScore1; //スコア
 	int TimeLimitImages; //文字
 	int LimitImages; //制限時間
 	int ScoreImages; //スコア文字
@@ -67,7 +68,10 @@ private:
 	int g_bag_count;
 	int g_key_count;
 	int g_score;
-
+	bool ClearTime;
+	bool ClearStop;
+	int ClearStopTime;
+	int ClearScore;
 	int g_chara_life;
 
 	int g_bom_count;
