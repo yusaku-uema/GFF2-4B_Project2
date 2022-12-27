@@ -3,15 +3,16 @@
 
 class InputRanking  {
 private:
-	/*RANKING ranking;
-	UI ui;*/
+	RANKING ranking;
+	/*UI ui;*/
 	int g_score;
 	int getvalue(int n);
 	int g_InputRankingGameState;
+	int i;
 
 public:
 	
-	InputRanking(int g_GameState,int n);
+	InputRanking();
 
 	//デストラクタ
 	virtual~InputRanking() {};

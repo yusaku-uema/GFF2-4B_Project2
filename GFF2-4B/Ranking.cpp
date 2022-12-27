@@ -1,4 +1,5 @@
 #include"Ranking.h"
+#include"main.h"
 
 char g_name[6][13] = {
     {'a','b','c','d','e','f','g','h','i','j','k','l','m'},
@@ -29,11 +30,18 @@ void RANKING::InputRankingInit(void)
     {
         g_Ranking[4].name[i] = '\0';
     }
-
+    fonttime = 0;
+    g_nowfontX = 0;
+    g_nowfontY = 0;
+    fontno = 0;
 }
 
-void RANKING::DrawRanking(void)
+void RANKING::DrawRanking(void) 
 {
+  
+   
+    ReadRanking();
+
     //ƒ‰ƒ“ƒLƒ“ƒO‰æ‘œ•\Ž¦
     DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
 
@@ -57,6 +65,8 @@ void RANKING::InputRanking() {
     g_OldKey = g_NowKey;
     g_NowKey = GetJoypadAnalogInput(&AX, &AY, DX_INPUT_PAD1);
     g_KeyFlg = g_NowKey & ~g_OldKey;
+
+    g_Score = GetScore();
 
     if (fonttime >= 7)
     {
@@ -261,4 +271,8 @@ int RANKING::ReadRanking() {
     fclose(fp);
 
     return 0;
+}
+
+int RANKING::GetRankingScore(int n) {
+    return g_Ranking[n].score;
 }
