@@ -9,6 +9,8 @@
 #include"GameReward.h"
 #include"Ranking.h"
 #include"Help.h"
+#include"InputRankingScene.h"
+#include"DrawRankingScene.h"
 
 
 
@@ -59,6 +61,8 @@ Gameover gameover;
 GameClear gameclear;
 RANKING ranking;
 Help help;
+InputRanking inputranking;
+DrawRanking drawranking;
 
 
 /***********************************************
@@ -71,6 +75,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetMainWindowText("掘れ掘れダンジョン君");
 	SetGraphMode(1280, 720, 16);  //画面サイズ
 	ChangeWindowMode(TRUE);		// ウィンドウモードで起動
+
+	if (ranking.ReadRanking() == -1)  return  -1;    //ランキングデータの読み込み
 
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 	if (LoadImages() == -1) return -1; //画像読込み
@@ -119,6 +125,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			break;
 		case 8:
 			// Pause();
+			break;
+		case 9:
+			/*keyconfigscene.Update();*/
+			break;
+		case 10:
+			inputranking.Update();
+			break;
+		case 11:
+			inputranking.Draw();
 			break;
 		}
 

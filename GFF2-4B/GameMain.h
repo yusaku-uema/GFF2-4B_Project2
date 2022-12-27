@@ -1,5 +1,7 @@
 #pragma once
 #include"main.h"
+//#include"KeyConfig.h"
+#include"Ranking.h"
 
 
 class GameMain
@@ -25,6 +27,10 @@ private:
 	int ScoreImages; //スコア文字
 	int TimeLimit; //残り時間
 	int TmpTime; //残り時間保護
+	/*KeyConfig keyconfig;*/
+	RANKING ranking;
+	
+	
 	int fps_cunt;
 	int BreakBGM;
 
