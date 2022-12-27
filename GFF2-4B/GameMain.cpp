@@ -61,7 +61,7 @@ void GameMain::Stage_Select_Init()
 
 	g_stage = 0;
 	g_game_state = 0;
-	g_stage_select_image = LoadGraph("images/map.png");
+	g_stage_select_image = LoadGraph("images/map1.png");
 	LoadDivGraph("images/number.png", 10, 10, 1, 45, 110, g_stage_select_number_image);
 	SetGameState(2); //ƒQ[ƒ€ƒƒCƒ“ˆÚs
 }
@@ -90,7 +90,7 @@ void GameMain::Draw_Stage_Select()
 }
 void GameMain::Update_Stage_Select()
 {
-	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 3))g_stage++;
+	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
 	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
 	
 	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
@@ -478,11 +478,11 @@ void GameMain::Ui()
 	
 		if (ClearTime == FALSE && g_game_state == 2)
 		{
-			ClearScore = ((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000)) + (TimeLimit * 10);
+			ClearScore = ((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000)) + (TimeLimit * 100);
 			ClearTime = TRUE;
 		}
 
-		if (ClearTime == TRUE && GetScore() < ClearScore)SetScore(11, TRUE);
+		if (ClearTime == TRUE && GetScore() < ClearScore)SetScore(101, TRUE);
 			
 		if (GetScore() >= ClearScore && g_game_state == 2)
 		{
