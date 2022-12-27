@@ -92,8 +92,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	while (ProcessMessage() == 0 && g_forcedtermination != true && g_GameState != 999) {
 
 		if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_7) {
-			//g_forcedtermination = true;//ã≠êßèIóπ
-			SetGameState(3);
+			g_forcedtermination = true;//ã≠êßèIóπ
 		}
 
 		timebaseloopexecuter.TimeAdjustment();// fpsä«óù
