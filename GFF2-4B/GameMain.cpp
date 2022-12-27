@@ -31,7 +31,6 @@ void GameMain::Update()
 		}
 		Draw();
 		Ui();
-		g_game_state = 2;
 		break;
 
 	case 2:
