@@ -3,14 +3,26 @@
 //#include"KeyConfig.h"
 #include"Ranking.h"
 
+
 class GameMain
 {
 private:
 
+	int g_hi_score[3];
+	int g_game_state;
+	int g_stage;
+	int g_stage_width;
+	int g_stage_scroll_x;
+	int g_clear_x;
+
+	int g_stage_select_number_image[10];
+	int g_stage_select_image;
 	int g_blowing_images; //吹き出し画像
 	int g_NumberImage[10]; //数字画像
+	int g_NumberImage1[10]; //
 	int TmpScore; //スコア保護
 	int TimeLimitImages; //文字
+	int LimitImages; //制限時間
 	int ScoreImages; //スコア文字
 	int TimeLimit; //残り時間
 	int TmpTime; //残り時間保護
@@ -32,7 +44,7 @@ private:
 	int g_old_hammer_x, g_old_hammer_y;
 	int g_hammer_orbit_x, g_hammer_orbit_y;
 	bool g_hit_hammer_flg;
-	bool g_hammer_flg;//ハンマーが使われているかどうか
+	int g_hammer_flg;//ハンマーが使われているかどうか
 	
 	int g_player_image_type;
 	int g_image_time;
@@ -46,15 +58,15 @@ private:
 	int g_scroll_x;
 
 	int g_cursorx, g_cursory;
+	int g_old_cursor_BX, g_old_cursor_BY;
+	bool g_cursor_flg;
+	int g_cursor_key_time;
 
 	int g_item_selection;
 
-	int g_hukuro_count;
-	int g_kagi_count;
+	int g_bag_count;
+	int g_key_count;
 	int g_score;
-	int g_score2;
-	int g_score3;
-	int g_score4;
 
 	int g_chara_life;
 
@@ -72,11 +84,16 @@ private:
 	bool g_old_rkey_flg;
 	bool g_old_rightkey_flg;
 	bool g_old_leftkey_flg;
+	bool g_old_startkey_flg;
 	bool g_upkey_flg;
 	bool g_downkey_flg;
 	bool g_rightkey_flg;
 	bool g_leftkey_flg;
-	bool g_titen_flg;
+	bool g_startkey_flg;
+
+	bool g_checkpoint_flg;
+	bool g_game_stop;
+
 	int g_move_speed_y;
 
 	int g_player_flg;
@@ -108,6 +125,13 @@ private:
 		LEFT = 1,
 	};
 
+	enum HAMMER_STATE
+	{
+		HAMMER_NONE = 0, //使ってない
+		HAMMER_CURSOR,    //カーソルのブロックを掘る
+		HAMMER_FLY, //投げてる
+	};
+
 	struct ITEM {
 		bool flg;
 		int x;
@@ -123,6 +147,10 @@ private:
 		int y;
 		int time;
 		bool hit_flg;
+		int orbit_x;
+		int orbit_y;
+		int angle_direction;
+		int angle;
 	};
 	struct BOM g_bom[10];
 
@@ -143,6 +171,7 @@ public:
 	void Ui();
 	void Block_Collision(int a, int b, bool c); //つるはしを投げた時の当たり判定
 	void Draw();
+	void Bom();
 
 	int Player_Hit_Front(int a, int b);
 	int Player_Hit_Back(int a, int b);
@@ -154,11 +183,12 @@ public:
 	void Clear(); //ゲームクリア
 	int Get_MapData(int y, int x);
 
-	void ItemAnim(); //アイテムのエフェクト処理
+	void Draw_Stage_Select();
+	void Update_Stage_Select();
+	void Stage_Select_Init();
 
 	unsigned int ITEM_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
 	unsigned int MAP_DATA[MAP_HIGHT][MAP_WIDTH];
 	unsigned int ITEM_DATA_INIT[MAP_HIGHT][MAP_WIDTH];
-
 };

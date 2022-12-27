@@ -104,7 +104,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			title.Update(); //ゲームタイトル描画処理
 			break;
 		case 1:
-			gamemain.GameMain_Init(); //初期化して case2に自動移行
+			gamemain.Stage_Select_Init(); //初期化して case2に自動移行
 			break;
 		case 2:
 			gamemain.Update(); //ゲーム処理
@@ -122,7 +122,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			ranking.DrawRanking(); //ランキング表示
 			break;
 		case 7:
-			help.Draw();
+			help.Draw(); //ヘルプ
+			break;
 		case 8:
 			// Pause();
 			break;
@@ -176,12 +177,12 @@ int LoadImages()
 	if ((g_Title_images = LoadGraph("images/TitleImage.png")) == -1)return -1;
 	if ((g_GameOver_images = LoadGraph("images/GameOver3.png")) == -1)return -1;
 	if ((g_GameClear_images = LoadGraph("images/GameClear2.png")) == -1)return -1;
-	if ((g_life = LoadGraph("images/BomFire.png")) == -1)return -1;
+	if ((g_life = LoadGraph("images/PlayerLife.png")) == -1)return -1;
 	if ((g_Box_images = LoadGraph("images/宝箱１_transparent.png")) == -1)return-1;
 	if ((g_Box2_images = LoadGraph("images/宝箱２_transparent.png")) == -1)return -1;
 	if ((g_HelpImages = LoadGraph("images/HeipImage.png")) == -1)return -1;
 	if (LoadDivGraph("images/team/block222.png", 7, 7, 1, 30, 30, g_block_image) == -1) return -1;
-	if (LoadDivGraph("images/Player1.png", 4, 4, 1, 25, 25, g_player_image) == -1) return -1;
+	if (LoadDivGraph("images/player3.png", 4, 4, 1, 20, 25, g_player_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item_cursor1.png", 3, 3, 1, 100, 100, g_item_cursor_image) == -1) return -1;
 	if (LoadDivGraph("images/team/item22.png", 5, 5, 1, 30, 30, g_item_image) == -1) return -1;
 	if (LoadDivGraph("images/team/kirakira2.png", 2, 2, 1, 30, 30, g_KiraKira_image) == -1) return -1;
