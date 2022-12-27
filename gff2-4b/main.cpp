@@ -9,6 +9,8 @@
 #include"GameReward.h"
 #include"Ranking.h"
 #include"Help.h"
+#include"InputRankingScene.h"
+#include"DrawRankingScene.h"
 
 
 
@@ -16,7 +18,7 @@
 *  変数
 ************************************************/
 int g_GameState; //ゲームシーン管理
-int g_Score = 0; //スコア
+int Score1 = 0; //スコア
 bool g_forcedtermination; //強制終了
 
 /***********************************************
@@ -59,6 +61,8 @@ Gameover gameover;
 GameClear gameclear;
 RANKING ranking;
 Help help;
+InputRanking inputranking;
+DrawRanking drawranking;
 
 
 /***********************************************
@@ -71,6 +75,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetMainWindowText("掘れ掘れダンジョン君");
 	SetGraphMode(1280, 720, 16);  //画面サイズ
 	ChangeWindowMode(TRUE);		// ウィンドウモードで起動
+
+	if (ranking.ReadRanking() == -1)  return  -1;    //ランキングデータの読み込み
 
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 	if (LoadImages() == -1) return -1; //画像読込み
@@ -120,6 +126,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		case 8:
 			// Pause();
 			break;
+		case 9:
+			/*keyconfigscene.Update();*/
+			break;
+		case 10:
+			inputranking.Update();
+			break;
+		case 11:
+			inputranking.Draw();
+			break;
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
@@ -142,12 +157,18 @@ void  SetGameState(int a)
 //スコアを読むコム
 int GetScore()
 {
-	return g_Score;
+	return Score1;
 }
 
-void SetScore(int a)
+void SetScore(float a,bool b)
 {
-	g_Score = a;
+	if (b == FALSE) {
+		Score1 = a;
+	}
+	else
+	{
+		Score1 = Score1 + a;
+	}
 }
 
 /***********************************************
