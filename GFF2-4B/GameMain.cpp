@@ -31,6 +31,7 @@ void GameMain::Update()
 		}
 		Draw();
 		Ui();
+		g_game_state = 2;
 		break;
 
 	case 2:
@@ -478,11 +479,11 @@ void GameMain::Ui()
 	
 		if (ClearTime == FALSE && g_game_state == 2)
 		{
-			ClearScore = ((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000)) + (TimeLimit * 10);
+			ClearScore = ((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000)) + (TimeLimit * 100);
 			ClearTime = TRUE;
 		}
 
-		if (ClearTime == TRUE && GetScore() < ClearScore)SetScore(11, TRUE);
+		if (ClearTime == TRUE && GetScore() < ClearScore)SetScore(101, TRUE);
 			
 		if (GetScore() >= ClearScore && g_game_state == 2)
 		{
