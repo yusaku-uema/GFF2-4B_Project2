@@ -4,10 +4,10 @@
 
 class DrawRanking {
 private:
-	//RANKING ranking;
-	int g_DrawRankingGameState;
+	RANKING ranking;
+	
 public:
-	DrawRanking(int g_GameState);
+	
 
 	DrawRanking(); //コンストラクタ
 	//デストラクタ
@@ -21,3 +21,5 @@ public:
 	//シーン切り替え
 	void ChangeScene();
 };
+
+extern DrawRanking drawranking;

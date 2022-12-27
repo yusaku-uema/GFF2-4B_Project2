@@ -56,6 +56,7 @@ void GameMain::GameMain_Init()
 	g_hammer_flg = FALSE;
 
 	ranking.InputRankingInit();
+	ranking.ReadRanking();
 
 	//ƒtƒ@ƒCƒ‹
 	FILE* fp = NULL;

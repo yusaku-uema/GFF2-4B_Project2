@@ -8,6 +8,7 @@ class GameClear
 private:
     RANKING ranking;
 
+    int g_Rankingscore;
     int g_score;
 public:
     void Draw();

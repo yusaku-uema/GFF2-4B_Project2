@@ -35,7 +35,8 @@ public:
     char enter[5] = "Œˆ’è";
     int fontno ;
     int g_Score;
-    
+  
+
 public:
    
 

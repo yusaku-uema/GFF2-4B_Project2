@@ -30,12 +30,17 @@ void RANKING::InputRankingInit(void)
     {
         g_Ranking[4].name[i] = '\0';
     }
-
+    fonttime = 0;
+    g_nowfontX = 0;
+    g_nowfontY = 0;
+    fontno = 0;
 }
 
-void RANKING::DrawRanking(void)
+void RANKING::DrawRanking(void) 
 {
-    WaitTimer(300);
+  
+   
+    ReadRanking();
 
     //ƒ‰ƒ“ƒLƒ“ƒO‰æ‘œ•\Ž¦
     DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
