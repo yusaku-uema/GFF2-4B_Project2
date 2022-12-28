@@ -46,7 +46,7 @@ int g_life;
 *  サウンド変数
 ************************************************/
 int g_Title_SE; //タイトルSE
-
+int g_Title_BGM;
 
 /***********************************************
 *  クラス？？
@@ -199,6 +199,7 @@ int LoadImages()
 int LoadSounds(void)
 {
 	if ((g_Title_SE = LoadSoundMem("BGM/Title.mp3")) == -1)return -1; //	タイトルSE
+	if ((g_Title_BGM = LoadSoundMem("BGM/ldtyl-isrvf.mp3")) == -1)return -1;//破壊音BGM
 }
 
 
@@ -288,8 +289,14 @@ int GetArrayImages(int type, int num)
 * サウンド呼び出し
 ************************************************/
 int GetSounds(int type) {
-
-	if (Title_SE == type)return g_Title_SE;
-	return 0;
-
+	switch (type)
+	{
+	case Title_SE:
+		return g_Title_SE;
+		break;
+	case Title_BGM:
+		return g_Title_BGM;
+		break;
+	}
+	
 }
