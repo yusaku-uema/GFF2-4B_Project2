@@ -33,6 +33,10 @@ private:
 	
 	int fps_cunt;
 	int BreakBGM;
+	int StageBGM;
+	int StageBGM1;
+	int StageBGM2;
+	int BGMStage;
 
 	int AX, AY; //ÉLÅ[ÇÃíl
 	int BX, BY;
