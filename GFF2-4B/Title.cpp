@@ -31,10 +31,17 @@ void Title::Update()
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {   //SE再生
 		if (CheckSoundMem(GetSounds(Title_SE)) != 1) {   //SEが流れていなかったら再生
 			ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(Title_SE)); //SE音量調整 255最大音量から80%再生
-			PlaySoundMem(GetSounds(Title_SE), DX_PLAYTYPE_NORMAL, TRUE); //SE再生
+			PlaySoundMem(GetSounds(Title_SE), DX_PLAYTYPE_BACK, TRUE); //SE再生
 		}
 	}
 	
+
+	if (CheckSoundMem(GetSounds(Title_BGM)) != 1) {   //SEが流れていなかったら再生
+		ChangeVolumeSoundMem(255 * 25 / 100, GetSounds(Title_BGM)); //SE音量調整 255最大音量から80%再生
+		PlaySoundMem(GetSounds(Title_BGM), DX_PLAYTYPE_LOOP, TRUE); //SE再生
+	}
+
+
 	g_MenuY = g_MenuNumber * 60; //　カーソル位置60
 
 	Draw(); //描画
@@ -58,11 +65,11 @@ void Title::Draw()
 
 void Title::ChangeScen()
 {
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0) SetGameState(1); //ゲームメイン移行
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)SetGameState(7); //ヘルプ画面に移行
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 0)StopSoundMem(GetSounds(Title_BGM)),SetGameState(1); //ゲームメイン移行
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 1)StopSoundMem(GetSounds(Title_BGM)),SetGameState(7); //ヘルプ画面に移行
 
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) SetGameState(5);
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)SetGameState(6); //ランキング入力
-	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)SetGameState(999); //強制終了
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 3) StopSoundMem(GetSounds(Title_BGM)),SetGameState(5);
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 2)StopSoundMem(GetSounds(Title_BGM)),SetGameState(6); //ランキング入力
+	if (g_KeyFlg & PAD_INPUT_B && g_MenuNumber == 4)StopSoundMem(GetSounds(Title_BGM)),SetGameState(999); //強制終了
 
 }
