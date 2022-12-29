@@ -30,7 +30,6 @@ void GameMain::Update()
 		}
 		Draw();
 		Ui();
-		g_game_state = 2;
 		break;
 
 	case 2:
@@ -219,7 +218,7 @@ void GameMain::GameMain_Init()
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
-	g_bom_count = 20;
+	g_bom_count = 0;
 	g_chara_life = 3;
 	g_checkpoint_flg = FALSE;
 	g_hammer_flg = HAMMER_NONE;
@@ -457,10 +456,6 @@ void GameMain::Draw()
 				TimeX += 50;
 			}
 		}
-	}
-	for (int i = 0; i < 10; i++)
-	{
-		DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
 	}
 }
 
