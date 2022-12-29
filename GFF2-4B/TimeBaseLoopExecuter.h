@@ -1,38 +1,18 @@
-#pragma once
-#include <fstream>
-#include <sstream>
-#include <windows.h>
-#include <timeapi.h>
-#pragma comment(lib,"winmm.lib")
+class Fps {
+	int mStartTime = 0;         //測定開始時刻
+	int mCount = 0;             //カウンタ
+	float mFps = 0;             //fps
+	static const int N = 60;//平均を取るサンプル数
+	static const int FPS = 60;	//設定したFPS
 
-class TimeBaseLoopExecuter
-{
 public:
-	TimeBaseLoopExecuter(double frame = 60.0) :FRAME_TIME(1.0f / frame)
-	{
-		//周波数取得
-		QueryPerformanceFrequency(&mTimeFreq);
-		//計測開始時間の初期化
-		QueryPerformanceCounter(&mTimeStart);
+	Fps() {
+		mStartTime = 0;
+		mCount = 0;
+		mFps = 0;
 	}
-	//FPSを固定するため処理時間に余裕がある場合その分待つ
-	double TimeAdjustment();
-private:
-	const double FRAME_TIME = 0.0;
-	//計測開始時間
-	LARGE_INTEGER mTimeStart;
-	//計測終了時間
-	LARGE_INTEGER mTimeEnd;
-	//計測周波数
-	LARGE_INTEGER mTimeFreq;
 
-#ifdef _DEBUG
-public:
-private:
-	int mFrameCount = 0;
-	int mDebugCount = 10;
-#endif // _DEBUG
+	bool Update();
+	void Wait();
 
 };
-
-
