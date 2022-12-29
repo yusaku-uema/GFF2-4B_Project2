@@ -28,7 +28,7 @@ void GameClear::Draw()
 	DrawFormatString(500, 350, GetColor(255, 0, 0), "%d", GetScore());
 	DrawString(350, 280, "Bボタンでタイトルへ", GetColor(255, 0, 0));
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B) {
-		if (g_score >= g_Rankingscore)SetGameState(11);
+		if (g_score >= g_Rankingscore)StopSoundMem(BGM),SetGameState(11);
 		else {
 			StopSoundMem(BGM);
 			SetGameState(0);
