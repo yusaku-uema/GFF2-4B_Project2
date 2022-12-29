@@ -383,6 +383,7 @@ void GameMain::Draw()
 	if (++Timer == 40)Timer = 0;
 	DrawGraph(-(g_scroll_x / 5), 0, GetArrayImages(GameMain_Images, 0), TRUE);
 
+
 	for (int i = 0; i < 10; i++)
 	{
 		if (g_item[i].flg)
@@ -529,6 +530,20 @@ void GameMain::Ui()
 			else DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_bom_count);
 		}
 	}
+
+	if (g_game_stop == TRUE)
+	{
+		if (g_bkey_flg && !g_old_bkey_flg)
+		{
+			SetGameState(1);
+		}
+		if (g_akey_flg && !g_old_bkey_flg)
+		{
+			GameMain_Init();
+		}
+		DrawFormatString(400, 300, GetColor(255, 255, 255), "Aボタンでステージやり直し\nBボタンでステージ選択\nSTARTボタンでポーズ解除");
+	}
+
 }
 
 void GameMain::Bom()
