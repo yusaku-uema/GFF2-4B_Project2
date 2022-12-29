@@ -7,7 +7,7 @@ class GameClear
 {
 private:
     RANKING ranking;
-
+    int BGM;
     int g_Rankingscore;
     int g_score;
 public:

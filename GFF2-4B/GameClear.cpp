@@ -10,7 +10,11 @@ void GameClear::Draw()
 	DrawGraph(0, 0, GetArrayImages(GameClear_Images, 0), TRUE);
 	SetFontSize(40);
 	
-
+	if (CheckSoundMem(BGM) != 1) {   //SE‚ª—¬‚ê‚Ä‚¢‚È‚©‚Á‚½‚çÄ¶
+		BGM = LoadSoundMem("BGM/gameclear.mp3");
+		ChangeVolumeSoundMem(255 * 40 / 100, BGM); //SE‰¹—Ê’²® 255Å‘å‰¹—Ê‚©‚ç80%Ä¶
+		PlaySoundMem(BGM, DX_PLAYTYPE_LOOP, TRUE); //SEÄ¶
+	}
 
 
 	DrawGraph(450, 450, GetArrayImages(Item_Images, 1),FALSE); //ƒJƒM
@@ -26,6 +30,7 @@ void GameClear::Draw()
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B) {
 		if (g_score >= g_Rankingscore)SetGameState(11);
 		else {
+			StopSoundMem(BGM);
 			SetGameState(0);
 		}
 	}
