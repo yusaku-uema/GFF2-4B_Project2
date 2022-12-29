@@ -30,6 +30,7 @@ void GameMain::Update()
 		}
 		Draw();
 		Ui();
+		g_game_state = 2;
 		break;
 
 	case 2:
@@ -75,7 +76,6 @@ void GameMain::Draw_Stage_Select()
 	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
-	//DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);//いる？？？
 
 	int hi_score = g_hi_score[g_stage]; //スコア保護
 	int hiscore_x = 300;//時間の描画位置
@@ -274,7 +274,7 @@ void GameMain::GameMain_Init()
 			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;//ブロックをランダムに
 		}
 	}
-
+	Setstage(g_stage);
 }
 
 /***********************************************
@@ -306,7 +306,7 @@ void GameMain::Time()
 			StopSoundMem(StageBGM);
 			StopSoundMem(StageBGM1);
 			StopSoundMem(StageBGM2);
-			SetGameState(3);
+			SetGameState(8);
 		}
 	}
 }
