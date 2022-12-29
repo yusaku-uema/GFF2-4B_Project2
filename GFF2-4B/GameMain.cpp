@@ -214,7 +214,7 @@ void GameMain::GameMain_Init()
 	g_key_count = 0;
 	g_item_selection = 0;
 	fps_cunt = 0;
-	TimeLimit = 110;//§ŒÀŠÔ
+	TimeLimit = 200;//§ŒÀŠÔ
 	ClearStopTime = 3;
 	g_player_image_type = 0;
 	g_direction = RIGHT;
