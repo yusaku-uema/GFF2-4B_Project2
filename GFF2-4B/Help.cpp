@@ -21,6 +21,6 @@ void Help::Draw()
 
 void Help::ChangeScene()
 {
-	/*if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)SetGameState(6);*/
+	DrawString(0, 685, "Aƒ{ƒ^ƒ“‚Å–ß‚é", GetColor(255, 0, 0));
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)SetGameState(0);
 }

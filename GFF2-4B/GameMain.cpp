@@ -215,7 +215,7 @@ void GameMain::GameMain_Init()
 	g_item_selection = 0;
 	fps_cunt = 0;
 	TimeLimit = 200;//制限時間
-	ClearStopTime = 3;
+	ClearStopTime = 1;
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
@@ -235,7 +235,7 @@ void GameMain::GameMain_Init()
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
-	LoadDivGraph("images/Timemo1.png", 10, 10, 1, 40, 60, g_NumberImage1);
+	LoadDivGraph("images/Timemo2.png", 10, 10, 1, 40, 60, g_NumberImage1);
 	LimitImages = LoadGraph("images/Limet.png");
 
 	for(int i = 0; i < 10; i++)//アイテムの初期化
@@ -440,9 +440,6 @@ void GameMain::Draw()
 			if(g_bom[i].flg == ANGRY)DrawFormatString(g_bom[i].x - g_scroll_x, g_bom[i].y - 30, 0xffffff, "%d", (g_bom[i].time / 50));
 		}
 	}
-	//怪しい
-	/*DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
-	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);*/
 	if (g_game_state == 1) {
 		if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
 		{
@@ -454,18 +451,22 @@ void GameMain::Draw()
 
 			while (Calc > 0)
 			{
-				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
+				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], TRUE);//時間表示
 				TmpTime -= (TmpTime / Calc) * Calc;
 				Calc /= 10;
 				TimeX += 50;
 			}
 		}
 	}
-	for (int i = 0; i < 10; i++)
-	{
-		DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
-		//DrawFormatString(30, 0 + (i * 23), 0xffffff, "%d", g_item[i].flg);
-	}
+
+	/*
+	* 動画撮影のために消した
+	*/
+//	for (int i = 0; i < 10; i++)
+//	{
+//		//DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
+//		//DrawFormatString(30, 0 + (i * 23), 0xffffff, "%d", g_item[i].flg);
+//	}
 }
 
 void GameMain::Ui()
@@ -514,7 +515,6 @@ void GameMain::Ui()
 		}
 		if (TimeLimit != 0 && g_game_state == 2)--TimeLimit;
 		//SetScore(20,FALSE);
-	DrawFormatString(640, 350, GetColor(255, 0, 0), "%d", ClearScore);
 	if (g_game_state == 1) {
 		SetScore((g_break_block_count * 5) + (g_bag_count * 300) + (g_key_count * 1000), FALSE);
 	}

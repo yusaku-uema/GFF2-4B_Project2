@@ -3,6 +3,8 @@
 
 class Gameover
 {
+private:
+	int BGM;
 public:
 	void Draw();
 };
