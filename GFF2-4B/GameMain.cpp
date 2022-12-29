@@ -218,7 +218,7 @@ void GameMain::GameMain_Init()
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
-	g_bom_count = 20;
+	g_bom_count = 0;
 	g_chara_life = 3;
 	g_checkpoint_flg = FALSE;
 	g_hammer_flg = HAMMER_NONE;
@@ -234,7 +234,7 @@ void GameMain::GameMain_Init()
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
-	LoadDivGraph("images/Timemo2.png", 10, 10, 1, 40, 60, g_NumberImage1);
+	LoadDivGraph("images/Timemo1.png", 10, 10, 1, 40, 60, g_NumberImage1);
 	LimitImages = LoadGraph("images/Limet.png");
 
 	for(int i = 0; i < 10; i++)//アイテムの初期化
@@ -450,22 +450,13 @@ void GameMain::Draw()
 
 			while (Calc > 0)
 			{
-				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], TRUE);//時間表示
+				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
 				TmpTime -= (TmpTime / Calc) * Calc;
 				Calc /= 10;
 				TimeX += 50;
 			}
 		}
 	}
-
-	/*
-	* 動画撮影のために消した
-	*/
-//	for (int i = 0; i < 10; i++)
-//	{
-//		//DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
-//		//DrawFormatString(30, 0 + (i * 23), 0xffffff, "%d", g_item[i].flg);
-//	}
 }
 
 void GameMain::Ui()
