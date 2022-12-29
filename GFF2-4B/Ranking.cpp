@@ -51,9 +51,9 @@ void RANKING::DrawRanking(void)
         DrawFormatString(120, 170 + i * 60, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
     }
     SetFontSize(30);
-    DrawString(250, 500, "----Bボタン押してタイトルに戻る----", 0xffffff, 0);
+    DrawString(250, 500, "----Aボタン押してタイトルに戻る----", 0xffffff, 0);
 
-    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)
+    if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)
     {
         SetGameState(0);
     }

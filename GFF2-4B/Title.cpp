@@ -30,7 +30,7 @@ void Title::Update()
 
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_B) {   //SEÄ¶
 		if (CheckSoundMem(GetSounds(Title_SE)) != 1) {   //SE‚ª—¬‚ê‚Ä‚¢‚È‚©‚Á‚½‚çÄ¶
-			ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(Title_SE)); //SE‰¹—Ê’²® 255Å‘å‰¹—Ê‚©‚ç80%Ä¶
+			ChangeVolumeSoundMem(255 * 40 / 100, GetSounds(Title_SE)); //SE‰¹—Ê’²® 255Å‘å‰¹—Ê‚©‚ç80%Ä¶
 			PlaySoundMem(GetSounds(Title_SE), DX_PLAYTYPE_BACK, TRUE); //SEÄ¶
 		}
 	}
