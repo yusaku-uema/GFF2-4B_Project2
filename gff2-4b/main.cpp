@@ -11,6 +11,7 @@
 #include"Help.h"
 #include"InputRankingScene.h"
 #include"DrawRankingScene.h"
+#include"Tkara.h"
 
 
 
@@ -19,7 +20,9 @@
 ************************************************/
 int g_GameState; //ゲームシーン管理
 int Score1 = 0; //スコア
+int kagi; //カギ
 bool g_forcedtermination; //強制終了
+int stage;
 
 /***********************************************
 *  画像変数
@@ -42,6 +45,7 @@ int g_item_cursor_image[3]; //アイテムカーソル画像
 int g_KiraKira_image[2]; //アイテムを光らせる用
 int g_life;
 
+
 /***********************************************
 *  サウンド変数
 ************************************************/
@@ -63,6 +67,7 @@ RANKING ranking;
 Help help;
 InputRanking inputranking;
 DrawRanking drawranking;
+Takara takara;
 
 
 /***********************************************
@@ -124,10 +129,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			help.Draw(); //ヘルプ
 			break;
 		case 8:
-			// Pause();
+			takara.init();
 			break;
 		case 9:
-			/*keyconfigscene.Update();*/
+			takara.Draw();
 			break;
 		case 10:
 			inputranking.Update();
@@ -158,6 +163,25 @@ void  SetGameState(int a)
 int GetScore()
 {
 	return Score1;
+}
+
+int Getkagi()
+{
+	return kagi;
+}
+
+void Setkagi(int a)
+{
+	kagi = a;
+}
+
+void Setstage(int a)
+{
+	stage = a;
+}
+int Getstage()
+{
+	return stage;
 }
 
 void SetScore(float a,bool b)
