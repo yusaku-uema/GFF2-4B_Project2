@@ -107,7 +107,6 @@ void GameMain::Update_Stage_Select()
 	
 	if (g_bkey_flg && !g_old_bkey_flg)
 	{
-		/*if (g_stage >= 2)g_stage = 1;*/
 		GameMain_Init();
 		StopSoundMem(BGMStage);
 		g_game_state = 1;
@@ -445,24 +444,24 @@ void GameMain::Draw()
 	//怪しい
 	/*DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
 	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);*/
-
-	if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
-	{
-		DrawGraph(250, 50, LimitImages, TRUE); //残り時間の文字描画
-
-		TmpTime = TimeLimit; //制限時間保護
-		int TimeX = 550;//時間の描画位置
-		int Calc = 10000;//表示桁数
-
-		while (Calc > 0)
+	if (g_game_state == 1) {
+		if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
 		{
-			if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
-			TmpTime -= (TmpTime / Calc) * Calc;
-			Calc /= 10;
-			TimeX += 50;
+			DrawGraph(250, 50, LimitImages, TRUE); //残り時間の文字描画
+
+			TmpTime = TimeLimit; //制限時間保護
+			int TimeX = 550;//時間の描画位置
+			int Calc = 10000;//表示桁数
+
+			while (Calc > 0)
+			{
+				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
+				TmpTime -= (TmpTime / Calc) * Calc;
+				Calc /= 10;
+				TimeX += 50;
+			}
 		}
 	}
-
 	for (int i = 0; i < 10; i++)
 	{
 		DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
