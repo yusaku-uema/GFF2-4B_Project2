@@ -160,8 +160,6 @@
     <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ranking.cpp" />
     <ClCompile Include="InputRankingScene.cpp" />
     <ClCompile Include="TimeBaseLoopExecuter.cpp" />
@@ -176,8 +174,6 @@
     <ClInclude Include="GameReward.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Ranking.h" />
     <ClInclude Include="InputRankingScene.h" />
     <ClInclude Include="TimeBaseLoopExecuter.h" />
