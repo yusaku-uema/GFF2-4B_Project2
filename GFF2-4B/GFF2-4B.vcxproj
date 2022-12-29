@@ -164,6 +164,7 @@
     <ClCompile Include="InputRankingScene.cpp" />
     <ClCompile Include="TimeBaseLoopExecuter.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Tkara.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Credit.h" />

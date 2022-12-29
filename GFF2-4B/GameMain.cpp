@@ -10,8 +10,6 @@
 ************************************************/
 void GameMain::Update()
 {
-
-
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 	switch (g_game_state)
@@ -75,7 +73,6 @@ void GameMain::Draw_Stage_Select()
 	DrawCircle(900, 265, 10, 0xff0000, TRUE);
 	
 	DrawRotaGraph(g_player_x, g_player_y, 1.0, M_PI / 180 * 0, GetArrayImages(Player_Images, g_player_image_type), TRUE, FALSE);
-	//DrawFormatString(0, 0, 0xffffff, "%d", g_hi_score[g_stage]);//いる？？？
 
 	int hi_score = g_hi_score[g_stage]; //スコア保護
 	int hiscore_x = 300;//時間の描画位置
@@ -219,7 +216,7 @@ void GameMain::GameMain_Init()
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
-	g_bom_count = 20;
+	g_bom_count = 0;
 	g_chara_life = 3;
 	g_checkpoint_flg = FALSE;
 	g_hammer_flg = HAMMER_NONE;
@@ -235,7 +232,7 @@ void GameMain::GameMain_Init()
 	g_blowing_images = LoadGraph("images/fuki.png"); //爆発した時の画像
 	ScoreImages = LoadGraph("images/Score.png"); //スコア文字画像
 	LoadDivGraph("images/Timemo.png", 10, 10, 1, 20, 30, g_NumberImage);
-	LoadDivGraph("images/Timemo2.png", 10, 10, 1, 40, 60, g_NumberImage1);
+	LoadDivGraph("images/Timemo1.png", 10, 10, 1, 40, 60, g_NumberImage1);
 	LimitImages = LoadGraph("images/Limet.png");
 
 	for(int i = 0; i < 10; i++)//アイテムの初期化
@@ -274,7 +271,7 @@ void GameMain::GameMain_Init()
 			if (MAP_DATA[i][j] == 3)MAP_DATA[i][j] = GetRand(2) + 1;//ブロックをランダムに
 		}
 	}
-
+	Setstage(g_stage);
 }
 
 /***********************************************
@@ -306,7 +303,7 @@ void GameMain::Time()
 			StopSoundMem(StageBGM);
 			StopSoundMem(StageBGM1);
 			StopSoundMem(StageBGM2);
-			SetGameState(3);
+			SetGameState(8);
 		}
 	}
 }
@@ -451,22 +448,13 @@ void GameMain::Draw()
 
 			while (Calc > 0)
 			{
-				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], TRUE);//時間表示
+				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
 				TmpTime -= (TmpTime / Calc) * Calc;
 				Calc /= 10;
 				TimeX += 50;
 			}
 		}
 	}
-
-	/*
-	* 動画撮影のために消した
-	*/
-//	for (int i = 0; i < 10; i++)
-//	{
-//		//DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
-//		//DrawFormatString(30, 0 + (i * 23), 0xffffff, "%d", g_item[i].flg);
-//	}
 }
 
 void GameMain::Ui()
@@ -538,6 +526,19 @@ void GameMain::Ui()
 			}
 			else DrawFormatString(530 + (110 * i) + 30, 685, 0xffffff, "%d", g_bom_count);
 		}
+	}
+
+	if (g_game_stop == TRUE)
+	{
+		if (g_bkey_flg && !g_old_bkey_flg)
+		{
+			SetGameState(1);
+		}
+		if (g_akey_flg && !g_old_bkey_flg)
+		{
+			GameMain_Init();
+		}
+		DrawFormatString(400, 300, GetColor(255, 255, 255), "Aボタンでステージやり直し\nBボタンでステージ選択\nSTARTボタンでポーズ解除");
 	}
 }
 
