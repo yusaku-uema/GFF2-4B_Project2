@@ -10,8 +10,6 @@
 ************************************************/
 void GameMain::Update()
 {
-
-
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 	switch (g_game_state)
