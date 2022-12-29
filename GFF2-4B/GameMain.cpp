@@ -10,8 +10,6 @@
 ************************************************/
 void GameMain::Update()
 {
-
-
 	ChangeVolumeSoundMem(255 * 80 / 100, GetSounds(BreakBGM));
 	Key();
 	switch (g_game_state)
@@ -383,7 +381,6 @@ void GameMain::Draw()
 	if (++Timer == 40)Timer = 0;
 	DrawGraph(-(g_scroll_x / 5), 0, GetArrayImages(GameMain_Images, 0), TRUE);
 
-
 	for (int i = 0; i < 10; i++)
 	{
 		if (g_item[i].flg)
@@ -543,7 +540,6 @@ void GameMain::Ui()
 		}
 		DrawFormatString(400, 300, GetColor(255, 255, 255), "Aボタンでステージやり直し\nBボタンでステージ選択\nSTARTボタンでポーズ解除");
 	}
-
 }
 
 void GameMain::Bom()
