@@ -3,7 +3,6 @@
 #include"main.h"
 #define _USE_MATH_DEFINES
 #include<math.h>
-#include"Player.h"
 
 
 /***********************************************
@@ -63,6 +62,9 @@ void GameMain::Stage_Select_Init()
 	g_game_state = 0;
 	g_stage_select_image = LoadGraph("images/map1.png");
 	LoadDivGraph("images/number.png", 10, 10, 1, 45, 110, g_stage_select_number_image);
+	StageBGM = LoadSoundMem("BGM/StageBGM.mp3");
+	StageBGM1 = LoadSoundMem("BGM/StageBGM1.mp3");
+	StageBGM2 = LoadSoundMem("BGM/StageBGM2.mp3");
 	SetGameState(2); //ゲームメイン移行
 }
 void GameMain::Draw_Stage_Select()
@@ -90,17 +92,22 @@ void GameMain::Draw_Stage_Select()
 }
 void GameMain::Update_Stage_Select()
 {
+	if (CheckSoundMem(BGMStage) != 1) {
+		BGMStage = LoadSoundMem("BGM/BGMStage.mp3");
+		ChangeVolumeSoundMem(255 * 25 / 100, BGMStage); //BGM音量調整 
+		PlaySoundMem(BGMStage, DX_PLAYTYPE_LOOP, TRUE); //SE再生
+	}
 	if ((g_rightkey_flg) && (!g_old_rightkey_flg) && (g_stage < 2))g_stage++;
 	else if ((g_leftkey_flg) && (!g_old_leftkey_flg) && (g_stage > 0))g_stage--;
 	
 	if (g_stage == 0)g_player_x = 460, g_player_y = 465;
 	else if (g_stage == 1)g_player_x = 675, g_player_y = 395;
 	else if (g_stage == 2)g_player_x = 900, g_player_y = 265;
-
+	
 	if (g_bkey_flg && !g_old_bkey_flg)
 	{
-		/*if (g_stage >= 2)g_stage = 1;*/
 		GameMain_Init();
+		StopSoundMem(BGMStage);
 		g_game_state = 1;
 	}
 }
@@ -125,6 +132,9 @@ void GameMain::GameMain_Init()
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
 
+		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM); //BGM音量調整 
+		PlaySoundMem(StageBGM, DX_PLAYTYPE_LOOP, TRUE); //SE再生
+
 		if (fopen_s(&fp_i, "data/item1.txt", "r") != 0)//アイテムデータ
 		{
 			throw "Data/item1.txt";
@@ -142,6 +152,9 @@ void GameMain::GameMain_Init()
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
 
+		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM1); //BGM音量調整 
+		PlaySoundMem(StageBGM1, DX_PLAYTYPE_LOOP, TRUE); //SE再生
+
 		if (fopen_s(&fp_i, "data/item2.txt", "r") != 0)//アイテムデータ
 		{
 			throw "Data/item2.txt";
@@ -158,6 +171,9 @@ void GameMain::GameMain_Init()
 		g_stage_width = 150;
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
+
+		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM2); //BGM音量調整 
+		PlaySoundMem(StageBGM2, DX_PLAYTYPE_LOOP, TRUE); //SE再生
 
 		if (fopen_s(&fp_i, "data/item3.txt", "r") != 0)//アイテムデータ
 		{
@@ -272,6 +288,9 @@ void GameMain::Time()
 		}
 		if (TimeLimit <= 0)
 		{
+			StopSoundMem(StageBGM);
+			StopSoundMem(StageBGM1);
+			StopSoundMem(StageBGM2);
 			SetScore(0, FALSE);
 			SetGameState(4);
 		}
@@ -284,6 +303,9 @@ void GameMain::Time()
 		}
 		if (ClearStopTime <= 0)
 		{
+			StopSoundMem(StageBGM);
+			StopSoundMem(StageBGM1);
+			StopSoundMem(StageBGM2);
 			SetGameState(3);
 		}
 	}
@@ -421,24 +443,24 @@ void GameMain::Draw()
 	//怪しい
 	/*DrawFormatString(100, 100, 0xffffff, "%d", Player_Hit_Front(g_player_x,0));
 	DrawFormatString(100, 100, 0xffffff, "%d",g_cursorx);*/
-
-	if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
-	{
-		DrawGraph(250, 50, LimitImages, TRUE); //残り時間の文字描画
-
-		TmpTime = TimeLimit; //制限時間保護
-		int TimeX = 550;//時間の描画位置
-		int Calc = 10000;//表示桁数
-
-		while (Calc > 0)
+	if (g_game_state == 1) {
+		if (TimeLimit <= 100 && TimeLimit >= 95 || TimeLimit <= 50 && TimeLimit >= 45 || TimeLimit <= 5) //残り時間を大きく表示
 		{
-			if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
-			TmpTime -= (TmpTime / Calc) * Calc;
-			Calc /= 10;
-			TimeX += 50;
+			DrawGraph(250, 50, LimitImages, TRUE); //残り時間の文字描画
+
+			TmpTime = TimeLimit; //制限時間保護
+			int TimeX = 550;//時間の描画位置
+			int Calc = 10000;//表示桁数
+
+			while (Calc > 0)
+			{
+				if (Calc <= 100)DrawGraph(TimeX, 50, g_NumberImage1[TmpTime / Calc], FALSE);//時間表示
+				TmpTime -= (TmpTime / Calc) * Calc;
+				Calc /= 10;
+				TimeX += 50;
+			}
 		}
 	}
-
 	for (int i = 0; i < 10; i++)
 	{
 		DrawFormatString(0, 0 + (i * 26), 0xffffff, "flg = %d, x = %d, y = %d", g_bom[i].flg, g_bom[i].x, g_bom[i].y);
@@ -732,7 +754,13 @@ void GameMain::Player_Sousa()
 			else g_player_x = 30, g_player_y = 550;
 			g_player_flg = WALK;
 		}
-		else SetScore(0,FALSE), SetGameState(4); //ゲームオーバーは、時間を加算しない
+		else {
+			StopSoundMem(StageBGM);
+			StopSoundMem(StageBGM1);
+			StopSoundMem(StageBGM2);
+			SetScore(0, FALSE);
+			SetGameState(4); //ゲームオーバーは、時間を加算しない
+		}
 	}
 
 	if (AX < 0)g_direction = LEFT;

@@ -46,13 +46,13 @@ int g_life;
 *  サウンド変数
 ************************************************/
 int g_Title_SE; //タイトルSE
-
+int g_Title_BGM;
 
 /***********************************************
 *  クラス？？
 ************************************************/
 
-TimeBaseLoopExecuter timebaseloopexecuter; //fps
+Fps fps; //fps
 Title title; //タイトル
 GameMain gamemain;
 Credit credit;//クレジット
@@ -95,8 +95,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			g_forcedtermination = true;//強制終了
 		}
 
-		timebaseloopexecuter.TimeAdjustment();// fps管理
-
+		
+		fps.Update(); //FPS管理
 		ClearDrawScreen();		// 画面の初期化
 		switch (g_GameState) {
 		case 0:
@@ -138,7 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 
 		ScreenFlip();  // 裏画面の内容を表画面に反映
-
+		fps.Wait(); //FPS管理（待機）
 	}
 
 	DxLib_End();	// DXライブラリ使用の終了処理
@@ -199,6 +199,7 @@ int LoadImages()
 int LoadSounds(void)
 {
 	if ((g_Title_SE = LoadSoundMem("BGM/Title.mp3")) == -1)return -1; //	タイトルSE
+	if ((g_Title_BGM = LoadSoundMem("BGM/ldtyl-isrvf.mp3")) == -1)return -1;//破壊音BGM
 }
 
 
@@ -288,8 +289,14 @@ int GetArrayImages(int type, int num)
 * サウンド呼び出し
 ************************************************/
 int GetSounds(int type) {
-
-	if (Title_SE == type)return g_Title_SE;
-	return 0;
-
+	switch (type)
+	{
+	case Title_SE:
+		return g_Title_SE;
+		break;
+	case Title_BGM:
+		return g_Title_BGM;
+		break;
+	}
+	
 }
