@@ -154,7 +154,7 @@ void Takara::ArrowControl()
 
 void Takara::init()
 {
-	BGM = LoadSoundMem("BGM/takara.mp3");//”j‰ó‰¹BGM
+	BGM = LoadSoundMem("BGM/takara.mp3");
 	sousa = FALSE;
 	FPS = 0;
 	TimeLimet = 4;

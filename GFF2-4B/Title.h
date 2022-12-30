@@ -18,6 +18,5 @@ public:
     void Draw(); //•`‰æ
     void ChangeScen(); //ƒV[ƒ“Ø‚è‘Ö‚¦
 
-
 };
 
