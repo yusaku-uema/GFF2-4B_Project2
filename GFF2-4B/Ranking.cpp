@@ -266,20 +266,56 @@ int RANKING::SaveRanking() {
     FILE* fp;
 #pragma warning(disable:4996)
 
+    int a;
+    a = Getstage();
+    if (a == 0) {
+        if ((fp = fopen("data/rankingdata.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
 
-    if ((fp = fopen("data/rankingdata.txt", "w")) == NULL) {
-        /* エラー処理 */
-        printf("Ranking Data Error\n");
-        return -1;
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ランキングデータ分配列データを書き込む
-    for (int i = 0; i < 5; i++) {
-        fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+    if (a == 1) {
+        if ((fp = fopen("data/rankingdata1.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ファイルクローズ
-    fclose(fp);
+    if (a == 2) {
+        if ((fp = fopen("data/rankingdata2.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
+    }
+
 
     return 0;
 }
