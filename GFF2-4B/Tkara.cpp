@@ -9,11 +9,11 @@ void Takara::Draw()
 		PlaySoundMem(BGM, DX_PLAYTYPE_LOOP, TRUE); //SEçƒê∂
 	}
 	DrawGraph(0,0, backgroundimage, TRUE); //ïÛî†ÇÃï\é¶
-	if (sousa == FALSE) {
+	
 		g_OldKey = g_NowKey;
 		g_NowKey = GetJoypadInputState(DX_INPUT_PAD1);
 		g_KeyFlg = g_NowKey & ~g_OldKey;
-	}
+	
 	switch (g_stage)
 	{
 	case 0:
