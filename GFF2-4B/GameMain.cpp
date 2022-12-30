@@ -128,6 +128,7 @@ void GameMain::GameMain_Init()
 		g_stage_width = 150;
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
+		g_bom_count = 0;
 
 		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM); //BGMâπó í≤êÆ 
 		PlaySoundMem(StageBGM, DX_PLAYTYPE_LOOP, TRUE); //SEçƒê∂
@@ -148,6 +149,7 @@ void GameMain::GameMain_Init()
 		g_stage_width = 150;
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
+		g_bom_count = 0;
 
 		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM1); //BGMâπó í≤êÆ 
 		PlaySoundMem(StageBGM1, DX_PLAYTYPE_LOOP, TRUE); //SEçƒê∂
@@ -168,6 +170,7 @@ void GameMain::GameMain_Init()
 		g_stage_width = 150;
 		g_stage_scroll_x = 3220;
 		g_clear_x = 4477;
+		g_bom_count = 0;
 
 		ChangeVolumeSoundMem(255 * 25 / 100, StageBGM2); //BGMâπó í≤êÆ 
 		PlaySoundMem(StageBGM2, DX_PLAYTYPE_LOOP, TRUE); //SEçƒê∂
@@ -216,7 +219,6 @@ void GameMain::GameMain_Init()
 	g_player_image_type = 0;
 	g_direction = RIGHT;
 	g_player_flg = WALK;
-	g_bom_count = 0;
 	g_chara_life = 3;
 	g_checkpoint_flg = FALSE;
 	g_hammer_flg = HAMMER_NONE;
@@ -293,6 +295,11 @@ void GameMain::Time()
 		}
 	}
 
+	if (TimeLimit == 200)
+	{
+		g_bom_count = 2;
+	}
+
 	if (g_game_state == 2)
 	{
 		if (++fps_cunt % 60 == 0) {
@@ -303,6 +310,7 @@ void GameMain::Time()
 			StopSoundMem(StageBGM);
 			StopSoundMem(StageBGM1);
 			StopSoundMem(StageBGM2);
+			Setkagi(g_key_count);
 			SetGameState(8);
 		}
 	}
