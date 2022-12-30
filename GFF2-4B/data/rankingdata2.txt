@@ -1,0 +1,5 @@
+ 1          c      20000
+ 2  XXXXXXXXX      10000
+ 3  QQQQQQQQQ       5000
+ 4        OPI       3000
+ 5          2       1000

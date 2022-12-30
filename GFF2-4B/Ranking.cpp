@@ -39,9 +39,26 @@ void RANKING::InputRankingInit(void)
 void RANKING::DrawRanking(void) 
 {
   
-   
+    g_OldKey = g_NowKey;
+    g_NowKey = GetJoypadInputState(DX_INPUT_PAD1);
+    g_KeyFlg = g_NowKey & ~g_OldKey;
+
+    //メニューカーソル移動処理
+    if (g_KeyFlg & PAD_INPUT_RIGHT)
+    {
+       Setstage(Getstage() + 1);
+       if (Getstage() > 2) Setstage(0);
+    }
+
+    if (g_KeyFlg & PAD_INPUT_LEFT)
+    {
+        Setstage(Getstage() -1);
+        if (Getstage() < 0) Setstage(2);
+    }
+
     ReadRanking();
 
+   
     //ランキング画像表示
     DrawGraph(0, 0, GetArrayImages(Title_Images,0), FALSE);
 
@@ -51,11 +68,27 @@ void RANKING::DrawRanking(void)
         DrawFormatString(120, 170 + i * 60, 0xffffff, "%2d %10s %10d", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
     }
     SetFontSize(30);
-    DrawString(250, 500, "----Aボタン押してタイトルに戻る----", 0xffffff, 0);
+    DrawString(250, 500, "----Aボタン押してタイトルに戻る----\n---右十字キーで次のステージスコア---\n---左十字キーで前のステージスコア---", 0xffffff, 0);
 
     if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A)
     {
+        Setstage(0);
         SetGameState(0);
+    }
+
+    if (Getstage() == 0)
+    {
+        DrawString(500, 50, "1ステージ", 0xffffff, 0);
+    }
+
+    if (Getstage() == 1)
+    {
+        DrawString(500, 50, "2ステージ", 0xffffff, 0);
+    }
+
+    if (Getstage() == 2)
+    {
+        DrawString(500, 50, "3ステージ", 0xffffff, 0);
     }
 
 }
@@ -233,20 +266,56 @@ int RANKING::SaveRanking() {
     FILE* fp;
 #pragma warning(disable:4996)
 
+    int a;
+    a = Getstage();
+    if (a == 0) {
+        if ((fp = fopen("data/rankingdata.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
 
-    if ((fp = fopen("data/rankingdata.txt", "w")) == NULL) {
-        /* エラー処理 */
-        printf("Ranking Data Error\n");
-        return -1;
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ランキングデータ分配列データを書き込む
-    for (int i = 0; i < 5; i++) {
-        fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+    if (a == 1) {
+        if ((fp = fopen("data/rankingdata1.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ファイルクローズ
-    fclose(fp);
+    if (a == 2) {
+        if ((fp = fopen("data/rankingdata2.txt", "w")) == NULL) {
+            /* エラー処理 */
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        //ランキングデータ分配列データを書き込む
+        for (int i = 0; i < 5; i++) {
+            fprintf(fp, "%2d %10s %10d\n", g_Ranking[i].no, g_Ranking[i].name, g_Ranking[i].score);
+        }
+        //ファイルクローズ
+        fclose(fp);
+
+    }
+
 
     return 0;
 }
@@ -254,21 +323,58 @@ int RANKING::SaveRanking() {
 int RANKING::ReadRanking() {
     FILE* fp;
 #pragma warning(disable:4996)
+    int a;
+    a = Getstage();
+    if (a == 0) {
+        //ファイルオープン
+        if ((fp = fopen("data/rankingdata.txt", "r")) == NULL) {
+            //エラー処理
+            printf("Ranking Data Error\n");
+            return -1;
+        }
 
-    //ファイルオープン
-    if ((fp = fopen("data/rankingdata.txt", "r")) == NULL) {
-        //エラー処理
-        printf("Ranking Data Error\n");
-        return -1;
+        for (int i = 0; i < 5; i++) {
+            fscanf(fp, "%2d %10s %10d\n", &g_Ranking[i].no, g_Ranking[i].name, &g_Ranking[i].score);//あやしい
+        }
+
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ランキングデータ配分列データを読み込む
-    for (int i = 0; i < 5; i++) {
-        fscanf(fp, "%2d %10s %10d\n", &g_Ranking[i].no, g_Ranking[i].name, &g_Ranking[i].score);//あやしい
+     if (a == 1) {
+        //ファイルオープン
+        if ((fp = fopen("data/rankingdata1.txt", "r")) == NULL) {
+            //エラー処理
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        for (int i = 0; i < 5; i++) {
+            fscanf(fp, "%2d %10s %10d\n", &g_Ranking[i].no, g_Ranking[i].name, &g_Ranking[i].score);//あやしい
+        }
+
+        //ファイルクローズ
+        fclose(fp);
+
     }
 
-    //ファイルクローズ
-    fclose(fp);
+    if (a == 2) {
+        //ファイルオープン
+        if ((fp = fopen("data/rankingdata2.txt", "r")) == NULL) {
+            //エラー処理
+            printf("Ranking Data Error\n");
+            return -1;
+        }
+
+        for (int i = 0; i < 5; i++) {
+            fscanf(fp, "%2d %10s %10d\n", &g_Ranking[i].no, g_Ranking[i].name, &g_Ranking[i].score);//あやしい
+        }
+
+        //ファイルクローズ
+        fclose(fp);
+
+    }
 
     return 0;
 }
