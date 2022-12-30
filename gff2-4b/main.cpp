@@ -22,7 +22,7 @@ int g_GameState; //ゲームシーン管理
 int Score1 = 0; //スコア
 int kagi; //カギ
 bool g_forcedtermination; //強制終了
-int stage;
+int stage = 0;
 
 /***********************************************
 *  画像変数
